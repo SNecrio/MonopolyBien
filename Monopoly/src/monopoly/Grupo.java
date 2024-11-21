@@ -2,6 +2,9 @@ package monopoly;
 
 import partida.*;
 import java.util.ArrayList;
+import monopoly.casillas.*;
+import monopoly.edificios.*;
+
 
 public class Grupo {
 

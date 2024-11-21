@@ -1,9 +1,9 @@
-package monopoly;
+package monopoly.casillas;
 
 import java.util.ArrayList;
 import java.util.Random;
-import partida.*;
-
+import partida.avatares.*;
+import partida.Jugador;
 
 public class Casilla {
 
@@ -11,17 +11,8 @@ public class Casilla {
     //Atributos:
     private String nombre; //Nombre de la casilla
     private String tipo; //Tipo de casilla (Solar, Especial, Transporte, Servicios, Comunidad, Suerte).
-    private float valor; //Valor de esa casilla (en la mayoría será valor de compra, en la casilla parking se usará como el bote).
-    private float valorInicial;
     private int posicion; //Posición que ocupa la casilla en el tablero (entero entre 1 y 40).
-    private Jugador duenho; //Dueño de la casilla (por defecto sería la banca).
-    private Grupo grupo; //Grupo al que pertenece la casilla (si es solar).
-    private float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
-    private float hipoteca; //Valor otorgado por hipotecar una casilla
-    private boolean estarHipotecada; //True si esta en hipoteca
-    private ArrayList<Edificio> edificios;
     private ArrayList<Avatar> avatares;
-    private float rentabilidad = 0f; //Dinero recaudado por la casilla a lo largo de la partida
     private int visitas = 0;
     private ArrayList<Jugador> jugadoresvisitantes; //Array usado para incluir los nombres de todas las personas que caen en la casilla (para calcular si el jugador cae mas de dos veces en esta casilla se puede comprar)
 
@@ -30,17 +21,8 @@ public class Casilla {
         //damoslle valores por defecto
         this.nombre = "";
         this.tipo = "";
-        this.valor= 0.0f;
-        this.valorInicial = 0.0f;
         this.posicion= 0;
-        this.duenho= null;
-        this.grupo= null;
-        this.impuesto=0.0f;
-        this.hipoteca=0.0f;
-        this.estarHipotecada = false;
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
-        this.edificios = new ArrayList<>();
-        this.rentabilidad = 0.0f;
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
         
@@ -59,18 +41,8 @@ public class Casilla {
         else{
             throw new IllegalArgumentException("O tipo ten que ser solar, servicio ou transporte"); 
         }
-
         this.posicion=posicion;
-        this.valor=valor;
-        this.valorInicial=valor;
-        this.duenho= duenho;
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
-        this.impuesto = 0.1f * valor;
-        this.hipoteca = 0.5f * valor;
-        this.estarHipotecada = false;
-        this.grupo = null;
-        this.edificios = new ArrayList<>();
-        this.rentabilidad = 0.0f;
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
 
@@ -83,14 +55,7 @@ public class Casilla {
         this.nombre=nombre;
         this.tipo = "Impuesto";
         this.posicion=posicion;
-        this.impuesto=impuesto;
-        this.duenho= duenho;
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
-        this.hipoteca = 0.0f;
-        this.grupo = null;
-        this.estarHipotecada = false;
-        this.edificios = new ArrayList<>();
-        this.rentabilidad = 0.0f;
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
 
@@ -111,14 +76,7 @@ public class Casilla {
             throw new IllegalArgumentException("Tiene que ser 'Especial', 'Suerte' o 'Comunidad'");
         }
         this.posicion=posicion;
-        this.duenho=duenho;
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
-        this.impuesto = 0.0f;
-        this.hipoteca = 0.0f;
-        this.estarHipotecada = false;
-        this.grupo = null;
-        this.edificios = new ArrayList<>();
-        this.rentabilidad = 0.0f;
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
 

@@ -3,6 +3,8 @@ package partida;
 import java.util.ArrayList;
 
 import monopoly.*;
+import monopoly.casillas.*;
+import partida.avatares.*;
 
 import static monopoly.Valor.FORTUNA_INICIAL;
 import static monopoly.Valor.SUMA_VUELTA;

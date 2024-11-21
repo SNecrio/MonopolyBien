@@ -1,7 +1,7 @@
 package monopoly;
 
+import monopoly.casillas.*;
 import partida.*;
-import java.util.ArrayList;
 
 class Edificio {
 

@@ -1,7 +1,0 @@
-{
-    "java.project.sourcePaths": ["src", "src/monopoly", "src/partida"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ]
-}
