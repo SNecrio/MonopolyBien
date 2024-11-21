@@ -1,0 +1,74 @@
+Casilla.java
+	public Casilla  → Constructor casilla vacía, solar/servicios/transporte, impuestos, suerte/caja/especial
+	void anhadirAvatar → Añade avatar a array avatares de la casilla
+	void eliminarAvatar → Elimina avatar de array de avatares de la casilla
+	boolean evaluarCasilla → Evalúa casilla completa (true si caso solvente, fasle si no)
+	float calcularAlquiler → Calcula el valor que hay que pagar por caer en una casilla ajena
+	void comprarCasilla → Añade la casilla al array list del jugador y reduce fortuna
+	void sumarValor → Añade valor a una casilla (sumar valor a casillas tras 3 vueltas).
+	String infoCasilla → Devuelve cadena con información sobre casilla
+	void listarAvatares → Lista nombre jugadores que están en una casilla
+	String casEnVenta → Devuelve información de todas las casillas en venta
+	
+Grupo.java
+	public Grupo → Constructor grupo de 2/3 solares
+	void anhadirCasilla → Añade casilla a array de casillas de un grupo
+	boolean esDuenhoGrupo → Comprueba si jugador es dueño de todas casillas de un grupo
+	
+Menu.java
+	void iniciarPartida → Muestra menú de inicio (escoger modo juego) e inicializa dados
+	void mostrarMenu → Muestra menú general
+	void analizarComando → Interpreta el comando introducido
+	void describirJugador → Imprime atributos relacionados con jugador (nombre, propiedades)
+	void descAvatar → Imprime atributos relacionados con avatar (Id, tipo, jugador,  casilla…)
+	void descCasilla → Imprime atributos relacionados con casilla (usa función infoCasilla)
+	void lanzarDados → lanza dados y mueve avatar posiciones dadas. Si irCárcel, lleva avatar a cárcel. Si dobles, vuelve a tirar. Si dobles 2 veces, lleva avatar a cárcel. Si cae en propiedad ajena, paga alquiler o bancarrota.
+	void dadosTrucados → igual pero pones el valor de los dados tú
+	void comprar → si la casilla es vendible, comprueba que se pueda adquirir y la añade a las propiedades del jugador
+	void salirCarcel → método para salir de la carcel bien pagando bien tirando (si no saca dobles y no tiene fianza, bancarrota)	
+	void listarVenta → llama a listarPropiedadesenVenta de la banca
+	void listarJugadores → recorre el array de jugadores e imprime sus atributos
+	void listarAvatares → recorre el array de avatares e imprime sus atributos
+	void acabarTurno → cambia turno, le toca a siguiente jugador
+	void crearJugador → crea jugador (añade a array, pone nombre, …)
+	void mostrarJugadorTurno → imprime de quien es el turno
+	boolean comprobarVueltas → comprueba cuantas vueltas se han dado, true si 4
+	void resetearVueltas → pone el número de vueltas dadas a 0
+	void eliminarJugador → elimina a jugador del array de jugadores
+
+
+	
+MonopolyETSE.java
+	static main → crea menú y llama a iniciar partida ( menu.iniciarPartida() )
+
+Tablero.java
+	public Tablero → constructor tablero, llama a generarCasillas()
+	void generarCasillas → inserta todos los lados del tablero (n-o-e-s)
+	void insertarLado----- → define todas las casillas de cierto lado, crea los grupos correspondientes y añade la fila al array posiciones
+	String toString → override del toString original. Usado para construit el tablero y los avatares en cada casilla
+	Casilla encontrar_casilla → devuelve casilla pedida por nombre
+	void imprimirTablero → Imprime el tablero por pantalla
+	void incrementarPrecios → Aumenta el precio de cada casilla
+	
+Valor.java
+Se definen valores estáticos para la fortuna de la banca, inicial, otorgada al dar una vuelta, y todos los valores de colores.
+
+Avatar.java
+	public Avatar → constructor de Avatar. Llama a generarId
+	void moverAvatar() → mueve el avatar la cantidad de posiciones indicada
+	void moverAvatar() → mueve el avatar a la casilla indicada
+	void generarId → genera Id de un avatar (letra random no repetida)
+	
+Dado.java
+	int hacerTirada → genera un número random entre el 1 y el 6.
+
+Jugador.java
+	public Jugador → constructor jugador (solo permite fichas concretas)
+	void anhadirPropiedades → añade una casilla al array de casillas de un jugador
+	void eliminarPropiedad → elimina una casilla del array de casillas de un jugador
+	void sumarVueltas → le suma al jugador dinero por pasar por la salida
+	void encarcelar → mete un jugador a la cárcel
+	int getNumCasillasServicio → calcula nº casillas de tipo servicio (para alquiler)
+	int getNumCasillasTransporte → calcula n.º casillas tipo transporte (para alquiler)
+	void listarPropiedadesenVenta → lista todas las propiedades vendibles aún no vendidas
+	void transferirPropiedadesBanca → transfiere todas las propiedades de jugador a banca

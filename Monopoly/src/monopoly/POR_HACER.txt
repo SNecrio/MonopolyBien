@@ -1,0 +1,19 @@
+HACER: 
+ESTADISTICAS GLOBAIS    - SERXIO
+LISTAR EDIFICIOS EN CASILLAS    - INES (CREI QUE ESTA)
+ESTADISTICAS PERSONA IMPRIMIR   - INES (ESTUVEN NAS CARTAS PARA QUE SE AÑADIRAN BEN AS ESTADISTICAS ESAS)
+
+COMPROBAR:
+Que pasa si caes en una casilla de comunidad sin dinero para pagar lo que manda (puse banzarrota pero no se si va así) (serxioarreglo: creo que ahora deberia ir)
+SI TENEIS TIEMPO, PROBAD DADOS AVANZADOS A FUERZA BRUTA A VER SI ALGO FALLA
+
+NON FUNCIONA
+trans1 se non o pos en minuscula non vai
+lanzar dados simple        martirespuesta: algo en particular? si era salir de la cárcel debería estar arreglado
+vender edificio no funciona esto ta no?
+pista de deporte tiene 3 palabras y no se divide bien pq son varias palabras (pon edificar pista y ya) creo que ta tamen
+comprobar que se eliminan las casas al construir el hotel comprobado
+
+
+hai que mirar que cando vendemos os edificios esos cartos sque ganamos van para algunha estadistica???
+non sei por que cando pagas o alquiler se añaden as tuas estadisticas o de cobro de alquiler, mirr nada listo
