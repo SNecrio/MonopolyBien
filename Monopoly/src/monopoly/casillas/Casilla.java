@@ -2,10 +2,15 @@ package monopoly.casillas;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import monopoly.Carta;
+import monopoly.Grupo;
+import monopoly.Valor;
+import monopoly.edificios.Edificio;
 import partida.avatares.*;
 import partida.Jugador;
 
-public class Casilla {
+public abstract class Casilla {
 
     private static final float SUMA_VUELTA = 1301328.584f;
     //Atributos:
@@ -31,7 +36,7 @@ public class Casilla {
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
     * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.
      */
-    public Casilla(String nombre, String tipo, int posicion, float valor, Jugador duenho) {
+    public Casilla(String nombre, String tipo, int posicion) {
         this.nombre=nombre;
         
         //hay que comprobar que tipo sexa "solar", "servicio" ou "transporte"
@@ -48,141 +53,46 @@ public class Casilla {
 
     }
 
-    /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
-    * Parámetros: nombre, posición en el tablero, impuesto establecido y dueño.
-     */
-    public Casilla(String nombre, int posicion, float impuesto, Jugador duenho) {
-        this.nombre=nombre;
-        this.tipo = "Impuesto";
-        this.posicion=posicion;
-        this.avatares=new ArrayList<>(); //inicializamos o array vacío
-        this.visitas = 0;
-        this.jugadoresvisitantes = new ArrayList<>();
+    // Métodos de acceso
+    public String getNombre() { return nombre; }
+    public String getTipo() { return tipo; }
+    public int getPosicion() { return posicion; }
 
-    }
-
-    /*Constructor utilizado para crear las casillas Especiales, de Suerte y de Caja de Comunidad:
-    * Parámetros: nombre, tipo de la casilla (será uno de los que queda), posición en el tablero y dueño.
-     */
-    public Casilla(String nombre, String tipo, int posicion, Jugador duenho) {
-        this.nombre=nombre;
-        if(tipo.equalsIgnoreCase("Especial")){
-            this.tipo=tipo;
-        }
-        else if(tipo.equalsIgnoreCase("Suerte")||tipo.equalsIgnoreCase("Comunidad")){
-            this.tipo=tipo;
-        }
-        else{
-            throw new IllegalArgumentException("Tiene que ser 'Especial', 'Suerte' o 'Comunidad'");
-        }
-        this.posicion=posicion;
-        this.avatares=new ArrayList<>(); //inicializamos o array vacío
-        this.visitas = 0;
-        this.jugadoresvisitantes = new ArrayList<>();
-
-    }
-
-
-    //Método utilizado para añadir un avatar al array de avatares en casilla.
+    //Metodos para avatares
     public void anhadirAvatar(Avatar av) {
         this.avatares.add(av);
     }
 
-    //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
         if(!this.avatares.remove(av)){
             System.err.println("El avatar no esta en la casilla seleccionada");
         }
     }
 
-    /*Método para evaluar qué hacer en una casilla concreta. Parámetros:
-    * - Jugador cuyo avatar está en esa casilla.
-    * - La banca (para ciertas comprobaciones).
-    * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
-    * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
-    * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada){
-        
-        // Si el jugador  es el dueño, no paga alquiler, devolvemos true
-        if (this.duenho == actual){
-            return true; //non hai que pagar alquiler
-        }        
+    // Método abstracto para evaluar una casilla, debe ser implementado por las subclases
+    public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada);
 
-        boolean espropiedadBanca = (this.duenho == banca);
-        if(this.getNombreSinColor().equalsIgnoreCase("Parking")){
-
-            float impuesto = banca.getFortuna();
-            banca.setFortuna(0f);
-            float fortuna = actual.getFortuna();
-            if(impuesto < 0.001f){
-                System.out.println("\nEl jugador cayo en el parking pero no hay bote que dar");
-            }
-            else{
-                System.out.println("\nEl jugador " + actual.getNombre() + " recibe " + impuesto + 
-                " del bote");
-                System.out.println("Su fortuna actual es " + fortuna + impuesto);
-            }
-            
-            actual.sumarFortuna(impuesto);
-            actual.EstadisticaPremios(impuesto);
-        }
-        else if(tipo.equalsIgnoreCase("IrCarcel")){
-            //Casilla carcel = 
-            //actual.getAvatar().setLugar(Casilla );
-
-        }
-        else if(tipo.equalsIgnoreCase("Impuesto")){
-            if(actual.getFortuna() >= this.impuesto){
-                actual.pagar(this.impuesto);
-                actual.sumarGastos(this.impuesto);
-                actual.EstadisticaTasasImpuesto(this.impuesto);
-                banca.sumarFortuna(this.impuesto);
-                System.out.println("Se han pagado " + impuesto + " de impuestos");
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else if(espropiedadBanca ==true){
-            if(actual.getFortuna() >= this.valor){ //se puede permitir comprar la propiedad
-                return true;
-            }
-            else{
-                return false; 
-            }
-        }
-
-        //La casillla pertenece a otro jugador y calculamos el alquiler
-        float alquiler = calcularAlquiler(actual, tirada);
-
-        if(this.estarHipotecada == true){
+    //Metodo para saber si un avatar está en esta casilla
+    public boolean estaAvatar(Avatar av){
+        if(av.getLugar().getPosicion() == this.posicion){
             return true;
         }
 
-        if(actual.getFortuna() >= alquiler){ //se puede permitir pagar la propiedad
-            Jugador duenhocasilla = this.duenho;
-
-            actual.pagar(alquiler);
-            actual.sumarGastos(alquiler);
-            actual.EstadisticaPagoAlquiler(alquiler);
-
-            duenhocasilla.EstadisticaCobroAlquiler(alquiler);
-            duenhocasilla.sumarFortuna(alquiler);
-
-            this.sumarRentabilidad(alquiler);
-            if(this.tipo.equalsIgnoreCase("Solar")){
-                this.grupo.sumarRentabilidad(alquiler);
-            }
-            
-
-            return true;
-        }
-        else{
-            return false; 
-        }
+        return false;
     }
+
+
+    //Metodo ToString para describir una casilla
+    public void DescribirCasilla(){
+        StringBuilder info = new StringBuilder();
+
+        info.append("\n");
+        //COMPLETAR
+    }
+
+    
         
+    ////////////////////HASTA AQUI O NOVO
     /*Devuelve la cantidad a pagar por caer en una casilla de otro jugador*/
     public float calcularAlquiler(Jugador actual, int tirada){
         switch(tipo){
@@ -857,122 +767,4 @@ public class Casilla {
     }
  
 
-    // Getter do nome da casilla
-    public String getNombre() {
-        return this.nombre;
-    }
-    public String getNombreSinColor(){
-        return this.nombre.replaceAll("\\x1B\\[[0-9;]*m", "");}
-
-
-    // Getter do tipo da casilla
-    public String getTipo() {
-        return this.tipo;
-    }
-
-    // Getter da posición da casilla
-    public int getPosicion(){
-        return this.posicion;
-    }
-    
-    // Getter do dueño da casilla
-    public Jugador getDuenho() {
-        return this.duenho;
-    }
-
-    // Getter do valor da casilla
-    public float getValor() {
-        return this.valor;
-    }
-
-    // Getter do grupo da casilla
-    public Grupo getGrupo() {
-        return this.grupo;
-    }
-
-    public float getImpuesto(){
-        return this.impuesto;
-    }
-
-    public ArrayList<Avatar> getAvatares(){
-        return this.avatares;
-    }
-
-    public ArrayList<Edificio> getEdificios(){
-        return this.edificios;
-    }
-
-    public void setGrupo(Grupo grupo){
-        this.grupo = grupo;
-    }
-
-    public boolean esComunidad(){
-        return "Comunidad".equalsIgnoreCase(tipo);
-    }
-    
-    public boolean esSuerte(){
-        return "Suerte".equalsIgnoreCase(tipo);
-    }
-
-    public boolean esImpuesto(){
-        return ("Imp1".equalsIgnoreCase(nombre) || "Imp2".equalsIgnoreCase(nombre));
-    }
-
-    public boolean esSolar(){
-        return "Solar".equalsIgnoreCase(tipo);
-    }
-
-    public boolean esIrACarcel(){
-        return "IrCarcel".equalsIgnoreCase(nombre);
-    }
-
-    public boolean esParking(){
-        return "Parking".equalsIgnoreCase(nombre);
-    }
-
-    public boolean esCarcel(){
-        return "Carcel".equalsIgnoreCase(nombre);
-    }
-
-    public void asignarDuenho(Jugador nuevoduenho){
-        this.duenho = nuevoduenho;
-    }
-
-    public float getHipotecaValor(){
-        return hipoteca;
-    }
-
-    public boolean getEstarHipotecada(){
-        return estarHipotecada;
-    }
-
-    //Suma rentabilidad
-    public void sumarRentabilidad(float valor){
-        this.rentabilidad += valor;
-    }
-
-    public float getRentabilidad(){
-        return rentabilidad;
-    }
-
-    public int getVisitas(){
-        return visitas;
-    }
-
-    public ArrayList<Jugador> getJugadoresVisitantes(){
-        return jugadoresvisitantes;
-    }
-
-
-    public void sumarJugadoresVisitantes(Jugador jugador){
-        if (jugador != null) {
-            this.jugadoresvisitantes.add(jugador);
-        } else {
-            System.out.println("Jugador no puede ser nulo");
-        }   
-    }
-    
-    public void sumarVisitas(int valor){
-        this.visitas += valor;
-    }
 }
