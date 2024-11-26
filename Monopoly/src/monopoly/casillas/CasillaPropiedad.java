@@ -158,6 +158,10 @@ public abstract class CasillaPropiedad extends Casilla {
         this.valor = valor;
     }
 
+    public void sumarValor(float valor){
+        this.valor += valor;
+    }
+
     public float getValorInicial(){
         return this.valorInicial;
     }
