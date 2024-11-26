@@ -10,10 +10,12 @@ public class CasillaImpuesto extends Casilla{
 
     //CONSTRUCTORES
     public CasillaImpuesto(){
+        super();
         this.impuesto = 0.0f;
     }
 
-    public CasillaImpuesto(float impuesto){
+    public CasillaImpuesto(float impuesto, String nombre, int posicion){
+        super(nombre, "Impuesto", posicion);
         this.impuesto = impuesto;
     }
 
@@ -36,7 +38,7 @@ public class CasillaImpuesto extends Casilla{
 
     }
 
-    public void infoCasilla(StringBuilder info){
+    public void describirEspecifico(StringBuilder info){
 
         info.append("IMPUESTO: ").append(this.impuesto).append("\n");
     }

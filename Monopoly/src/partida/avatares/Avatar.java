@@ -15,6 +15,9 @@ public class Avatar {
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
     private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
     private int extras; //Cuenta el numero de tiradas extra correspondiente a un tipo de avatar
+    private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
+    private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
+    
 
     //Constructor vacío
     public Avatar() {
@@ -42,10 +45,8 @@ public class Avatar {
     /*Método que permite mover a un avatar a una casilla concreta. Parámetros:
     * - Un array con las casillas del tablero. Se trata de un arrayList de arrayList de casillas (uno por lado).
     * - Un entero que indica el numero de casillas a moverse (será el valor sacado en la tirada de los dados).
-    * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
-     */
+    */
     public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
-
         //Los bucles iteran por todas las casillas hasta que encuentra la que tiene la misma posicion que la deseada
         for (int i = 0; i < casillas.size(); i++) {
             for(int u = 0; u < (casillas.get(i)).size(); u++){
@@ -102,6 +103,103 @@ public class Avatar {
         return id;
         
     }
+
+    // Método para movel el avatar en modo básico (jugador es jugador actual)
+    public void moverEnBasico(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca){
+        int casillasTotal = dado1 + dado2;
+
+        //COMPROBAR EN CARCEL
+
+        //Comprueba si son dobles y cuantos dobles lleva
+        if(dado1==dado2){
+            jugador.incrementarDobles();
+            if(jugador.getDobles()==3){
+                jugador.encarcelar(tablero.getPosiciones());
+                tablero.imprimirTablero();
+                System.out.println("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
+                System.out.println("Oh no! Has lanzado dobles 3 veces consecutivas, vas a la cárcel");
+                //acabarTurno(false);
+                return;
+            }
+        }
+
+        String casillaAnterior = jugador.getAvatar().getLugar().getNombre(); //Nombre de la casilla anterior para prints
+        jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
+
+        //Comprueba si se puede realizar la acción de la casilla.
+        solvente = jugador.getAvatar().getLugar().evaluarCasilla(jugador, banca, casillasTotal);
+
+        //Atributos estadísticos
+        //jugador.getAvatar().getLugar().sumarVisitas(1);
+        //jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
+
+        tablero.imprimirTablero();
+
+        System.out.println("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
+
+        //Se vuelve a mirar los dobles para imprimirlo debajo del tablero
+        if(dado1==dado2) System.out.println("Felicidades! Has lanzado dobles, tienes otro lanzamiento!");
+
+        //Si es una casilla de su propiedad
+        if(jugador == jugador.getAvatar().getLugar().getDuenho()){
+            System.out.println(
+            "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
+            casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
+            ". Es una casilla de su propiedad.");
+            }
+        else if(banca == jugador.getAvatar().getLugar().getDuenho()){
+            System.out.println(
+            "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
+            casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
+            ". Es una casilla de la banca.");   
+            }
+
+        //Si es de otro jugador
+        else{
+            float alquiler = jugador.getAvatar().getLugar().calcularAlquiler(jugador, casillasTotal);
+            System.out.println( "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
+            casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE);
+            //Si le puedes pagar, se paga automáticamente
+            if(solvente == true){
+                System.out.println( "Se han pagado " + alquiler + " euros de alquiler. ");
+            }
+            //Si no puede pagar pero tiene propiedades
+            else{
+                bancarrota(jugador,casillasTotal);
+                }
+            }
+
+        if(comprobarVueltas()==true){
+            tablero.incrementarPrecios();
+            resetearVueltas();
+        }
+    return;
+    }
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //Getter do id
     public String getId(){

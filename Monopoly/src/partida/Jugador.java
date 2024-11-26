@@ -33,7 +33,7 @@ public class Jugador {
     private int bloqueado; //Cuenta los turnos que un jugador no puede tirar
     private boolean comprado; //Para saber si un jugador ha comprado una propiedad en el mismo turno (usado para, si sacas dobles, no volver a preguntar modo)
     private boolean primeraDobles; //comprueba si la primera tirada fue dobles, usado para avatar pelota
-    private int modoelegido; //Entero para diferenciar los distintos estados del modo elegido (0 - no elegido, 1 - simple, 2 - avanzado)
+    private boolean modo; //false básico, true avanzado
     private int vecesDados;
 
     //Constructor vacío. Se usará para crear la banca.
@@ -83,7 +83,7 @@ public class Jugador {
         this.cobroAlquiler = 0.0f;
         this.comprado = false;
         this.primeraDobles = false;
-        this.modoelegido = 0;
+        this.modo = false;
   
     }
     
@@ -134,6 +134,8 @@ public class Jugador {
             this.tiradasCarcel = 0;
             Casilla carcel = pos.get(3).get(0);
             getAvatar().moverAvatar(pos, carcel, false);//Lo lleva a la carcel
+            //carcel.sumarVisitas(1);
+            //jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
             this.vecesCarcel++;
 
         }else{
@@ -309,12 +311,12 @@ public class Jugador {
         this.primeraDobles = dobles;
     }
 
-    public int getModoElegido(){
-        return this.modoelegido;
+    public boolean getModo(){
+        return this.modo;
     }
     
-    public void setModoElegido(int modo){
-        this.modoelegido = modo;
+    public void setModo(boolean modoElegido){
+        this.modo = modoElegido;
     }
 
     //Metodo para transferir todas as propiedades do xogador a banca

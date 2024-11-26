@@ -5,6 +5,7 @@ import partida.*;
 import monopoly.*;
 import monopoly.edificios.*;
 import monopoly.edificios.Edificio;
+import excepcions.*;
 
 public abstract class CasillaPropiedad extends Casilla {
     private float valor;
@@ -13,8 +14,9 @@ public abstract class CasillaPropiedad extends Casilla {
     private float hipoteca;
     private boolean estarHipotecada;
     private float rentabilidad;
+    private float alquiler;
 
-     //Constructores:
+    //Constructores:
     public CasillaPropiedad() {
         super();
         this.valor = 0.0f;
@@ -23,10 +25,11 @@ public abstract class CasillaPropiedad extends Casilla {
         this.hipoteca = 0.0f;
         this.estarHipotecada = false;
         this.rentabilidad = 0.0f;
+        this.alquiler = 0.0f;
 
     }
 
-    public CasillaPropiedad(float valor, Jugador duenho, Grupo grupo,String nombre, String tipo, int posicion){
+    public CasillaPropiedad(float valor, Jugador duenho, String nombre, String tipo, int posicion){
         super(nombre, tipo, posicion);
         this.valor = valor;
         this.valorInicial = valor;
@@ -34,26 +37,24 @@ public abstract class CasillaPropiedad extends Casilla {
         this.hipoteca = 0.5f * valor;
         this.estarHipotecada = false;
         this.rentabilidad = 0.0f;
-
     }
 
     public abstract float calcularAlquiler(Jugador actual, int tirada);
 
-
-
-    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada){
-        if(this.duenho == actual){
+    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero){
+        if(perteneceAJugador(actual)){
             return true;
         }
 
-        boolean espropiedadBanca = (this.duenho == banca);
+        boolean espropiedadBanca = perteneceAJugador(banca);
 
         if(espropiedadBanca== true){
             if(actual.getFortuna() >= this.valor){
                 return true;
             }
             else{
-                System.out.println("No te puedes permitir comprar esta casilla");
+                System.out.println("No te puedes permitir comprar esta casilla"); //EXECEPCION!!!!!!!!!!!!
+                GeneralException("No te puedes permitir comprar esta casilla");
                 return false;
             }
         }
@@ -87,6 +88,69 @@ public abstract class CasillaPropiedad extends Casilla {
         }       
     }
 
+    public void describirEspecifico(StringBuilder info){
+        info.append("Valor: ").append(valor).append("\n");
+        info.append("Dueño: ").append(duenho.getNombre()).append("\n");
+        info.append("Hipoteca: ").append(hipoteca).append("\n");
+
+        infoCasilla(info);
+    }
+
+    public abstract void infoCasilla(StringBuilder info);
+
+    boolean perteneceAJugador(Jugador jugador){
+        if(this.duenho.getNombre().equalsIgnoreCase(jugador.getNombre())){
+            return true;
+        }
+
+        return false;
+    }
+
+    public void comprarCasilla(Jugador solicitante, Jugador banca){
+        if(perteneceAJugador(solicitante)==true){
+            System.out.println("NO PUEDES COMPRAR UNA PROPIEDAD QUE YA ES TUYA"); //EXCEPCIÓN
+            return;
+        }
+
+        else if(solicitante.getFortuna() < this.valor){
+            System.out.println("El jugador no tiene dinero suficiente para comprar la casilla"); //EXCEPCIÓN
+            return;
+        }
+
+        banca.eliminarPropiedad(this);
+        solicitante.anhadirPropiedad(this);
+        solicitante.setComprado(true);
+        solicitante.pagar(this.valor); //reducimos a fortuna
+        solicitante.sumarGastos(this.valor); //aumentamos os gastos
+        solicitante.EstadisticaDineroInvertido(this.valor);
+
+        //establecemos dueño da casilla
+        this.duenho = solicitante;
+        
+        System.out.println("El jugador " + solicitante.getNombre() + " compra la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.valor + ".");
+    }
+
+    public void hipotecarCasilla(Jugador solicitante, Jugador banca){
+
+        estarHipotecada = true;
+        solicitante.sumarFortuna(this.hipoteca);
+
+        System.out.println("El jugador " + solicitante.getNombre() + " hipoteca la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.hipoteca + ".");
+    }
+
+    public void deshipotecarCasilla(Jugador solicitante, Jugador banca){
+        estarHipotecada = false;
+        solicitante.sumarFortuna(this.hipoteca * -1.1f);
+
+        System.out.println("El jugador " + solicitante.getNombre() + " deshipoteca la casilla " + this.nombre + Valor.WHITE + " por " + this.hipoteca * 1.1f + 
+        ", ahora puede volver a recibir alquiler");
+    }
+
+    public abstract void casEnVenta();
+
+    
+
+    
     public float getValor(){
         return this.valor;
     }
@@ -94,6 +158,10 @@ public abstract class CasillaPropiedad extends Casilla {
         this.valor = valor;
     }
 
+    public float getValorInicial(){
+        return this.valorInicial;
+    }
+   
     public Jugador getDuenho(){
         return this.duenho;
     }
@@ -110,6 +178,10 @@ public abstract class CasillaPropiedad extends Casilla {
 
      public float getRentabilidad(){
         return rentabilidad;
+    }
+
+    public void sumarRentabilidad(float valor){
+        this.rentabilidad += valor;
     }
 
 }

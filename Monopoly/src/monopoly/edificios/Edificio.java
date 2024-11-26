@@ -12,10 +12,12 @@ public class Edificio {
     private Casilla casilla;
     private float coste;
     private Grupo grupo;
+    private String tipo;
     
 
     //Constructor vacío.
     public Edificio(){
+        this.tipo = "";
         this.duenho = null;
         this.id = 0;
         this.coste = 0.0f;
@@ -24,12 +26,28 @@ public class Edificio {
     }
 
     //Constructor
-    public Edificio(Jugador duenho, int id, float coste, Casilla casilla, Grupo grupo){
+    public Edificio(Jugador duenho, int id, float coste, Casilla casilla, Grupo grupo, String tipo){
         this.duenho = duenho;
         this.id = id;
         this.coste = coste;
         this.casilla = casilla;
         this.grupo = grupo;
+        this.tipo = tipo;
+    }
+
+    //Métodos para listar edificios construidos
+    public void listarEdificio(){
+        StringBuilder info = new StringBuilder();
+
+        info.append("{").append("\n");
+        info.append("id: ").append(this.tipo).append("-").append(this.id).append("\n");
+        info.append("propietario: ").append(this.duenho.getNombre()).append("\n");
+        info.append("casilla: ").append(this.casilla.getNombreSinColor()).append("\n");
+        info.append("grupo: ").append(this.grupo.getColor()).append("\n");
+        info.append("coste: ").append(this.coste).append("\n");
+        info.append("}\n");
+
+        System.out.println(info.toString());
     }
     
     public Jugador getDuenho(){
@@ -66,6 +84,14 @@ public class Edificio {
 
     public void setGrupo(Grupo grupo){
         this.grupo =grupo;
+    }
+
+    public void setTipo(String tipo){
+        this.tipo = tipo;
+    }
+
+    public String getTipo(){
+        return this.tipo;
     }
 
 

@@ -1,11 +1,18 @@
 package monopoly.casillas;
 import java.util.ArrayList;
+
+import monopoly.Valor;
 import partida.*;
 
 public class PropiedadTransporte extends CasillaPropiedad {
 
-    public PropiedadTransporte(){
-        super();
+    public PropiedadTransporte(float valor, Jugador duenho, String nombre, int posicion){
+        super(valor, duenho, nombre, "Transporte", posicion);
+    }
+
+    @Override
+    public void infoCasilla(StringBuilder info){
+        info.append("Alquiler: ").append(0.1*getValor()).append("\n");
     }
     
     @Override
@@ -31,6 +38,14 @@ public class PropiedadTransporte extends CasillaPropiedad {
         else{
             return 0.0f;
         }
+    }
+
+    @Override
+    public void casEnVenta(){
+        StringBuilder info = new StringBuilder();
+        info.append(Valor.WHITE + "\n").append(this.getNombre()).append("\n");
+        info.append("Tipo: ").append(this.getTipo()).append("\n");
+        info.append("Valor: ").append(this.getValor()).append("\n");
     }
 }
 

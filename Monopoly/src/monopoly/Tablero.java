@@ -32,48 +32,78 @@ public class Tablero {
     
     //Método para insertar las casillas del lado norte.
     private void insertarLadoNorte() {
+
         ArrayList<Casilla> filaNorte = new ArrayList<>(11);
-        Casilla casilla = new Casilla(Valor.WHITE + "Parking" , "Especial", 20, banca); //Crear unha casilla
+
+        Grupo grupoRojo = new Grupo();
+        grupoRojo.setColor("RED");
+        grupos.put("RED",grupoRojo);
+
+        Grupo grupoMarron = new Grupo();
+        grupoMarron.setColor("MARRON");
+        grupos.put("MARRON",grupoMarron);
+
+        Casilla casilla;
+
+        casilla = new CasillaEspecial(0f,Valor.WHITE + "Parking",20);
         filaNorte.add(casilla); //Engadila ao arrayList
         banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.RED + "Solar12" , "Solar", 21, 1142440, banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.WHITE + "Suerte" , "Suerte", 22, banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.RED + "Solar13" , "Solar", 23, 1142440, banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.RED + "Solar14" , "Solar", 24, 1142440, banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.WHITE + "Trans3" ,"Transporte", 25,1301328.584f , banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.MARRON + "Solar15" , "Solar", 26, 1485172 , banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.MARRON + "Solar16" , "Solar", 27, 1485172 , banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.WHITE + "Serv2" ,"Servicio", 28,975996.438f , banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.MARRON + "Solar17" , "Solar", 29, 1485172 , banca);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        casilla = new Casilla(Valor.WHITE + "IrCarcel" , "Especial", 30, banca);
+
+        casilla = new PropiedadSolar(grupoRojo,1142440f,banca,Valor.RED + "Solar12",21);
+        ((PropiedadSolar)casilla).setGrupo(grupoRojo);
+        grupoRojo.anhadirCasilla(casilla);
         filaNorte.add(casilla);
         banca.anhadirPropiedad(casilla);
 
-        Grupo grupo = new Grupo(filaNorte.get(1),filaNorte.get(3),filaNorte.get(4),"RED");
-        filaNorte.get(1).setGrupo(grupo);filaNorte.get(3).setGrupo(grupo);filaNorte.get(4).setGrupo(grupo);
-        grupos.put("RED",grupo);
+        /*
+        //casilla = new CasillaAccion(Valor.WHITE + "Suerte" , "Suerte", 22, banca);
+        casilla = new CasillaAccion(,);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        */
 
-        grupo = new Grupo(filaNorte.get(6),filaNorte.get(7),filaNorte.get(9),"MARRON");
-        filaNorte.get(6).setGrupo(grupo);filaNorte.get(7).setGrupo(grupo);filaNorte.get(9).setGrupo(grupo);
-        grupos.put("MARRON",grupo);
+        casilla = new PropiedadSolar(grupoRojo,1142440f,banca,Valor.RED + "Solar13",23);
+        ((PropiedadSolar)casilla).setGrupo(grupoRojo);
+        grupoRojo.anhadirCasilla(casilla);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new PropiedadSolar(grupoRojo,1142440f,banca,Valor.RED + "Solar14",24);
+        ((PropiedadSolar)casilla).setGrupo(grupoRojo);
+        grupoRojo.anhadirCasilla(casilla);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new PropiedadTransporte(1301328.584f,banca,Valor.WHITE + "Trans3", 25);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new PropiedadSolar(grupoMarron,1485172f,banca,Valor.MARRON + "Solar15",26);
+        ((PropiedadSolar)casilla).setGrupo(grupoMarron);
+        grupoMarron.anhadirCasilla(casilla);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new PropiedadSolar(grupoMarron,1485172f,banca,Valor.MARRON + "Solar16",27);
+        ((PropiedadSolar)casilla).setGrupo(grupoMarron);
+        grupoMarron.anhadirCasilla(casilla);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new PropiedadServicio(975996.438f,banca,Valor.WHITE + "Serv2",28);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new PropiedadSolar(grupoMarron,1485172f,banca,Valor.MARRON + "Solar17",29);
+        ((PropiedadSolar)casilla).setGrupo(grupoMarron);
+        grupoMarron.anhadirCasilla(casilla);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+        
+        casilla = new CasillaEspecial(0f,"IrCarcel",30);
+        filaNorte.add(casilla);
+        banca.anhadirPropiedad(casilla);
+
 
         this.posiciones.add(filaNorte); //Engadimos o arrayList fila ao arrayList posiciones
     }

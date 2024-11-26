@@ -141,6 +141,10 @@ public class Grupo {
         return this.colorGrupo;
     }
 
+    public void setColor(String color){
+        this.colorGrupo = color;
+    }
+
     public ArrayList<Casilla> getCasillas(){
         return new ArrayList<>(this.miembros);
     }

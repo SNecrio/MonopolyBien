@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.Random;
 import partida.avatares.*;
 import partida.Jugador;
+import monopoly.Grupo;
 import monopoly.Valor;
 
 public class PropiedadServicio extends CasillaPropiedad {
+
     public PropiedadServicio(){
         super();
+    };
+
+    public PropiedadServicio(float valor, Jugador duenho, String nombre, int posicion){
+        super(valor, duenho, nombre,"Servicio",  posicion);
     };
 
     @Override
@@ -18,7 +24,7 @@ public class PropiedadServicio extends CasillaPropiedad {
         //miramos cantas casillas servicio ten o dueño
         int num_servicio = propietariocasillaservicio.getNumCasillasServicio();
 
-        float factor_servicio =  SUMA_VUELTA/200; //calculamos o factor servicio
+        float factor_servicio =  Valor.SUMA_VUELTA/200; //calculamos o factor servicio
 
         //Dependiendo del numero de casillas servicio y de la tirada, se pagara un valor o otro
         if (num_servicio == 1){
@@ -32,4 +38,19 @@ public class PropiedadServicio extends CasillaPropiedad {
         }
         
     }
+
+    @Override
+    public void infoCasilla(StringBuilder info){
+        info.append("Alquiler: ").append(0.1*getValor()).append("\n");
+    }
+
+    @Override
+    public void casEnVenta(){
+        StringBuilder info = new StringBuilder();
+        info.append(Valor.WHITE + "\n").append(this.getNombre()).append("\n");
+        info.append("Tipo: ").append(this.getTipo()).append("\n");
+        info.append("Valor: ").append(this.getValor()).append("\n");
+    }
+
+
 }

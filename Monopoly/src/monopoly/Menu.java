@@ -7,7 +7,7 @@ import static monopoly.Valor.SUMA_VUELTA;
 import partida.*;
 import monopoly.casillas.*;
 import partida.avatares.*;
-
+import excepcions.*;
 
 public class Menu {
 
@@ -57,20 +57,13 @@ public class Menu {
         System.out.println("&     &  &&&&&&  &    &  &&&&&&  &       &&&&&&  &&&&&  &\u001B[0m");
 
         System.out.println("\nBienvenido a una nueva partida de Monopoly!\n");
-        /*
-        do { 
-            System.out.println("Van a jugar en modo simple o avanzado?");
-            nome = scan.nextLine();
-        } while (!nome.equalsIgnoreCase("simple") && !nome.equalsIgnoreCase("avanzado"));
-
-        if(nome.equalsIgnoreCase("simple")){
-            this.modo = true;
-        }else{
-            this.modo = false;
-        }*/
-
         System.out.println("Para comenzar, cree de 2 a 6 jugadores. Recuerde que una vez empezada, no se podran crear nuevos jugadores.\n");
-        mostrarMenu();
+        try{
+            mostrarMenu();
+        }catch(GeneralException e){
+            System.err.println("Excepción capturada: " + e.getMessage() + "\n");
+        }
+
     }
     
     private void mostrarMenu(){
@@ -378,7 +371,7 @@ public class Menu {
             jugadores.get(turno).setFortuna(0);
         }
         else{
-            System.out.println("\nComando incorrecto\n");
+            throw new GeneralException("Comando incorrecto");
         }
 
         return;
@@ -1516,7 +1509,7 @@ public class Menu {
         if(jugador.getBloqueado()<0) jugador.setBloqueado(0);
         jugador.setPrimeraDobles(false);
         jugador.getAvatar().setExtras(0);
-        jugador.setModoElegido(0);
+        jugador.setModo(0);
 
         turno++;
         if(turno > jugadores.size() -1){
