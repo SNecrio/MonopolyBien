@@ -110,15 +110,7 @@ public abstract class Casilla {
     
 
 
-    public ArrayList<Edificio> ObtenerArrayEdificiosPorTipo(String tipo){
-        ArrayList<Edificio> listaEdificios = new ArrayList<Edificio>();
-        for(Edificio edificio:edificios){
-            if(edificio.getTipo().equalsIgnoreCase(tipo)){
-                listaEdificios.add(edificio);
-            }
-        }
-        return listaEdificios;        
-    }
+   
  
 
 }

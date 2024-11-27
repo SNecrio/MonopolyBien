@@ -1,38 +1,37 @@
 package monopoly.edificios;
-
+import java.util.ArrayList;
 import monopoly.casillas.*;
 import partida.*;
 import monopoly.*;
 
-public class Edificio {
+public abstract class Edificio {
 
-    //Atributos
+    // Atributos
     private Jugador duenho; 
     private int id;
-    private Casilla casilla;
-    private float coste;
+    private PropiedadSolar casilla;
     private Grupo grupo;
     private String tipo;
-    
-
-    //Constructor vacío.
-    public Edificio(){
+    private float coste;  // Coste común que será modificado en las subclases
+  
+    // Constructor vacío
+    public Edificio() {
         this.tipo = "";
         this.duenho = null;
         this.id = 0;
-        this.coste = 0.0f;
         this.casilla = null;
         this.grupo = null;
+        this.coste = 0.0f; // Valor predeterminado
     }
-
-    //Constructor
-    public Edificio(Jugador duenho, int id, float coste, Casilla casilla, Grupo grupo, String tipo){
+  
+    // Constructor con parámetros
+    public Edificio(Jugador duenho, int id, PropiedadSolar casilla, Grupo grupo, String tipo, float coste) {
         this.duenho = duenho;
         this.id = id;
-        this.coste = coste;
         this.casilla = casilla;
         this.grupo = grupo;
         this.tipo = tipo;
+        this.coste = coste;
     }
 
     //Métodos para listar edificios construidos
@@ -44,11 +43,35 @@ public class Edificio {
         info.append("propietario: ").append(this.duenho.getNombre()).append("\n");
         info.append("casilla: ").append(this.casilla.getNombreSinColor()).append("\n");
         info.append("grupo: ").append(this.grupo.getColor()).append("\n");
-        info.append("coste: ").append(this.coste).append("\n");
+        info.append("coste: ").append(calcularCoste()).append("\n");
         info.append("}\n");
 
         System.out.println(info.toString());
     }
+
+    public abstract float calcularCoste();
+
+    public abstract boolean puedeConstruir();
+
+    //ESTE METODO USAMOLO CANDO POR EJEMPLO COMPRAMOS UN HOTEL HAI QUE ELIMINAR CATRO CASAS
+    public abstract ArrayList<Edificio> accionComprar(ArrayList<Edificio> edificios);
+    
+
+    public float venderEdificioBanca(Jugador banca){
+        if(this.duenho !=banca){
+            float fortuna = this.duenho.getFortuna();
+            this.duenho.setFortuna(fortuna + (0.5f * this.coste));
+            this.duenho = banca;
+
+            return 0.5f * this.coste;
+        }
+        else{
+            System.out.println("No tiene dueño este edificio");
+            return 0;
+        }
+    
+    }
+
     
     public Jugador getDuenho(){
         return this.duenho;
@@ -62,7 +85,7 @@ public class Edificio {
         return this.coste;
     }
 
-    public Casilla getCasilla(){
+    public PropiedadSolar getCasilla(){
         return this.casilla;
     }
 
@@ -78,7 +101,7 @@ public class Edificio {
         this.id= id;
     }
 
-    public void setCasilla(Casilla casilla){
+    public void setCasilla(PropiedadSolar casilla){
         this.casilla = casilla;
     }
 
