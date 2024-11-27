@@ -166,6 +166,11 @@ public class PropiedadSolar extends CasillaPropiedad {
             System.out.println("EL JUGADOR NO ES EL DUEÑO DE LA CASILLA");
             return false;
         }
+
+        if(this.getGrupo().esDuenhoGrupo(jugador) == false){
+            System.out.println("El jugador no es el dueño del grupo entero, no puede comprarla");
+            return false;
+        }
         
         if(!tipo.equalsIgnoreCase("casa") ||!tipo.equalsIgnoreCase("hotel") || !tipo.equalsIgnoreCase("piscina")  || !tipo.equalsIgnoreCase("pista de deporte") ){
             System.out.println("TIPO CONSTRUCCION NON VALIDO");
@@ -238,6 +243,16 @@ public class PropiedadSolar extends CasillaPropiedad {
     }
 
 
+    public ArrayList<Edificio> ObtenerArrayEdificiosPorTipo(String tipo){
+        
+        ArrayList<Edificio> listaEdificios = new ArrayList<Edificio>();
+        for(Edificio edificio:edificios){
+            if(edificio.getTipo().equalsIgnoreCase(tipo)){
+                listaEdificios.add(edificio);
+            }
+        }
+        return listaEdificios;        
+    }
 
     public void setGrupo(Grupo grupo){
         this.grupo = grupo;

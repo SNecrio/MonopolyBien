@@ -28,7 +28,7 @@ public class Jugador {
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
     private int vueltas; //Cuenta las vueltas dadas al tablero.
     private int vueltasTotal;
-    private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
+    private ArrayList<CasillaPropiedad> propiedades; //Propiedades que posee el jugador.
     private int dobles; //Cuenta el número de veces que salen dobles en un turno
     private int bloqueado; //Cuenta los turnos que un jugador no puede tirar
     private boolean comprado; //Para saber si un jugador ha comprado una propiedad en el mismo turno (usado para, si sacas dobles, no volver a preguntar modo)
@@ -46,7 +46,7 @@ public class Jugador {
         this.tiradasCarcel=0;
         this.vueltas=0;
         this.vueltasTotal=0;
-        this.propiedades= new ArrayList<Casilla>();
+        this.propiedades= new ArrayList<CasillaPropiedad>();
         this.dineroInvertido = 0.0f;
         this.pagoTasasImpuestos = 0.0f;
         this.pagoAlquiler = 0.0f;
@@ -72,7 +72,7 @@ public class Jugador {
         this.tiradasCarcel = 0;
         this.vueltas = 0;
         this.vueltasTotal=0;
-        this.propiedades= new ArrayList<Casilla>();
+        this.propiedades= new ArrayList<CasillaPropiedad>();
         this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);
         this.dineroInvertido = 0.0f;
         this.pagoTasasImpuestos = 0.0f;
@@ -89,12 +89,12 @@ public class Jugador {
     
     //Otros métodos:
     //Método para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
-    public void anhadirPropiedad(Casilla casilla) {
+    public void anhadirPropiedad(CasillaPropiedad casilla) {
         this.propiedades.add(casilla);
     }
 
     //Método para eliminar una propiedad del arraylist de propiedades de jugador.
-    public void eliminarPropiedad(Casilla casilla) {
+    public void eliminarPropiedad(CasillaPropiedad casilla) {
         if(!this.propiedades.remove(casilla)){
             System.out.println("El jugador no tiene esa casilla en propiedad, no se puede eliminar");
         }
@@ -185,15 +185,13 @@ public class Jugador {
 
         else{
             System.out.println("Propiedades en venta: ");
-            for(Casilla propiedad : propiedades){
-                String info = propiedad.casEnVenta();
-
-                System.out.println(info);
+            for(CasillaPropiedad propiedad : propiedades){
+                propiedad.casEnVenta();
         }}
     }
 
     public boolean poseeGrupo(Grupo grupo){
-        ArrayList<Casilla> casillasGrupo = grupo.getCasillas();
+        ArrayList<PropiedadSolar> casillasGrupo = grupo.getCasillas();
         for(Casilla casilla: casillasGrupo){
             if(!propiedades.contains(casilla)){
                 return false; //si galta alguna el jugador no posee el grupo
@@ -201,6 +199,33 @@ public class Jugador {
         }
 
         return true;
+    }
+
+    public void describirJugador(String nombre){
+        if(this.nombre.equalsIgnoreCase(nombre)){
+            StringBuilder info = new StringBuilder();
+
+            info.append("Nombre:").append(this.nombre).append("\n");
+            info.append("Avatar:").append(this.avatar.getId()).append("\n");
+            info.append("Fortuna:").append(this.fortuna).append("\n");
+            info.append("Propiedades: [");
+
+            for(CasillaPropiedad propiedad:propiedades){
+                info.append(propiedad.getNombre()).append("],");
+            }
+            info.append("\n");
+
+            info.append("Hipotecas: [");
+            for(CasillaPropiedad propiedad:propiedades){
+                if(propiedad.estaHipotecada()==true){
+                    info.append(propiedad.getNombre()).append("],");
+                }
+            }
+
+
+            //HAY QUE SEGUIR CON ESTO
+
+        }
     }
 
     public void mostrarEstadisticas(){

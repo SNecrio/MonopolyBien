@@ -56,4 +56,12 @@ public class Hotel extends Edificio {
 
         return edificios;
     }
+
+    @Override
+    public void identificadorEdificio(StringBuilder info){
+        info.append("[").append("hotel-").append(this.getId()).append("] ");
+    }
+
 }
+
+

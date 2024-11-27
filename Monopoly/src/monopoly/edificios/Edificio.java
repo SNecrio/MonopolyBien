@@ -56,6 +56,7 @@ public abstract class Edificio {
     //ESTE METODO USAMOLO CANDO POR EJEMPLO COMPRAMOS UN HOTEL HAI QUE ELIMINAR CATRO CASAS
     public abstract ArrayList<Edificio> accionComprar(ArrayList<Edificio> edificios);
     
+    public abstract void identificadorEdificio(StringBuilder info);
 
     public float venderEdificioBanca(Jugador banca){
         if(this.duenho !=banca){

@@ -36,4 +36,11 @@ public class Pista extends Edificio {
         System.out.println("Se ha comprado una pista de deporte por el precio de " + getCoste());
         return edificios;
     }
+
+    
+    @Override
+    public void identificadorEdificio(StringBuilder info){
+        info.append("[").append("pista-").append(this.getId()).append("] ");
+    }
+    
 }

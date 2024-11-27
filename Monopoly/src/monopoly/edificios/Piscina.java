@@ -39,5 +39,11 @@ public class Piscina extends Edificio{
 
 
     
+    @Override
+    public void identificadorEdificio(StringBuilder info){
+        info.append("[").append("piscina-").append(this.getId()).append("] ");
+    }
+
+    
     
 }

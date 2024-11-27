@@ -3,20 +3,21 @@ package monopoly;
 import partida.*;
 import java.util.ArrayList;
 import monopoly.casillas.*;
+import monopoly.edificios.Edificio;
 import monopoly.edificios.*;
 
 
 public class Grupo {
 
     //Atributos
-    private ArrayList<Casilla> miembros; //Casillas miembros del grupo.
+    private ArrayList<PropiedadSolar> miembros; //Casillas miembros del grupo.
     private String colorGrupo; //Color del grupo
     private int numCasillas; //Número de casillas del grupo.
     private float rentabilidad = 0f;
 
     //Constructor vacío.
     public Grupo() {
-        this.miembros = new ArrayList<Casilla>();
+        this.miembros = new ArrayList<PropiedadSolar>();
         this.colorGrupo="";
         this.numCasillas= 0;
     }
@@ -24,8 +25,8 @@ public class Grupo {
     /*Constructor para cuando el grupo está formado por DOS CASILLAS:
     * Requiere como parámetros las dos casillas miembro y el color del grupo.
      */
-    public Grupo(Casilla cas1, Casilla cas2, String colorGrupo) {
-        this.miembros = new ArrayList<Casilla>(); //inicializamos o array de miembros
+    public Grupo(PropiedadSolar cas1, PropiedadSolar cas2, String colorGrupo) {
+        this.miembros = new ArrayList<PropiedadSolar>(); //inicializamos o array de miembros
         this.miembros.add(cas1);
         //cas1.
         this.miembros.add(cas2);
@@ -37,8 +38,8 @@ public class Grupo {
     /*Constructor para cuando el grupo está formado por TRES CASILLAS:
     * Requiere como parámetros las tres casillas miembro y el color del grupo.
      */
-    public Grupo(Casilla cas1, Casilla cas2, Casilla cas3, String colorGrupo) {
-        this.miembros = new ArrayList<Casilla>();
+    public Grupo(PropiedadSolar cas1, PropiedadSolar cas2, PropiedadSolar cas3, String colorGrupo) {
+        this.miembros = new ArrayList<PropiedadSolar>();
         this.miembros.add(cas1);
         this.miembros.add(cas2);
         this.miembros.add(cas3);
@@ -49,7 +50,7 @@ public class Grupo {
     /* Método que añade una casilla al array de casillas miembro de un grupo.
     * Parámetro: casilla que se quiere añadir.
      */
-    public void anhadirCasilla(Casilla miembro){
+    public void anhadirCasilla(PropiedadSolar miembro){
         if(!miembros.contains(miembro)){
             this.miembros.add(miembro);
             this.numCasillas++;
@@ -75,25 +76,29 @@ public class Grupo {
         return true;
     }
 
+
     public void listarEdificiosGrupo(){
 
-        for(Casilla casilla : miembros){
-            ArrayList<Edificio> listaCasas = casilla.ObtenerArrayEdificiosPorTipo("Casa");
-            ArrayList<Edificio> listaHoteles = casilla.ObtenerArrayEdificiosPorTipo("Hotel");
-            ArrayList<Edificio> listaPiscinas = casilla.ObtenerArrayEdificiosPorTipo("Pista de Deporte");
-            ArrayList<Edificio> listaPistas = casilla.ObtenerArrayEdificiosPorTipo("Piscina");
+        for(PropiedadSolar propiedad : miembros){
+
+            propiedad.ObtenerArrayEdificiosPorTipo("casa");
+
+            ArrayList<Edificio> listaCasas = propiedad.ObtenerArrayEdificiosPorTipo("Casa");
+            ArrayList<Edificio> listaHoteles = propiedad.ObtenerArrayEdificiosPorTipo("Hotel");
+            ArrayList<Edificio> listaPiscinas = propiedad.ObtenerArrayEdificiosPorTipo("Pista de Deporte");
+            ArrayList<Edificio> listaPistas = propiedad.ObtenerArrayEdificiosPorTipo("Piscina");
 
             StringBuilder info = new StringBuilder();
             
             info.append("{").append("\n");
-            info.append("propiedad: ").append(casilla.getNombreSinColor()).append("\n");
+            info.append("propiedad: ").append(propiedad.getNombreSinColor()).append("\n");
             info.append("casas: ");
             if(listaCasas.isEmpty()==true){
                 info.append("-vacío-");
             }
             else{
                 for(Edificio edificio : listaCasas){
-                    info.append("[").append("casa-").append(edificio.getId()).append("] ");
+                    edificio.identificadorEdificio(info);;
                 }
             }
             info.append("\n");
@@ -104,7 +109,7 @@ public class Grupo {
             }
             else{
                 for(Edificio edificio : listaHoteles){
-                    info.append("[hotel-").append(edificio.getId()).append("] ");
+                    edificio.identificadorEdificio(info);
                 }
             }
             info.append("\n");
@@ -115,7 +120,7 @@ public class Grupo {
             }
             else{
                 for(Edificio edificio : listaPiscinas){
-                    info.append("[piscina-").append(edificio.getId()).append("] ");
+                    edificio.identificadorEdificio(info);
                 }
             }
             info.append("\n");
@@ -126,16 +131,20 @@ public class Grupo {
             }
             else{
                 for(Edificio edificio : listaPistas){
-                    info.append("[pista deporte-").append(edificio.getId()).append("] ");
+                    edificio.identificadorEdificio(info);
                 }
             }
             info.append("\n");
+
+            Jugador jugador = new Jugador();
+            int tirada = 0;
             
-            info.append("alquiler: ").append(casilla.calculoAlquilerAnhadidoEdificaciones()+casilla.getImpuesto()).append("\n");
+            info.append("alquiler: ").append(propiedad.calcularAlquiler(jugador, tirada)).append("\n");
             info.append("}");
             System.out.println(info.toString());
         }
     }
+
 
     public String getColor(){
         return this.colorGrupo;
@@ -145,7 +154,7 @@ public class Grupo {
         this.colorGrupo = color;
     }
 
-    public ArrayList<Casilla> getCasillas(){
+    public ArrayList<PropiedadSolar> getCasillas(){
         return new ArrayList<>(this.miembros);
     }
 
