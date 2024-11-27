@@ -112,6 +112,11 @@ public abstract class CasillaPropiedad extends Casilla {
             return;
         }
 
+        if(perteneceAJugador(banca)==false){
+            System.out.println("No puedes comprar una casilla que ya esta comprada"); //EXCEPCIÓN
+            return;
+        }
+
         else if(solicitante.getFortuna() < this.valor){
             System.out.println("El jugador no tiene dinero suficiente para comprar la casilla"); //EXCEPCIÓN
             return;

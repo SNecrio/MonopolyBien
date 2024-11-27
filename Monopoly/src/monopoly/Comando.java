@@ -15,7 +15,7 @@ public interface Comando {
 
     void listarAvatares(String comando);
 
-    void listarEnVenta(String comando);
+    void listarEnVenta();
 
     void consultarAvatar(String comando);
 

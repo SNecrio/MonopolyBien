@@ -3,8 +3,11 @@ package partida;
 import java.util.ArrayList;
 
 import monopoly.*;
+import monopoly.Consola;
 import monopoly.casillas.*;
 import partida.avatares.*;
+import monopoly.edificios.*;
+import monopoly.edificios.Edificio;
 
 import static monopoly.Valor.FORTUNA_INICIAL;
 import static monopoly.Valor.SUMA_VUELTA;
@@ -177,7 +180,7 @@ public class Jugador {
         return contador;
     }
 
-    /*Imprime todas las pr */
+    /
     public void listarPropiedadesenVenta(){
         if(propiedades.isEmpty()){ //comprobamos que no está vacía
             System.out.println("No hay propiedades");
@@ -208,24 +211,47 @@ public class Jugador {
             info.append("Nombre:").append(this.nombre).append("\n");
             info.append("Avatar:").append(this.avatar.getId()).append("\n");
             info.append("Fortuna:").append(this.fortuna).append("\n");
-            info.append("Propiedades: [");
+            info.append("Propiedades: ");
 
             for(CasillaPropiedad propiedad:propiedades){
-                info.append(propiedad.getNombre()).append("],");
+                info.append("[").append(propiedad.getNombre()).append("],");
             }
             info.append("\n");
 
-            info.append("Hipotecas: [");
+            info.append("Hipotecas: ");
+            for(CasillaPropiedad propiedad:propiedades){
+                if(propiedad.estaHipotecada()==true){
+                    info.append("[").append(propiedad.getNombre()).append("],");
+                }
+            }
+            info.append("\n");
+
+            info.append("Edificios: ");
             for(CasillaPropiedad propiedad:propiedades){
                 if(propiedad.estaHipotecada()==true){
                     info.append(propiedad.getNombre()).append("],");
                 }
             }
 
+            ArrayList<PropiedadSolar> propiedadSolares = new ArrayList<>();
+            for (CasillaPropiedad propiedad : propiedades) {
+                if (propiedad.getTipo().equals("solar") && propiedad instanceof PropiedadSolar) {
+                    propiedadSolares.add((PropiedadSolar) propiedad);  
+                }
+            }
 
-            //HAY QUE SEGUIR CON ESTO
+            for(PropiedadSolar solar:propiedadSolares){
+                ArrayList<Edificio> edificios = solar.getEdificios();
+                for(Edificio edificio:edificios){
+                    info.append("[").append(edificio.getTipo()).append("-").append(edificio.getId()).append("] ");
+                }
+            }
+            info.append("\n");
+            System.out.println(info.toString());
+            return;
 
         }
+        
     }
 
     public void mostrarEstadisticas(){

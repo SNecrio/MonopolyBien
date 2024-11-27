@@ -81,6 +81,16 @@ public class Avatar {
         this.lugar.anhadirAvatar(this);
     }
 
+    public void describirAvatar(){
+        StringBuilder info = new StringBuilder();
+        info.append(Valor.WHITE + "Id: ").append(this.id).append("\n");
+        info.append("Tipo: ").append(this.tipo).append("\n");
+        info.append("Jugador: ").append(this.jugador.getNombre()).append("\n");
+        info.append("Casilla: ").append(this.lugar.getNombreSinColor()).append("\n");
+
+        System.out.println(info.toString());
+        return;
+    }
 
     /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
     * El ID generado será una letra mayúscula. Parámetros:

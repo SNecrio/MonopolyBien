@@ -261,5 +261,9 @@ public class PropiedadSolar extends CasillaPropiedad {
     public Grupo getGrupo(){
         return this.grupo;
     }
+
+    public ArrayList<Edificio> getEdificios(){
+        return this.edificios;
+    }
 }
 
