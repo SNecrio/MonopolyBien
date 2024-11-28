@@ -14,10 +14,9 @@ public class Avatar {
     private String tipo; //Sombrero, Esfinge, Pelota, Coche
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
     private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
-    private int extras; //Cuenta el numero de tiradas extra correspondiente a un tipo de avatar
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
-    
+    private ConsolaNormal consola;
 
     //Constructor vacío
     public Avatar() {
@@ -25,7 +24,7 @@ public class Avatar {
         this.tipo="";
         this.jugador=null;
         this.lugar=null;
-        this.extras = 0;
+        this.consola = new ConsolaNormal();
     }
 
     /*Constructor principal. Requiere éstos parámetros:
@@ -36,8 +35,6 @@ public class Avatar {
         this.tipo= tipo;
         this.jugador=jugador;
         this.lugar= lugar;
-        this.extras = 0;
-
         this.id = generarId(avCreados); //usamos o metodo de abaixo para crear ID únicos
     }
 
@@ -88,8 +85,7 @@ public class Avatar {
         info.append("Jugador: ").append(this.jugador.getNombre()).append("\n");
         info.append("Casilla: ").append(this.lugar.getNombreSinColor()).append("\n");
 
-        System.out.println(info.toString());
-        return;
+        consola.imprimir(info.toString());
     }
 
     /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
@@ -126,18 +122,17 @@ public class Avatar {
             if(jugador.getDobles()==3){
                 jugador.encarcelar(tablero.getPosiciones());
                 tablero.imprimirTablero();
-                System.out.println("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
-                System.out.println("Oh no! Has lanzado dobles 3 veces consecutivas, vas a la cárcel");
+                consola.imprimir("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
+                consola.imprimir("Oh no! Has lanzado dobles 3 veces consecutivas, vas a la cárcel");
                 //acabarTurno(false);
                 return;
             }
         }
 
-        String casillaAnterior = jugador.getAvatar().getLugar().getNombre(); //Nombre de la casilla anterior para prints
         jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
 
         //Comprueba si se puede realizar la acción de la casilla.
-        solvente = jugador.getAvatar().getLugar().evaluarCasilla(jugador, banca, casillasTotal);
+        solvente = jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero);
 
         //Atributos estadísticos
         //jugador.getAvatar().getLugar().sumarVisitas(1);
@@ -145,70 +140,16 @@ public class Avatar {
 
         tablero.imprimirTablero();
 
-        System.out.println("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
+        consola.imprimir("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
 
-        //Se vuelve a mirar los dobles para imprimirlo debajo del tablero
-        if(dado1==dado2) System.out.println("Felicidades! Has lanzado dobles, tienes otro lanzamiento!");
-
-        //Si es una casilla de su propiedad
-        if(jugador == jugador.getAvatar().getLugar().getDuenho()){
-            System.out.println(
-            "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
-            casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
-            ". Es una casilla de su propiedad.");
-            }
-        else if(banca == jugador.getAvatar().getLugar().getDuenho()){
-            System.out.println(
-            "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
-            casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
-            ". Es una casilla de la banca.");   
-            }
-
-        //Si es de otro jugador
-        else{
-            float alquiler = jugador.getAvatar().getLugar().calcularAlquiler(jugador, casillasTotal);
-            System.out.println( "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
-            casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE);
-            //Si le puedes pagar, se paga automáticamente
-            if(solvente == true){
-                System.out.println( "Se han pagado " + alquiler + " euros de alquiler. ");
-            }
-            //Si no puede pagar pero tiene propiedades
-            else{
-                bancarrota(jugador,casillasTotal);
-                }
-            }
-
-        if(comprobarVueltas()==true){
-            tablero.incrementarPrecios();
-            resetearVueltas();
-        }
-    return;
     }
 
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     // Método para movel el avatar en modo avanzado (esfinge y sombrero)
+     public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca){
+        consola.imprimir("Este avatar no tiene modo de avance avanzado. Se procederá en el modo básico");
+        moverEnBasico(dado1, dado2, jugador, tablero, banca);
+     }
 
 
     //Getter do id
@@ -233,11 +174,30 @@ public class Avatar {
     }
 
     public int getExtras(){
-        return this.extras;
-    }
-    
-    public void setExtras(int extras){
-        this.extras = extras;
+        return 0;
     }
 
+    public void setExtras(int extras){} //Función solo implementada para coche
+
+    public int getBloqueado(){
+        return 0;
+    }
+
+    public void setBloqueado(int block){} //Función solo implementada para coche
+
+    public boolean getSolvente(){
+        return this.solvente;
+    }
+    
+    public void setSolvente(boolean expresion){
+        this.solvente = expresion;
+    }
+
+    /* 
+    public boolean getDobles(){
+        return false;
+    }
+
+    public void setDobles(boolean dobles){} //Función solo implementada para coche
+*/
 }

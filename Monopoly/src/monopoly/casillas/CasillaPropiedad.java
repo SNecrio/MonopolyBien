@@ -39,7 +39,11 @@ public abstract class CasillaPropiedad extends Casilla {
         this.rentabilidad = 0.0f;
     }
 
-    public abstract float calcularAlquiler(Jugador actual, int tirada);
+    @Override  //Declarado por primera vez en casilla
+    public float calcularAlquiler(Jugador actual, int tirada){
+        return 0;  
+        //EXCEPCIÓN
+    }
 
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero){
         if(perteneceAJugador(actual)){
@@ -171,6 +175,7 @@ public abstract class CasillaPropiedad extends Casilla {
         return this.valorInicial;
     }
    
+    @Override
     public Jugador getDuenho(){
         return this.duenho;
     }
@@ -181,6 +186,8 @@ public abstract class CasillaPropiedad extends Casilla {
     public float getHipoteca(){
         return this.hipoteca;
     }
+
+    @Override
     public boolean estaHipotecada(){
         return this.estarHipotecada;
     }
@@ -192,5 +199,10 @@ public abstract class CasillaPropiedad extends Casilla {
     public void sumarRentabilidad(float valor){
         this.rentabilidad += valor;
     }
+
+    @Override
+    public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
+        //AAAAAAAAAAAAAAAAAA
+        }
 
 }

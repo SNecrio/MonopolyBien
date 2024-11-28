@@ -1,10 +1,9 @@
 package monopoly.casillas;
 
 import java.util.ArrayList;
-import partida.*;
 import monopoly.*;
-import monopoly.edificios.*;
 import monopoly.edificios.Edificio;
+import partida.*;
 
 public class PropiedadSolar extends CasillaPropiedad {
     //ATRIBUTOS
@@ -28,6 +27,7 @@ public class PropiedadSolar extends CasillaPropiedad {
     }
 
     //Método que calcular el alquiler de las casillas de tipo solar
+    @Override
     public float calcularAlquiler(Jugador actual, int tirada){
         float anhadidoEdificaciones = calculoAlquilerAnhadidoEdificaciones();
         return (this.alquilersimple + anhadidoEdificaciones); 
@@ -124,10 +124,7 @@ public class PropiedadSolar extends CasillaPropiedad {
     }
 
     public boolean tieneEdificios(){
-        if( edificios.size() == 0){
-            return false;
-        }
-        return true;
+        return !edificios.isEmpty();    //Si la lista está vacía devuelve false
     }
 
     public boolean Edificar(Jugador jugador, Edificio edificio, String tipo){
@@ -205,7 +202,7 @@ public class PropiedadSolar extends CasillaPropiedad {
         return true;
     }
 
-    
+    @Override
     public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
         if(!tipo.equalsIgnoreCase("casa") && !tipo.equalsIgnoreCase("hotel") && !tipo.equalsIgnoreCase("piscina") && !tipo.equalsIgnoreCase("pista de deporte")){
             System.out.println("El tipo de edificio indicado no existe\n");
@@ -245,7 +242,7 @@ public class PropiedadSolar extends CasillaPropiedad {
 
     public ArrayList<Edificio> ObtenerArrayEdificiosPorTipo(String tipo){
         
-        ArrayList<Edificio> listaEdificios = new ArrayList<Edificio>();
+        ArrayList<Edificio> listaEdificios = new ArrayList<>();
         for(Edificio edificio:edificios){
             if(edificio.getTipo().equalsIgnoreCase(tipo)){
                 listaEdificios.add(edificio);

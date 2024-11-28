@@ -11,6 +11,8 @@ import monopoly.Tablero;
 import partida.avatares.*;
 import partida.Jugador;
 import excepcions.*;
+import monopoly.Consola;
+import monopoly.ConsolaNormal;
 
 public abstract class Casilla {
 
@@ -21,6 +23,7 @@ public abstract class Casilla {
     private ArrayList<Avatar> avatares;
     private int visitas = 0;
     private ArrayList<Jugador> jugadoresvisitantes; //Array usado para incluir los nombres de todas las personas que caen en la casilla (para calcular si el jugador cae mas de dos veces en esta casilla se puede comprar)
+    private ConsolaNormal consola;
 
     //Constructores:
     public Casilla() {
@@ -31,6 +34,7 @@ public abstract class Casilla {
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
+        this.consola = new ConsolaNormal(); //No se si es mejor esto o pasar como argumento, asumo que esto
         
     }//Parámetros vacíos
 
@@ -104,7 +108,29 @@ public abstract class Casilla {
         System.out.println(info.toString());
     }
 
-        
+    // Método para recuperar el dueño de una casilla, implementado por las subclases que lo tengan
+    public Jugador getDuenho(){
+        consola.imprimir("Esta casilla no tiene dueño");
+        //HAY QUE PONER UNA EXCEPCIÓN PARA QUE NO COJA NADA EN CASO DE FALLO
+    }
+
+    public float calcularAlquiler(Jugador actual, int tirada){
+        return 0;  //Borrar cuando excepción puesta
+        //EXCEPCIÓN
+    }
+
+    public boolean estaHipotecada(){
+        //EXCEPCION
+        return false;  //Borrar cuando excepción puesta
+
+    }
+
+    public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
+        //Lanzar excepción
+        }
+    
+
+
     ///
 
     

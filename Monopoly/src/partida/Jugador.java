@@ -49,7 +49,7 @@ public class Jugador {
         this.tiradasCarcel=0;
         this.vueltas=0;
         this.vueltasTotal=0;
-        this.propiedades= new ArrayList<CasillaPropiedad>();
+        this.propiedades= new ArrayList<>();
         this.dineroInvertido = 0.0f;
         this.pagoTasasImpuestos = 0.0f;
         this.pagoAlquiler = 0.0f;
@@ -58,6 +58,7 @@ public class Jugador {
         this.premios = 0.0f;
         this.vecesCarcel = 0;
         this.bloqueado = 0;
+        this.modo = false;
     }
 
     /*Constructor principal. Requiere parámetros:
@@ -300,6 +301,10 @@ public class Jugador {
     
     public int getDobles() {
         return dobles;
+    }
+
+    public void setDobles(int d) {
+        this.dobles = d;
     }
 
     public int getTiradasCarcel(){
