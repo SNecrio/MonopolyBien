@@ -35,7 +35,6 @@ public class Jugador {
     private int dobles; //Cuenta el número de veces que salen dobles en un turno
     private int bloqueado; //Cuenta los turnos que un jugador no puede tirar
     private boolean comprado; //Para saber si un jugador ha comprado una propiedad en el mismo turno (usado para, si sacas dobles, no volver a preguntar modo)
-    private boolean primeraDobles; //comprueba si la primera tirada fue dobles, usado para avatar pelota
     private boolean modo; //false básico, true avanzado
     private int vecesDados;
 
@@ -86,7 +85,6 @@ public class Jugador {
         this.vecesCarcel = 0;  
         this.cobroAlquiler = 0.0f;
         this.comprado = false;
-        this.primeraDobles = false;
         this.modo = false;
   
     }
@@ -357,14 +355,6 @@ public class Jugador {
     
     public void setComprado(boolean comprado){
         this.comprado = comprado;
-    }
-
-    public boolean getPrimeraDobles(){
-        return this.primeraDobles;
-    }
-    
-    public void setPrimeraDobles(boolean dobles){
-        this.primeraDobles = dobles;
     }
 
     public boolean getModo(){

@@ -124,7 +124,6 @@ public class Avatar {
                 tablero.imprimirTablero();
                 consola.imprimir("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2);
                 consola.imprimir("Oh no! Has lanzado dobles 3 veces consecutivas, vas a la cárcel");
-                //acabarTurno(false);
                 return;
             }
         }
@@ -193,11 +192,23 @@ public class Avatar {
         this.solvente = expresion;
     }
 
-    /* 
-    public boolean getDobles(){
+    public boolean getExtraDobles(){
         return false;
     }
+    
+    public void setExtraDobles(boolean dobles){} //Función solo implementada para coche
 
-    public void setDobles(boolean dobles){} //Función solo implementada para coche
-*/
+    public int getTiradaInicial(){
+        return 0;
+    }
+
+    public void setTiradaInicial(int tirada){} //Función solo implementada para pelota
+
+    public int getContinuar(){
+        return 0;
+    }
+
+    public void setContinuar(int cont){} //Función solo implementada para pelota
+
+
 }

@@ -297,9 +297,9 @@ public class Juego implements Comando{
         }
 
 
-        //TENGO QUE METER TIRAR EN CÁRCEL
-
-
+        if(jugador.getEncarcel()==true){
+            lanzarCarcel(dado1.getValor(), dado2.getValor());
+        }
 
         //Avance en modo simple
         if(jugador.getModo()==false){
@@ -310,7 +310,7 @@ public class Juego implements Comando{
         //Avance en modo avanzado
         else {
             jugador.getAvatar().moverEnAvanzado(dado1.getValor(), dado2.getValor(), jugador, tablero, banca);
-            if(jugador.getEncarcel()==true || jugador.getAvatar().getExtras()<0 || jugador.getDobles()==1) tirado = true;
+            if(jugador.getEncarcel()==true || jugador.getAvatar().getExtras()<0 || (jugador.getAvatar().getContinuar()==0 && jugador.getAvatar().getTiradaInicial()!=0) || jugador.getBloqueado()!=0) tirado = true;
         }
 
         //Determina que se imprimirá en cada casilla
@@ -320,13 +320,13 @@ public class Juego implements Comando{
          //Si es una casilla de su propiedad
          if(jugador == jugador.getAvatar().getLugar().getDuenho()){
             consola.imprimir(
-            "El avatar "+ jugador.getAvatar().getId() + " avanza " + (dado1.getValor()+dado2.getValor()) + " posiciones, desde " + 
+            "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
             casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
             ". Es una casilla de su propiedad.");
             }
         else if(banca == jugador.getAvatar().getLugar().getDuenho()){
             consola.imprimir(
-            "El avatar "+ jugador.getAvatar().getId() + " avanza " + (dado1.getValor()+dado2.getValor()) + " posiciones, desde " + 
+            "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
             casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
             ". Es una casilla de la banca.");   
             }
@@ -334,11 +334,11 @@ public class Juego implements Comando{
         //Si es de otro jugador
         else{
             float alquiler = jugador.getAvatar().getLugar().calcularAlquiler(jugador, (dado1.getValor()+dado2.getValor()));
-            consola.imprimir( "El avatar "+ jugador.getAvatar().getId() + " avanza " + (dado1.getValor()+dado2.getValor()) + " posiciones, desde " + 
+            consola.imprimir( "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
             casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE);
             //Si le puedes pagar, se paga automáticamente
             if(jugador.getAvatar().getSolvente() == true){
-                consola.imprimir( "Se han pagado " + alquiler + " euros de alquiler al dueño de la casilla. ");
+                consola.imprimir( "Se han pagado " + alquiler + " euros de alquiler al dueño de la casilla.");
             }
             //Si no puede pagar pero tiene propiedades
             else{
@@ -352,6 +352,66 @@ public class Juego implements Comando{
             resetearVueltas();
         }
     }
+
+
+    private void lanzarCarcel(int d1, int d2){
+        Jugador jugador = jugadores.get(turno);
+
+        if(d1 == d2){
+            System.out.println("Has sacado dobles y por lo tanto sales de la cárcel");
+            jugadores.get(turno).setEncarcel(false);
+            jugadores.get(turno).setTiradasCarcel(0); 
+        }
+        else{
+            tablero.imprimirTablero();
+            System.out.println("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1.getValor() + " y " + dado2.getValor());
+            if(jugador.getTiradasCarcel()<2){
+                System.out.println("Como no has sacado dobles, debes permanecer en la cárcel");
+                tirado=true;
+                jugador.setTiradasCarcel(jugador.getTiradasCarcel() + 1);
+                acabarTurno(false);
+                return;
+                }
+            else{
+                System.out.println("Has agotado tus intentos para salir de la cárcel");}
+                salirCarcel(false);
+        }
+    }
+
+    public void salirCarcel(boolean pagado) {
+        int tirada = dado1.getValor() + dado2.getValor();
+            if(pagado==true){
+                if(jugadores.get(turno).getAvatar().getLugar().evaluarCasilla(jugadores.get(turno), banca, tirada) == true){
+                    System.out.println(jugadores.get(turno).getNombre() + " paga " + 0.25*SUMA_VUELTA + " y sale de la cárcel. Puede lanzar los dados");
+                    jugadores.get(turno).pagar(0.25f*SUMA_VUELTA);
+                    jugadores.get(turno).EstadisticaTasasImpuesto(0.25f*SUMA_VUELTA);
+                    lanzamientos = 0;
+                    tirado = false;
+                    jugadores.get(turno).setEncarcel(false);
+                    jugadores.get(turno).setTiradasCarcel(0);
+                    return;
+                }
+                else System.out.println("El jugador no puede permitirse salir de la carcel");
+            }
+            else{
+                if(jugadores.get(turno).getAvatar().getLugar().evaluarCasilla(jugadores.get(turno), banca, tirada) == true){
+                    lanzamientos = 0;
+                    tirado = false;
+                    jugadores.get(turno).setEncarcel(false);
+                    jugadores.get(turno).setTiradasCarcel(0); 
+                    System.out.println("Por lo tanto, ha sido obligado a pagar la fianza para salir");
+                    return;
+                }
+                else{
+                    System.out.println("El jugador no puede permitirse salir de la carcel y ya ha agotado todos sus intentos. Por lo tanto, " + jugadores.get(turno).getNombre() + " se queda en bancarrota y pierde la partida.");
+                    eliminarJugador(jugadores.get(turno)); //eliminamos o xogador porque está en bancarrota
+                    
+                }
+            }
+        return;
+    }
+
+
 
     public boolean comprobarVueltas(){
         
@@ -536,9 +596,9 @@ public class Juego implements Comando{
         jugador.resetearDobles();
         jugador.setComprado(false);
         if(jugador.getBloqueado()<0) jugador.setBloqueado(0);
-        jugador.setPrimeraDobles(false);
+        jugador.setExtraDobles(false);
         if(jugador.getAvatar().getBloqueado()!=0) jugador.getAvatar().setBloqueado(jugador.getAvatar().getBloqueado() - 1); 
-        //jugador.getAvatar().setExtras(0);
+        jugador.getAvatar().setExtras(0);
 
         turno++;
         if(turno > jugadores.size() -1){
@@ -547,6 +607,7 @@ public class Juego implements Comando{
         
         lanzamientos = 0;
         tirado = false;
+        jugador.getAvatar().setExtras(3);
         jugador.getAvatar().setSolvente(true);
         if(vertablero==true) tablero.imprimirTablero();
     }
