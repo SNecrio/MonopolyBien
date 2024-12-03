@@ -14,7 +14,14 @@ public class CasillaAccion extends Casilla{
     //Atributos
     private ConsolaNormal consola;
 
+    //CONSTRUCTOR
     public CasillaAccion(){
+        super();
+        this.consola = new ConsolaNormal();
+    }
+
+    public CasillaAccion(String nombre, int posicion){
+        super(nombre, "Accion", posicion);
         this.consola = new ConsolaNormal();
     }
 
@@ -41,9 +48,10 @@ public class CasillaAccion extends Casilla{
             consola.imprimir("Escoja una carta (1-6): ");
             carta = consola.leerNumero();
         }while(carta<1||carta>6);
-
-        if(actual.getAvatar().getLugar().getNombreSinColor().equalsIgnoreCase("Suerte")) return suerte(actual, tablero, carta, banca);
-        else return comunidad(actual, tablero, carta, banca,);
+        //comenteino pa que fora 
+        /*if(actual.getAvatar().getLugar().getNombreSinColor().equalsIgnoreCase("Suerte")) return suerte(actual, tablero, carta, banca);
+        else return comunidad(actual, tablero, carta, banca,);*/
+        return true; //QUITALO DESPOIS
         }
     
     public boolean comunidad(Jugador jugador, Tablero tablero, int carta, Jugador banca, ArrayList<Jugador> lista){

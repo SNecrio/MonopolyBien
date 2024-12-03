@@ -188,7 +188,8 @@ public class Jugador {
             System.out.println("Propiedades en venta: ");
             for(CasillaPropiedad propiedad : propiedades){
                 propiedad.casEnVenta();
-        }}
+            }
+    }
     }
 
     public boolean poseeGrupo(Grupo grupo){
@@ -205,49 +206,58 @@ public class Jugador {
     public void describirJugador(String nombre){
         if(this.nombre.equalsIgnoreCase(nombre)){
             StringBuilder info = new StringBuilder();
-
+    
             info.append("Nombre:").append(this.nombre).append("\n");
             info.append("Avatar:").append(this.avatar.getId()).append("\n");
             info.append("Fortuna:").append(this.fortuna).append("\n");
+    
+            // Agregar las propiedades
             info.append("Propiedades: ");
-
-            for(CasillaPropiedad propiedad:propiedades){
-                info.append("[").append(propiedad.getNombre()).append("],");
+            for(CasillaPropiedad propiedad : propiedades) {
+                info.append("[").append(propiedad.getNombreSinColor()).append("],");
             }
             info.append("\n");
-
+    
+            // Agregar las propiedades hipotecadas
             info.append("Hipotecas: ");
-            for(CasillaPropiedad propiedad:propiedades){
-                if(propiedad.estaHipotecada()==true){
-                    info.append("[").append(propiedad.getNombre()).append("],");
+            boolean hayHipotecas = false;  // Controlar si hay propiedades hipotecadas
+            for(CasillaPropiedad propiedad : propiedades) {
+                if(propiedad.estaHipotecada()) {
+                    hayHipotecas = true;
+                    info.append("[").append(propiedad.getNombreSinColor()).append("],");
                 }
+            }
+            if (!hayHipotecas) {
+                info.append("Ninguna propiedad hipotecada.");
             }
             info.append("\n");
-
+    
+            // Agregar edificios
             info.append("Edificios: ");
-            for(CasillaPropiedad propiedad:propiedades){
-                if(propiedad.estaHipotecada()==true){
-                    info.append(propiedad.getNombre()).append("],");
-                }
-            }
-
             ArrayList<PropiedadSolar> propiedadSolares = new ArrayList<>();
             for (CasillaPropiedad propiedad : propiedades) {
                 if (propiedad.getTipo().equals("solar") && propiedad instanceof PropiedadSolar) {
-                    propiedadSolares.add((PropiedadSolar) propiedad);  
+                    propiedadSolares.add((PropiedadSolar) propiedad);
                 }
             }
-
-            for(PropiedadSolar solar:propiedadSolares){
+    
+            // Añadir los edificios
+            boolean hayEdificios = false;
+            for(PropiedadSolar solar : propiedadSolares){
                 ArrayList<Edificio> edificios = solar.getEdificios();
-                for(Edificio edificio:edificios){
+                for(Edificio edificio : edificios){
+                    hayEdificios = true;
                     info.append("[").append(edificio.getTipo()).append("-").append(edificio.getId()).append("] ");
                 }
             }
+    
+            if (!hayEdificios) {
+                info.append("No hay edificios.");
+            }
+    
             info.append("\n");
             System.out.println(info.toString());
             return;
-
         } 
     }
 

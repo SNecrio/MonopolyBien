@@ -46,6 +46,8 @@ public class PropiedadTransporte extends CasillaPropiedad {
         info.append(Valor.WHITE + "\n").append(this.getNombre()).append("\n");
         info.append("Tipo: ").append(this.getTipo()).append("\n");
         info.append("Valor: ").append(this.getValor()).append("\n");
+
+        System.out.println(info.toString());
     }
 }
 

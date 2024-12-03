@@ -11,7 +11,6 @@ import monopoly.Tablero;
 import partida.avatares.*;
 import partida.Jugador;
 import excepcions.*;
-import monopoly.Consola;
 import monopoly.ConsolaNormal;
 
 public abstract class Casilla {
@@ -43,19 +42,12 @@ public abstract class Casilla {
      */
     public Casilla(String nombre, String tipo, int posicion) {
         this.nombre=nombre;
-        
-        //hay que comprobar que tipo sexa "solar", "servicio" ou "transporte"
-        if(tipo.equalsIgnoreCase("Solar")||tipo.equalsIgnoreCase("Servicio")||tipo.equalsIgnoreCase("Transporte")){
-            this.tipo=tipo;
-        }
-        else{
-            throw new IllegalArgumentException("O tipo ten que ser solar, servicio ou transporte"); 
-        }
+        this.tipo = tipo;
         this.posicion=posicion;
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
-
+        this.consola = new ConsolaNormal();
     }
 
     // Métodos de acceso
@@ -81,9 +73,9 @@ public abstract class Casilla {
     }
 
     // Método abstracto para evaluar una casilla, debe ser implementado por las subclases
-    public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero);
+    //public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero);
 
-    //EVALUAR CASILLAS PARA SUERTE/COMUNIDAD
+    //EVALUAR CASILLAS PARA SUERTE/COMUNIDAD, puxen eso en todo e asi xa oslo hai un
     public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero, ArrayList<Jugador> lista);
 
     //Metodo para saber si un avatar está en esta casilla
@@ -108,33 +100,9 @@ public abstract class Casilla {
         
         describirEspecifico(info);
 
-        System.out.println(info.toString());
+        consola.imprimir(info.toString());
     }
 
-    // Método para recuperar el dueño de una casilla, implementado por las subclases que lo tengan
-    public Jugador getDuenho(){
-        consola.imprimir("Esta casilla no tiene dueño");
-        //HAY QUE PONER UNA EXCEPCIÓN PARA QUE NO COJA NADA EN CASO DE FALLO
-    }
-
-    public float calcularAlquiler(Jugador actual, int tirada){
-        return 0;  //Borrar cuando excepción puesta
-        //EXCEPCIÓN
-    }
-
-    public boolean estaHipotecada(){
-        //EXCEPCION
-        return false;  //Borrar cuando excepción puesta
-
-    }
-
-    public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
-        //Lanzar excepción
-        }
-    
-
-
-    ///
 
 public void listarAvatares (StringBuilder info){
 
@@ -168,7 +136,5 @@ public void listarAvatares (StringBuilder info){
         }
         return true;
     }
-
- 
 
 }

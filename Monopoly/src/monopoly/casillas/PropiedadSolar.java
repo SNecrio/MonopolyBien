@@ -121,6 +121,7 @@ public class PropiedadSolar extends CasillaPropiedad {
         info.append("Tipo: ").append(this.getTipo()).append("\n");
         info.append("Grupo: ").append(grupo.getColor()).append("\n");
         info.append("Valor: ").append(this.getValor()).append("\n");
+        System.out.println(info.toString());
     }
 
     public boolean tieneEdificios(){
@@ -201,7 +202,6 @@ public class PropiedadSolar extends CasillaPropiedad {
         return true;
     }
 
-    @Override
     public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
         if(!tipo.equalsIgnoreCase("casa") && !tipo.equalsIgnoreCase("hotel") && !tipo.equalsIgnoreCase("piscina") && !tipo.equalsIgnoreCase("pista de deporte")){
             System.out.println("El tipo de edificio indicado no existe\n");

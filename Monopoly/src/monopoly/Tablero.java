@@ -60,12 +60,9 @@ public class Tablero {
         filaNorte.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
 
-        /*
-        //casilla = new CasillaAccion(Valor.WHITE + "Suerte" , "Suerte", 22, banca);
-        casilla = new CasillaAccion(,);
-        filaNorte.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        */
+        
+        casilla = new CasillaAccion(Valor.WHITE + "Suerte" , 22);
+        filaNorte.add(casilla);        
 
         casilla = new PropiedadSolar(grupoRojo,1142440f,banca,Valor.RED + "Solar13",23);
         ((PropiedadSolar)casilla).setGrupo(grupoRojo);
@@ -142,11 +139,10 @@ public class Tablero {
         filaSur.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
         
-        /*
-        casilla = new Casilla(Valor.WHITE + "Suerte" , "Suerte", 7, banca);
+        
+        casilla = new CasillaAccion(Valor.WHITE + "Suerte",  7);
         filaSur.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        */
+        
         
         casilla = new PropiedadSolar(grupoCyan,520000f, banca, Valor.CYAN + "Solar3",6);
         ((PropiedadSolar)casilla).setGrupo(grupoCyan);
@@ -167,11 +163,10 @@ public class Tablero {
         filaSur.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
         
-        /*
-        casilla = new Casilla(Valor.WHITE + "Caja" , "Comunidad", 2, banca);
+        
+        casilla = new CasillaAccion(Valor.WHITE + "Caja", 2);
         filaSur.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        */
+        
 
         casilla = new PropiedadSolar(grupoNegro,600000f, banca, Valor.BLACK + "Solar1",1);
         ((PropiedadSolar)casilla).setGrupo(grupoCyan);
@@ -212,11 +207,9 @@ public class Tablero {
         filaOeste.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
         
-        /*
-        casilla = new Casilla(Valor.WHITE + "Caja" , "Comunidad", 17,  banca); 
-        filaOeste.add(casilla);
-        banca.anhadirPropiedad(casilla);
-        */
+        
+        casilla = new CasillaAccion(Valor.WHITE + "Caja", 17); 
+        filaOeste.add(casilla);       
         
         casilla = new PropiedadSolar(grupoNaranja,878800f, banca, Valor.NARANJA + "Solar9",16);
         ((PropiedadSolar)casilla).setGrupo(grupoNaranja);
@@ -280,11 +273,10 @@ public class Tablero {
         filaEste.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
         
-        /*
-        casilla = new Casilla(Valor.WHITE + "Caja", "Comunidad", 33,  banca); 
+        
+        casilla = new CasillaAccion(Valor.WHITE + "Caja",  33); 
         filaEste.add(casilla);
-        banca.anhadirPropiedad(casilla); 
-        */
+        
         
         casilla = new PropiedadSolar(grupoVerde,1930723.6f, banca, Valor.GREEN + "Solar20",34);
         ((PropiedadSolar)casilla).setGrupo(grupoVerde);
@@ -296,11 +288,10 @@ public class Tablero {
         filaEste.add(casilla); 
         banca.anhadirPropiedad((PropiedadTransporte)casilla);
         
-        /*
-        casilla = new Casilla(Valor.WHITE + "Suerte", "Suerte", 36, banca); 
+        
+        casilla = new CasillaAccion(Valor.WHITE + "Suerte",  36); 
         filaEste.add(casilla); 
-        banca.anhadirPropiedad(casilla);
-        */
+        
         
         casilla = new PropiedadSolar(grupoAzul,3764911.02f, banca, Valor.BLUE + "Solar21",37);
         ((PropiedadSolar)casilla).setGrupo(grupoAzul);

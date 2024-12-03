@@ -5,7 +5,7 @@ import java.util.Random;
 import monopoly.*;
 import monopoly.casillas.*;
 import partida.Jugador;
-
+import monopoly.ConsolaNormal;
 
 public class Avatar {
 
@@ -35,6 +35,8 @@ public class Avatar {
         this.jugador=jugador;
         this.lugar= lugar;
         this.id = generarId(avCreados); //usamos o metodo de abaixo para crear ID únicos
+        this.consola = new ConsolaNormal();
+
     }
 
     //A continuación, tenemos otros métodos útiles para el desarrollo del juego.
@@ -129,8 +131,9 @@ public class Avatar {
 
         jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
 
+        ArrayList<Jugador> jugadores = new ArrayList<>(); //ESTO E SIMPLEMENTE PA PASARLLO A CASILLA
         //Comprueba si se puede realizar la acción de la casilla.
-        solvente = jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero);
+        solvente = jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores);
 
         //Atributos estadísticos
         //jugador.getAvatar().getLugar().sumarVisitas(1);

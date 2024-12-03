@@ -18,6 +18,11 @@ public class ConsolaNormal implements Consola{
 	}
 
 	@Override
+	public void imprimirSinEspacio(String mensaje){
+		System.out.print(mensaje);
+	}
+
+	@Override
 	public String leer(){
     	String leido = scanner.nextLine();   // Lee la entrada del usuario
     	return leido;
@@ -29,6 +34,20 @@ public class ConsolaNormal implements Consola{
     	return leido;
 	}
 
+	@Override
+	public int leerNumero(String mensaje){
+		System.out.println(mensaje);
+		int leido = scanner.nextInt();   // Lee la entrada del usuario
+    	return leido;
+	}
+
+	@Override
+	public String leer(String mensaje){
+		System.out.println(mensaje);
+
+		String leido = scanner.nextLine();   // Lee la entrada del usuario
+    	return leido;
+	}
 	public void cerrarScanner() {  //Llamar al acabar todo
         if (scanner != null) {
             scanner.close();

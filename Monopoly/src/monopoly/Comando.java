@@ -18,7 +18,7 @@ public interface Comando {
 
     void listarEnVenta();
 
-    void consultarAvatar(String comando);
+    void consultarAvatar();
 
     //void trucados(String comando);
 

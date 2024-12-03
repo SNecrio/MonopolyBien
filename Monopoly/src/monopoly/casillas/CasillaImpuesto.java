@@ -1,7 +1,6 @@
 package monopoly.casillas;
 
 import java.util.ArrayList;
-import partida.avatares.*;
 import partida.Jugador;
 import monopoly.Tablero;
 
@@ -22,7 +21,7 @@ public class CasillaImpuesto extends Casilla{
     }
 
     @Override
-    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero){
+    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero, ArrayList<Jugador> lista){
         if(this.getTipo().equalsIgnoreCase("impuesto")){
             if(actual.getFortuna() >= this.impuesto){
                 actual.pagar(this.impuesto);
@@ -41,6 +40,7 @@ public class CasillaImpuesto extends Casilla{
 
     }
 
+    @Override
     public void describirEspecifico(StringBuilder info){
         info.append("Impuesto: ").append(this.impuesto).append("\n");
     }

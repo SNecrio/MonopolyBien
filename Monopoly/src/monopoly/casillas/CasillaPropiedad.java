@@ -46,13 +46,10 @@ public abstract class CasillaPropiedad extends Casilla {
 
     }
 
-    @Override  //Declarado por primera vez en casilla
-    public float calcularAlquiler(Jugador actual, int tirada){
-        return 0;  
-        //EXCEPCIÓN
-    }
+    public abstract float calcularAlquiler(Jugador actual, int tirada);
 
-    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero){
+    @Override
+    public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero, ArrayList<Jugador> lista){
         if(perteneceAJugador(actual)){
             return true;
         }
@@ -65,7 +62,6 @@ public abstract class CasillaPropiedad extends Casilla {
             }
             else{
                 System.out.println("No te puedes permitir comprar esta casilla"); //EXECEPCION!!!!!!!!!!!!
-                GeneralException("No te puedes permitir comprar esta casilla");
                 return false;
             }
         }
@@ -99,6 +95,7 @@ public abstract class CasillaPropiedad extends Casilla {
         }       
     }
 
+    @Override
     public void describirEspecifico(StringBuilder info){
         info.append("Valor: ").append(valor).append("\n");
         info.append("Dueño: ").append(duenho.getNombre()).append("\n");
@@ -158,14 +155,11 @@ public abstract class CasillaPropiedad extends Casilla {
         estarHipotecada = false;
         solicitante.sumarFortuna(this.hipoteca * -1.1f);
 
-        System.out.println("El jugador " + solicitante.getNombre() + " deshipoteca la casilla " + this.nombre + Valor.WHITE + " por " + this.hipoteca * 1.1f + 
+        System.out.println("El jugador " + solicitante.getNombre() + " deshipoteca la casilla " + this.getNombre() + Valor.WHITE + " por " + this.hipoteca * 1.1f + 
         ", ahora puede volver a recibir alquiler");
     }
 
     public abstract void casEnVenta();
-
-    
-
     
     public float getValor(){
         return this.valor;
@@ -182,7 +176,6 @@ public abstract class CasillaPropiedad extends Casilla {
         return this.valorInicial;
     }
    
-    @Override
     public Jugador getDuenho(){
         return this.duenho;
     }
@@ -194,7 +187,6 @@ public abstract class CasillaPropiedad extends Casilla {
         return this.hipoteca;
     }
 
-    @Override
     public boolean estaHipotecada(){
         return this.estarHipotecada;
     }

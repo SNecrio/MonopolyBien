@@ -6,6 +6,13 @@
       "name": "MonopolyETSE",
       "request": "launch",
       "mainClass": "monopoly.MonopolyETSE",
+      "projectName": "MonopolyBien_edbde31"
+    },
+    {
+      "type": "java",
+      "name": "MonopolyETSE",
+      "request": "launch",
+      "mainClass": "monopoly.MonopolyETSE",
       "projectName": "MonopolyBien_624a90a7"
     },
     {
