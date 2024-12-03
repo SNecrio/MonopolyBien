@@ -128,6 +128,7 @@ public class PropiedadSolar extends CasillaPropiedad {
     }
 
     public boolean Edificar(Jugador jugador, Edificio edificio, String tipo){
+        
         float coste = edificio.calcularCoste();
 
         if(verificarPrecondiciones(jugador, tipo, edificio) == false){
@@ -142,8 +143,6 @@ public class PropiedadSolar extends CasillaPropiedad {
             System.out.println("NO PUEDES CONSTRUIR"); //EXCEPCION
             return false;
         }
-
-
 
         this.edificios.add(edificio);
 

@@ -15,6 +15,10 @@ public abstract class CasillaPropiedad extends Casilla {
     private boolean estarHipotecada;
     private float rentabilidad;
     private float alquiler;
+    private int visitas = 0;
+    private ArrayList<Jugador> jugadoresvisitantes; //Array usado para incluir los nombres de todas las personas que caen en la casilla (para calcular si el jugador cae mas de dos veces en esta casilla se puede comprar)
+
+
 
     //Constructores:
     public CasillaPropiedad() {
@@ -26,6 +30,7 @@ public abstract class CasillaPropiedad extends Casilla {
         this.estarHipotecada = false;
         this.rentabilidad = 0.0f;
         this.alquiler = 0.0f;
+        this.jugadoresvisitantes = new ArrayList<>();
 
     }
 
@@ -37,6 +42,8 @@ public abstract class CasillaPropiedad extends Casilla {
         this.hipoteca = 0.5f * valor;
         this.estarHipotecada = false;
         this.rentabilidad = 0.0f;
+        this.jugadoresvisitantes = new ArrayList<>();
+
     }
 
     @Override  //Declarado por primera vez en casilla
@@ -200,9 +207,26 @@ public abstract class CasillaPropiedad extends Casilla {
         this.rentabilidad += valor;
     }
 
-    @Override
-    public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
-        //AAAAAAAAAAAAAAAAAA
-        }
+    public int getVisitas(){
+        return visitas;
+    }
+
+    public void sumarVisitas(int valor){
+        this.visitas += valor;
+    }
+
+    
+    public ArrayList<Jugador> getJugadoresVisitantes(){
+        return jugadoresvisitantes;
+    }
+
+
+    public void sumarJugadoresVisitantes(Jugador jugador){
+        if (jugador != null) {
+            this.jugadoresvisitantes.add(jugador);
+        } else {
+            System.out.println("Jugador no puede ser nulo");
+        }   
+    }
 
 }

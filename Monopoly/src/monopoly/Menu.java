@@ -7,6 +7,7 @@ import static monopoly.Valor.SUMA_VUELTA;
 import partida.*;
 import monopoly.casillas.*;
 import partida.avatares.*;
+import monopoly.edificios.*;
 import excepcions.*;
 
 public class Menu {
@@ -1531,7 +1532,7 @@ public class Menu {
             return;
         }
     }
-
+/*
 
     public void suerteComunidad(Jugador jugador){
         Scanner scan = new Scanner(System.in);
@@ -1555,9 +1556,9 @@ public class Menu {
             if(jugador.getAvatar().getLugar().getNombreSinColor().equalsIgnoreCase("Suerte")){
                 id=carta;
                 carta=carta-1; //Borrar luego
-                /*COMENTADO PARA PODER LLAMAR A CARTA QUE QUERAMOS EN EL EXAMEN
-                Collections.shuffle(baraja.getSuerte());
-                id = baraja.getSuerte().get(carta).getId();*/
+                //COMENTADO PARA PODER LLAMAR A CARTA QUE QUERAMOS EN EL EXAMEN
+                //Collections.shuffle(baraja.getSuerte());
+                //id = baraja.getSuerte().get(carta).getId();
                 switch (id) { //Todos los posibles casos, dependiendo del id de la carta escogida al azar
                         case 1:
                             aux = tablero.getPosiciones().get(3).get(5);
@@ -1602,9 +1603,9 @@ public class Menu {
             else{
                 id=carta;
                 carta=carta-1;
-                /*COMENTADO PARA PODER LLAMAR A CARTA QUE QUERAMOS EN EL EXAMEN
-                Collections.shuffle(baraja.getComunidad());
-                id = baraja.getComunidad().get(carta).getId();*/
+                //COMENTADO PARA PODER LLAMAR A CARTA QUE QUERAMOS EN EL EXAMEN
+                //Collections.shuffle(baraja.getComunidad());
+                //id = baraja.getComunidad().get(carta).getId();
                 switch (id) {
                         case 1:
                         if(jugador.getFortuna()>=500000){
@@ -1665,7 +1666,7 @@ public class Menu {
             }    
             
     }
-
+*/
     public void venderEdificio(String tipo, String nombre, int cantidad){
         Jugador jugador = jugadores.get(turno);
 
@@ -1827,8 +1828,21 @@ public class Menu {
 
         return;
     }
-
+/*
     public Baraja getBaraja(){
         return this.baraja;
+    }*/
+
+
+
+
+    public void trato(String jugadorNombre){
+        
+
+        for(Jugador jugador : jugadores){
+            if(jugador.getNombre().equalsIgnoreCase(jugadorNombre)){
+                jugador
+            }
+        }
     }
 }

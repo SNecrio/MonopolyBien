@@ -3,6 +3,7 @@ package monopoly.casillas;
 import java.util.ArrayList;
 import partida.avatares.*;
 import partida.Jugador;
+import monopoly.Tablero;
 
 public class CasillaEspecial extends Casilla{
     
@@ -60,28 +61,14 @@ public class CasillaEspecial extends Casilla{
         }
 
         else if(this.getNombreSinColor().equalsIgnoreCase("parking")){
-            info.append("BOTE: ").append(this.impuesto).append("\n");
+            info.append("Bote: ").append(this.impuesto).append("\n");
             listarAvatares(info);
         }
 
         else if(this.getNombreSinColor().equalsIgnoreCase("carcel")){
-            info.append("IMPUESTO: ").append(this.impuesto).append("\n");
+            info.append("Fianza: ").append(this.impuesto).append("\n");
             listarAvatares(info);
         }
     }
 
-    public void listarAvatares (StringBuilder info){
-
-        ArrayList<Avatar> avatares = this.getAvatares();
-
-        info.append("Jugadores: ");
-        if(this.getAvatares().isEmpty()){
-            info.append(" - ");
-        }
-        else{
-            for(Avatar avatar : avatares){
-                info.append(avatar.getJugador().getNombre()).append(",");
-            }
-        }
-    }
 }

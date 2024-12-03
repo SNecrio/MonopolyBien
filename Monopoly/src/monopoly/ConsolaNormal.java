@@ -23,6 +23,12 @@ public class ConsolaNormal implements Consola{
     	return leido;
 	}
 
+	@Override
+	public int leerNumero(){
+    	int leido = scanner.nextInt();   // Lee la entrada del usuario
+    	return leido;
+	}
+
 	public void cerrarScanner() {  //Llamar al acabar todo
         if (scanner != null) {
             scanner.close();

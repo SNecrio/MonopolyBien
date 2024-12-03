@@ -2,6 +2,8 @@ package partida.avatares;
 
 import monopoly.*;
 import partida.Jugador;
+import java.util.ArrayList;
+
 
 public class AvatarPelota extends Avatar {
 
@@ -19,7 +21,7 @@ public class AvatarPelota extends Avatar {
 
 
     @Override
-    public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca){
+    public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugadores> lista){
         int casillasTotal = dado1 + dado2;
 
         if(tiradaInicial<=4){
@@ -114,7 +116,11 @@ public class AvatarPelota extends Avatar {
         //Moverse
         jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
         //Comprueba si se puede realizar la acción de la casilla.
-        jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero));
+        //LAS CASILLAS DE SUERTE/COMUNIDAD TIENEN UN EVALUAR CASILLA DISTINTO POR LAS ACCIONES QUE EJECUTAN
+        if(jugador.getAvatar().getLugar().getNombreSinColor().equals("Suerte")||jugador.getAvatar().getLugar().getNombreSinColor().equals("Comunidad")){
+            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, lista));
+        }
+        else jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero));
 
         tablero.imprimirTablero();
 

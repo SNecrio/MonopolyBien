@@ -1,4 +1,5 @@
 package monopoly;
+import partida.*;
 
 //Define los métodos que deben implementarse en cualquier clase que la implemente (Juego)
 public interface Comando {
@@ -9,27 +10,27 @@ public interface Comando {
 
     void listarJugadores(String comando);
 
-    void listarEdificiosCasilla(String comando);
+    void listarEdificiosCasilla();
 
     void listarEdificiosGrupo(String comando);
 
-    void listarAvatares(String comando);
+    void listarAvatares();
 
     void listarEnVenta();
 
     void consultarAvatar(String comando);
 
-    void trucados(String comando);
+    //void trucados(String comando);
 
-    void pobre(String comando);
+    //void pobre(String comando);
 
-    void lanzarDados(String comando);
+    void lanzarDados(Jugador jugador);
 
-    void acabarTurno(String comando);
+    void acabarTurno(boolean vertablero);
 
-    void pagarFianza(String comando);
+    void pagarFianza();
 
-    void verTablero(String comando);
+    void verTablero();
 
     void describirJugador(String comando);
 
@@ -37,7 +38,7 @@ public interface Comando {
 
     void describirCasilla(String comando);
 
-    void estadisticasPartida(String comando);
+    void estadisticasPartida();
 
     void estadisticasJugador(String comando);
 
@@ -49,6 +50,6 @@ public interface Comando {
 
     void edificar(String comando);
 
-    void venderEdificio(String Comando);
+    void venderEdificio(String comando);
  
 }

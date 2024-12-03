@@ -83,6 +83,9 @@ public abstract class Casilla {
     // Método abstracto para evaluar una casilla, debe ser implementado por las subclases
     public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero);
 
+    //EVALUAR CASILLAS PARA SUERTE/COMUNIDAD
+    public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero, ArrayList<Jugador> lista);
+
     //Metodo para saber si un avatar está en esta casilla
     public boolean estaAvatar(Avatar av){
         if(av.getLugar().getPosicion() == this.posicion){
@@ -133,10 +136,39 @@ public abstract class Casilla {
 
     ///
 
-    
+public void listarAvatares (StringBuilder info){
 
+        ArrayList<Avatar> avatares = this.getAvatares();
 
-   
+        info.append("Jugadores: ");
+        if(this.getAvatares().isEmpty()){
+            info.append(" - ");
+        }
+        else{
+            for(Avatar avatar : avatares){
+                info.append(avatar.getJugador().getNombre()).append(",");
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object casilla){
+        if(this==casilla){
+            return true;
+        }
+        if(casilla==null){
+            return false;
+        }
+        if(getClass() != casilla.getClass()){
+            return false;
+        }
+        final Casilla otro = (Casilla) casilla;
+        if(!this.getNombreSinColor().equals(otro.getNombreSinColor())){
+            return false;
+        }
+        return true;
+    }
+
  
 
 }

@@ -12,6 +12,10 @@ public class Casa extends Edificio {
         super(duenho, id, casilla, grupo, "Casa", 0.6f * coste); // Calculamos el coste aquí
     }
 
+    public Casa(){
+        super();
+    }
+
     @Override
     public float calcularCoste() {
         return getCoste(); // Retorna el coste calculado en el constructor

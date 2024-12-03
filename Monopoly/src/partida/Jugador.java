@@ -3,7 +3,6 @@ package partida;
 import java.util.ArrayList;
 
 import monopoly.*;
-import monopoly.Consola;
 import monopoly.casillas.*;
 import partida.avatares.*;
 import monopoly.edificios.*;
@@ -48,7 +47,7 @@ public class Jugador {
         this.tiradasCarcel=0;
         this.vueltas=0;
         this.vueltasTotal=0;
-        this.propiedades= new ArrayList<>();
+        this.propiedades= new ArrayList<CasillaPropiedad>();
         this.dineroInvertido = 0.0f;
         this.pagoTasasImpuestos = 0.0f;
         this.pagoAlquiler = 0.0f;
@@ -57,7 +56,6 @@ public class Jugador {
         this.premios = 0.0f;
         this.vecesCarcel = 0;
         this.bloqueado = 0;
-        this.modo = false;
     }
 
     /*Constructor principal. Requiere parámetros:
@@ -167,6 +165,7 @@ public class Jugador {
         }
         return contador;
     }
+
     /*Devuelve un entero que indica el número de casillas de tipo Transporte que tiene el jugador. Servirá a la hora de calcular el alquiler que 
     hay que pagar.*/
     public int getNumCasillasTransporte(){
@@ -179,7 +178,7 @@ public class Jugador {
         return contador;
     }
 
-    /
+    
     public void listarPropiedadesenVenta(){
         if(propiedades.isEmpty()){ //comprobamos que no está vacía
             System.out.println("No hay propiedades");
@@ -249,8 +248,7 @@ public class Jugador {
             System.out.println(info.toString());
             return;
 
-        }
-        
+        } 
     }
 
     public void mostrarEstadisticas(){
@@ -267,6 +265,14 @@ public class Jugador {
         info.append("}").append("\n");
 
         System.out.println(info.toString());
+    }
+
+    //Metodo para transferir todas as propiedades do xogador a banca
+    public void transferirPropiedadesBanca(Jugador banca){
+        for(CasillaPropiedad propiedad: propiedades){
+            propiedad.setDuenho(banca);
+        }
+        propiedades.clear(); //limpiamos as propidades do xogador eliminado
     }
 
     public void EstadisticaDineroInvertido(float valor){
@@ -301,10 +307,6 @@ public class Jugador {
         return dobles;
     }
 
-    public void setDobles(int d) {
-        this.dobles = d;
-    }
-
     public int getTiradasCarcel(){
         return this.tiradasCarcel;
     }
@@ -317,7 +319,7 @@ public class Jugador {
         return this.fortuna;
     }
 
-    public ArrayList<Casilla> getPropiedades(){
+    public ArrayList<CasillaPropiedad> getPropiedades(){
         return this.propiedades;
     }
 
@@ -357,6 +359,10 @@ public class Jugador {
         this.comprado = comprado;
     }
 
+    public void setDobles(int dobles){
+        this.dobles = dobles;
+    }
+
     public boolean getModo(){
         return this.modo;
     }
@@ -365,13 +371,6 @@ public class Jugador {
         this.modo = modoElegido;
     }
 
-    //Metodo para transferir todas as propiedades do xogador a banca
-    public void transferirPropiedadesBanca(Jugador banca){
-        for(Casilla propiedad: propiedades){
-            propiedad.asignarDuenho(banca);
-        }
-        propiedades.clear(); //limpiamos as propidades do xogador eliminado
-    }
 
     @Override
     public boolean equals(Object obj){

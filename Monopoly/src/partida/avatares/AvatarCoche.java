@@ -2,6 +2,8 @@ package partida.avatares;
 
 import monopoly.*;
 import partida.Jugador;
+import java.util.ArrayList;
+
 
 public class AvatarCoche extends Avatar {
 

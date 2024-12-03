@@ -4,7 +4,6 @@ import partida.*;
 import java.util.ArrayList;
 import monopoly.casillas.*;
 import monopoly.edificios.Edificio;
-import monopoly.edificios.*;
 
 
 public class Grupo {
@@ -65,7 +64,7 @@ public class Grupo {
     public boolean esDuenhoGrupo(Jugador jugador) {
         
         int tamano = miembros.size();
-        ArrayList<Casilla> casillasJugador = jugador.getPropiedades();;
+        ArrayList<CasillaPropiedad> casillasJugador = jugador.getPropiedades();
         
         //recorremos o array de miembros 
         for(int i=0; i< tamano; i++){

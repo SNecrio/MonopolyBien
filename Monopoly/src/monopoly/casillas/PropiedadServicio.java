@@ -1,7 +1,6 @@
 package monopoly.casillas;
 
 import java.util.ArrayList;
-import java.util.Random;
 import partida.avatares.*;
 import partida.Jugador;
 import monopoly.Grupo;
