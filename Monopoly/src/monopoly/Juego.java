@@ -1,13 +1,11 @@
 package monopoly;
 
 import java.util.ArrayList;
-import java.util.Collections;  // CUANDO SE DESCOMNTEN LAS CARTAS SE NECESITA
-import java.util.Scanner;
-
+import java.util.Scanner;  // CUANDO SE DESCOMNTEN LAS CARTAS SE NECESITA
 import static monopoly.Valor.SUMA_VUELTA;
-import partida.*;
 import monopoly.casillas.*;
 import monopoly.edificios.*;
+import partida.*;
 import partida.avatares.*;
 
 public class Juego implements Comando{
@@ -55,17 +53,21 @@ public class Juego implements Comando{
         }else{
             String nombre = partes[2]; //nombre
             String avatar = partes [3]; //tipo avatar
-    
-            Jugador nuevoJugador = new Jugador(nombre, avatar, tablero.encontrar_casilla("Salida"), avatares);       
-            jugadores.add(nuevoJugador);
-            avatares.add(nuevoJugador.getAvatar());
-            tablero.getPosiciones().get(3).get(10).anhadirAvatar(nuevoJugador.getAvatar());
+            
+            //Comprobar que el tipo de avatar dado es correcto
+            if(avatar.equalsIgnoreCase("pelota")||avatar.equalsIgnoreCase("esfinge")||avatar.equalsIgnoreCase("sombrero")||avatar.equalsIgnoreCase("coche")){
+                Jugador nuevoJugador = new Jugador(nombre, avatar, tablero.encontrar_casilla("Salida"), avatares);       
+                jugadores.add(nuevoJugador);
+                avatares.add(nuevoJugador.getAvatar());
+                tablero.getPosiciones().get(3).get(10).anhadirAvatar(nuevoJugador.getAvatar());
 
-            tablero.imprimirTablero();
+                tablero.imprimirTablero();
 
-            consola.imprimir("\nNombre: " + nombre);
-            consola.imprimir("Avatar: " + nuevoJugador.getAvatar().getId());
-    
+                consola.imprimir("\nNombre: " + nombre);
+                consola.imprimir("Avatar: " + nuevoJugador.getAvatar().getId());
+            }else{
+                consola.imprimir("Tipo de avatar no válido. Debe ser 'sombrero', 'esfinge', 'pelota' o 'coche'");
+            }
         }
     }
 
@@ -74,18 +76,87 @@ public class Juego implements Comando{
         dado1 = new Dado();
         dado2 = new Dado();
 
-        consola.imprimir("\u001B[1m");
-        consola.imprimir("&&   &&  &&&&&&  &&   &  &&&&&&  &&&&&&  &&&&&&  &    &   &");
-        consola.imprimir("& & & &  &    &  & &  &  &    &  &    &  &    &  &     & &");
-        consola.imprimir("&  &  &  &    &  &  & &  &    &  &&&&&   &    &  &      &");
-        consola.imprimir("&     &  &    &  &   &&  &    &  &       &    &  &      &");
-        consola.imprimir("&     &  &&&&&&  &    &  &&&&&&  &       &&&&&&  &&&&&  &\u001B[0m");
+        consola.imprimir("\u001B[1;33m"); // Negrita y color amarillo
+        consola.imprimir("███╗   ███╗   ████╗   ███╗   ██╗   ████╗    ████╗    ██████╗  ██║   ██╗   ██╗");
+        consola.imprimir("████╗ ████║ ██╔═══██╗ ████╗  ██║ ██╔═══██╗ ██╔══██╗ ██╔═══██╗ ██║   ╚██╗ ██╔╝");
+        consola.imprimir("██╔████╔██║ ██║   ██║ ██╔██╗ ██║ ██║   ██║ ██████╔╝ ██║   ██║ ██║    ╚████╔╝");
+        consola.imprimir("██║╚██╔╝██║ ██║   ██║ ██║╚██╗██║ ██║   ██║ ██╔═══╝  ██║   ██║ ██║     ╚██╔╝");
+        consola.imprimir("██║ ╚═╝ ██║ ╚██████╔╝ ██║ ╚████║ ╚██████╔╝ ██║      ╚██████╔╝ ██████╗  ██║");
+        consola.imprimir("╚═╝     ╚═╝  ╚═════╝  ╚═╝  ╚═══╝  ╚═════╝  ╚═╝       ╚═════╝  ╚═════╝  ╚═╝");
+        consola.imprimir("\u001B[0m"); // Reset de estilos
+
+
+
 
         consola.imprimir("\nBienvenido a una nueva partida de Monopoly!\n");
         consola.imprimir("Para comenzar, cree de 2 a 6 jugadores. Recuerde que una vez empezada, no se podran crear nuevos jugadores.\n");
         
         mostrarMenu();
 
+    }
+
+    
+    private void mostrarMenu(){
+        
+        String comando;
+        Scanner scan = new Scanner(System.in);
+        
+        while(true){
+            
+            if(acabarPartida == true){
+                if(jugadores.size() == 1){
+                    consola.imprimir("Felicidades " + jugadores.get(0).getNombre() + ", ganaste el Monopoly!");    
+                }
+                consola.imprimir("Cerrando juego...");
+                scan.close();
+                return;
+            }
+
+            if(partidainiciada == false){
+
+                consola.imprimir(Valor.WHITE + "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
+                consola.imprimir("-------------------------------------------");
+                consola.imprimir("Crear jugador <nombreJugador> <tipoAvatar>");
+                consola.imprimir("Listar jugadores");
+                consola.imprimir("Consultar tipos avatar");
+                consola.imprimir("Iniciar partida");
+                consola.imprimir("-------------------------------------------");
+            }
+    
+            else{
+        
+                consola.imprimir(Valor.WHITE + "\nEs tu turno " + jugadores.get(turno).getNombre() + "!");        
+                consola.imprimir( "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
+                
+
+                System.out.println("-------------------------------------------------------------------------------");
+                System.out.printf("%-45s%-45s%n", "Ver tablero", "Describir jugador <nombreJugador>");
+                System.out.printf("%-45s%-45s%n", "Lanzar dados", "Describir avatar <idAvatar>");
+                System.out.printf("%-45s%-45s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
+                System.out.printf("%-45s%-45s%n", "Edificar <tipo>", "Listar jugadores");
+                System.out.printf("%-45s%-45s%n", "Hipotecar <nombre casilla>", "Listar avatares");
+                System.out.printf("%-45s%-45s%n", "Deshipotecar <nombre casilla>", "Listar en venta");
+                System.out.printf("%-45s%-45s%n", "Vender <tipo> <nombre casilla> <cantidad>", "Estadisticas <nombre jugador>");
+                System.out.printf("%-45s%-45s%n", "Listar edificios", "Listar edificios <color grupo>");
+                System.out.printf("%-45s%-45s%n", "Estadisticas", "Estadisticas <nombreJugador>"); 
+                System.out.printf("%-45s%-45s%n", "Cambiar modo", "Acabar turno");       
+                if(jugadores.get(turno).getEncarcel()==true){
+                    consola.imprimir("Pagar fianza");
+                }
+                consola.imprimir("Salir");
+                consola.imprimir("-------------------------------------------------------------------------------");
+            }
+    
+            comando = consola.leer();
+
+            if(comando.equalsIgnoreCase("salir")){
+                consola.imprimir("Cerrando juego...");
+                scan.close();
+                return;
+            }
+            
+            AnalizarComando(comando);
+        }
     }
 
 
@@ -175,9 +246,13 @@ public class Juego implements Comando{
         Jugador jugadoractual = jugadores.get(turno);
 
         if((tirado == false)&&(jugadoractual.getDobles()<1)){
-            consola.imprimir("El jugador aun no ha tirado los dados, por lo que no puede comprarla");
+            consola.imprimir("El jugador aún no ha tirado los dados, por lo que no puede comprarla");
             return;
         } 
+        else if(jugadoractual.getBloqueado()!=0){
+            consola.imprimir("El jugador está bloqueado, por lo que no puede realizar compras");
+            return;
+        }
 
         if(casillacomprada instanceof CasillaPropiedad){
             CasillaPropiedad casillaPropiedad = (CasillaPropiedad) casillacomprada;
@@ -491,7 +566,6 @@ public class Juego implements Comando{
         consola.imprimir("");
         consola.imprimir("\u001B[1mPelota:\u001B[0m si el valor de los dados es inferior a 4, se retrocederá ese número de casillas. Si es superior se avanzará el valor dado");
         consola.imprimir("\tpero se irá parando en todas las casillas impares hasta el valor obtenido.");
-        return;
     }
 
     @Override
@@ -505,6 +579,7 @@ public class Juego implements Comando{
     }
 
     @Override
+    //Lanzar dados random
     public void lanzarDados(Jugador jugador){
         //Se guarda el nombre de la casilla en la que se encuentra el jugador para los prints
         String casillaAnterior = jugador.getAvatar().getLugar().getNombre(); //Nombre de la casilla anterior para prints
@@ -529,13 +604,13 @@ public class Juego implements Comando{
 
         //Avance en modo simple
         if(jugador.getModo()==false){
-            jugador.getAvatar().moverEnBasico(dado1.getValor(), dado2.getValor(), jugador, tablero, banca);
+            jugador.getAvatar().moverEnBasico(dado1.getValor(), dado2.getValor(), jugador, tablero, banca, jugadores);
             if(dado1.getValor()!=dado2.getValor() || jugador.getEncarcel()==true) tirado = true;
             else consola.imprimir("Felicidades! Has lanzado dobles, tienes otro lanzamiento!");
         }
         //Avance en modo avanzado
         else {
-            jugador.getAvatar().moverEnAvanzado(dado1.getValor(), dado2.getValor(), jugador, tablero, banca);
+            jugador.getAvatar().moverEnAvanzado(dado1.getValor(), dado2.getValor(), jugador, tablero, banca, jugadores);
             if(jugador.getEncarcel()==true || jugador.getAvatar().getExtras()<0 || (jugador.getAvatar().getContinuar()==0 && jugador.getAvatar().getTiradaInicial()!=0) || jugador.getBloqueado()!=0) tirado = true;
         }
 
@@ -592,6 +667,95 @@ public class Juego implements Comando{
     }
 
 
+    @Override
+    //Lanzar dados trucados (Sobrecarga)
+    public void lanzarDados(Jugador jugador, int dado1, int dado2){
+        //Se guarda el nombre de la casilla en la que se encuentra el jugador para los prints
+        String casillaAnterior = jugador.getAvatar().getLugar().getNombre(); //Nombre de la casilla anterior para prints
+
+        if(tirado==true){
+            consola.imprimir("El jugador ya ha tirado este turno.");
+            return;
+        }
+        else if(jugador.getAvatar().getBloqueado()!=0){
+            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + "turno(s). No podrá tirar hasta entonces.");
+            return;
+        }
+
+        // Comprueba si, estando en la cárcel, puede salir de ella
+        if(jugador.getEncarcel()==true){
+            lanzarCarcel(dado1, dado2);
+        }
+
+        //Avance en modo simple
+        if(jugador.getModo()==false){
+            jugador.getAvatar().moverEnBasico(dado1, dado2, jugador, tablero, banca, jugadores);
+            if(dado1!=dado2 || jugador.getEncarcel()==true) tirado = true;
+            else consola.imprimir("Felicidades! Has lanzado dobles, tienes otro lanzamiento!");
+        }
+        //Avance en modo avanzado
+        else {
+            jugador.getAvatar().moverEnAvanzado(dado1, dado2, jugador, tablero, banca, jugadores);
+            if(jugador.getEncarcel()==true || jugador.getAvatar().getExtras()<0 || (jugador.getAvatar().getContinuar()==0 && jugador.getAvatar().getTiradaInicial()!=0) || jugador.getBloqueado()!=0) tirado = true;
+        }
+
+        //Determina que se imprimirá en cada casilla
+
+        if(jugador.getAvatar().getBloqueado()==0){
+
+            Casilla casilla = jugador.getAvatar().getLugar();
+            if(casilla instanceof CasillaPropiedad){
+                CasillaPropiedad propiedad = (CasillaPropiedad)casilla;
+
+                 //Si es una casilla de su propiedad
+                if(jugador.getNombre().equalsIgnoreCase(propiedad.getDuenho().getNombre())){
+                    consola.imprimir(
+                    "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
+                    casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
+                    ". Es una casilla de su propiedad.");
+                }
+                else if(banca == propiedad.getDuenho()){
+                    consola.imprimir(
+                    "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
+                    casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE + 
+                    ". Es una casilla de la banca.");   
+                }
+                 //Si es de otro jugador
+                else{
+
+                    float alquiler = propiedad.calcularAlquiler(jugador, (dado1+dado2));
+                    consola.imprimir( "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
+                    casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre() + Valor.WHITE);
+
+                    //Si le puedes pagar, se paga automáticamente
+                    if(jugador.getAvatar().getSolvente() == true){
+                        consola.imprimir( "Se han pagado " + alquiler + " euros de alquiler al dueño de la casilla.");
+                    }
+                    //Si no puede pagar pero tiene propiedades
+                    else{
+                        bancarrota(jugador,(dado1+dado2));
+                    }
+                }
+
+            }
+            else if(jugador.getAvatar().getLugar().getNombreSinColor().equals("Suerte")||jugador.getAvatar().getLugar().getNombreSinColor().equals("Comunidad")){//Si es una casilla de suerte o comunidad
+                consola.imprimir(
+                "El avatar "+ jugador.getAvatar().getId() + " avanza desde " + 
+                casillaAnterior + Valor.WHITE + " hasta " + jugador.getAvatar().getLugar().getNombre());   
+            }
+
+        }
+        if(comprobarVueltas()==true){
+            tablero.incrementarPrecios();
+            resetearVueltas();
+        }
+    }
+
+
+
+
+
+
     private void lanzarCarcel(int d1, int d2){
         Jugador jugador = jugadores.get(turno);
 
@@ -627,7 +791,6 @@ public class Juego implements Comando{
                     tirado = false;
                     jugadores.get(turno).setEncarcel(false);
                     jugadores.get(turno).setTiradasCarcel(0);
-                    return;
                 }
                 else consola.imprimir("El jugador no puede permitirse salir de la carcel");
             }
@@ -638,7 +801,6 @@ public class Juego implements Comando{
                     jugadores.get(turno).setEncarcel(false);
                     jugadores.get(turno).setTiradasCarcel(0); 
                     consola.imprimir("Por lo tanto, ha sido obligado a pagar la fianza para salir");
-                    return;
                 }
                 else{
                     consola.imprimir("El jugador no puede permitirse salir de la carcel y ya ha agotado todos sus intentos. Por lo tanto, " + jugadores.get(turno).getNombre() + " se queda en bancarrota y pierde la partida.");
@@ -646,7 +808,6 @@ public class Juego implements Comando{
                     
                 }
             }
-        return;
     }
 
 
@@ -930,6 +1091,17 @@ public class Juego implements Comando{
             lanzarDados(jugadores.get(turno));
         }
 
+        else if(comando.startsWith("trucados")){
+            String[] argumento = comando.split(" ");
+            //Valor de los dados fijado por el comando
+            if(argumento.length>=3){
+            lanzarDados(jugadores.get(turno), Integer.parseInt(argumento[1]), Integer.parseInt(argumento[2]));
+            }
+            else{
+                consola.imprimir("Indica el valor de los dados (Trucados 1 2)");
+            }
+        }
+
         else if(comando.equalsIgnoreCase("Pagar fianza")){ 
             salirCarcel(true);
         }
@@ -983,81 +1155,12 @@ public class Juego implements Comando{
             consultarAvatar();
         }
 
-
-    }
-
-    private void mostrarMenu(){
-        
-        String comando;
-        Scanner scan = new Scanner(System.in);
-        
-        while(true){
-            
-            if(acabarPartida == true){
-                if(jugadores.size() == 1){
-                    consola.imprimir("Felicidades " + jugadores.get(0).getNombre() + ", ganaste el Monopoly!");    
-                }
-                consola.imprimir("Cerrando juego...");
-                scan.close();
-                return;
-            }
-
-            if(partidainiciada == false){
-
-                consola.imprimir(Valor.WHITE + "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
-                consola.imprimir("-------------------------------------------");
-                consola.imprimir("Crear jugador <nombreJugador> <tipoAvatar>");
-                consola.imprimir("Listar jugadores");
-                consola.imprimir("Consultar tipos avatar");
-                consola.imprimir("Iniciar partida");
-                consola.imprimir("-------------------------------------------");
-            }
-    
-            else{
-        
-                consola.imprimir(Valor.WHITE + "\nEs tu turno " + jugadores.get(turno).getNombre() + "!");        
-                consola.imprimir( "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
-
-                consola.imprimir("-------------------------------------------------------------------------------");
-                consola.imprimirSinEspacio("Ver tablero ");
-                consola.imprimir(" Describir jugador <nombreJugador>");
-                consola.imprimirSinEspacio("Lanzar dados ");
-                consola.imprimir(" Describir avatar <idAvatar>");
-                consola.imprimirSinEspacio("Comprar <nombre casilla> ");
-                consola.imprimir(" Describir <nombreCasilla>");
-                consola.imprimirSinEspacio("Edificar <tipo> ");
-                consola.imprimir(" Listar jugadores");
-                consola.imprimirSinEspacio("Hipotecar <nombre casilla> ");
-                consola.imprimir(" Listar avatares"); 
-                consola.imprimirSinEspacio("Deshipotecar <nombre casilla> ");
-                consola.imprimir(" Listar en venta");
-                consola.imprimirSinEspacio("Vender <tipo> <nombre casilla> <cantidad> ");
-                consola.imprimir(" Estadisticas <nombre jugador>");
-                consola.imprimirSinEspacio("listar edificios ");
-                consola.imprimir(" Listar edificios <color grupo>");
-                //consola.imprimirSinEspacio("%-45s%-45s%n");
-                consola.imprimir("Estadisticas ");
-
-
-                if(jugadores.get(turno).getEncarcel()==true){
-                    consola.imprimir("Pagar fianza");
-                }
-                consola.imprimir("%-45s%-45s%n");
-                consola.imprimir("Acabar turno");
-                consola.imprimir("Salir");
-                consola.imprimir("-------------------------------------------------------------------------------");
-            }
-    
-            comando = consola.leer();
-
-            if(comando.equalsIgnoreCase("salir")){
-                consola.imprimir("Cerrando juego...");
-                scan.close();
-                return;
-            }
-            
-            AnalizarComando(comando);
+        else if(comando.equalsIgnoreCase("cambiar modo")){
+            jugadores.get(turno).setModo(!jugadores.get(turno).getModo());
+            if(jugadores.get(turno).getModo()==true) consola.imprimir("El modo de juego es ahora avanzado");
+            else consola.imprimir("El modo de juego es ahora simple");
         }
+
     }
 
 }

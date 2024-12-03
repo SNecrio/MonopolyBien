@@ -5,7 +5,6 @@ import java.util.Random;
 import monopoly.*;
 import monopoly.casillas.*;
 import partida.Jugador;
-import monopoly.ConsolaNormal;
 
 public class Avatar {
 
@@ -93,7 +92,7 @@ public class Avatar {
     * El ID generado será una letra mayúscula. Parámetros:
     * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    private String generarId(ArrayList<Avatar> avCreados) {
+    public String generarId(ArrayList<Avatar> avCreados) {
         
         Random ran = new Random();
         String id;
@@ -112,7 +111,7 @@ public class Avatar {
     }
 
     // Método para movel el avatar en modo básico (jugador es jugador actual)
-    public void moverEnBasico(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca){
+    public void moverEnBasico(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugador> jugadores){
         int casillasTotal = dado1 + dado2;
 
         //COMPROBAR EN CARCEL
@@ -131,7 +130,6 @@ public class Avatar {
 
         jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
 
-        ArrayList<Jugador> jugadores = new ArrayList<>(); //ESTO E SIMPLEMENTE PA PASARLLO A CASILLA
         //Comprueba si se puede realizar la acción de la casilla.
         solvente = jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores);
 
@@ -147,9 +145,9 @@ public class Avatar {
 
 
      // Método para movel el avatar en modo avanzado (esfinge y sombrero)
-     public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca){
+     public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugador> jugadores){
         consola.imprimir("Este avatar no tiene modo de avance avanzado. Se procederá en el modo básico");
-        moverEnBasico(dado1, dado2, jugador, tablero, banca);
+        moverEnBasico(dado1, dado2, jugador, tablero, banca, jugadores);
      }
 
 
@@ -158,20 +156,32 @@ public class Avatar {
         return this.id;
     }
 
+    public void setId(String id){
+        this.id=id;
+    }
+
     public String getTipo(){
         return this.tipo;
+    }
+
+    public void setTipo(String tipo){
+        this.tipo=tipo;
     }
 
     public Casilla getLugar(){
         return this.lugar;
     }
 
+    public void setLugar(Casilla lugar){
+        this.lugar=lugar;
+    }
+
     public Jugador getJugador(){
         return this.jugador;
     }
 
-    public void setLugar(Casilla pos){
-        this.lugar = pos;
+    public void setJugador(Jugador jugador){
+        this.jugador=jugador;
     }
 
     public int getExtras(){

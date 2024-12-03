@@ -1,8 +1,9 @@
 package partida.avatares;
 
-import monopoly.*;
-import partida.Jugador;
 import java.util.ArrayList;
+import monopoly.*;
+import monopoly.casillas.Casilla;
+import partida.Jugador;
 
 
 public class AvatarCoche extends Avatar {
@@ -14,7 +15,11 @@ public class AvatarCoche extends Avatar {
     private boolean extraDobles; //Almacena si se obtuvieron dobles en el último turno extra
 
     //Constructor
-    public AvatarCoche(){
+    public AvatarCoche(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados){
+    setTipo(tipo);
+    setJugador(jugador);
+    setLugar(lugar);
+    setId(generarId(avCreados)); //usamos o metodo de abaixo para crear ID únicos
     this.extras = 3;
     this.bloqueado = 0;
     this.consola = new ConsolaNormal();
@@ -22,7 +27,7 @@ public class AvatarCoche extends Avatar {
     }
 
     @Override
-    public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca){
+    public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugador> jugadores){
         int casillasTotal = dado1 + dado2;
 
         if(casillasTotal<=4){
@@ -45,7 +50,7 @@ public class AvatarCoche extends Avatar {
 
             jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
             //Comprueba si se puede realizar la acción de la casilla.
-            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero));
+            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));
 
             //Atributos estadísticos
             //jugador.getAvatar().getLugar().sumarVisitas(1);

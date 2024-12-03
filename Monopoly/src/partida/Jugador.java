@@ -1,16 +1,12 @@
 package partida;
 
 import java.util.ArrayList;
-
 import monopoly.*;
-import monopoly.casillas.*;
-import partida.avatares.*;
-import monopoly.edificios.*;
-import monopoly.edificios.Edificio;
-
 import static monopoly.Valor.FORTUNA_INICIAL;
 import static monopoly.Valor.SUMA_VUELTA;
-import static monopoly.Valor.FORTUNA_BANCA;
+import monopoly.casillas.*;
+import monopoly.edificios.Edificio;
+import partida.avatares.*;
 
 public class Jugador {
 
@@ -47,7 +43,7 @@ public class Jugador {
         this.tiradasCarcel=0;
         this.vueltas=0;
         this.vueltasTotal=0;
-        this.propiedades= new ArrayList<CasillaPropiedad>();
+        this.propiedades= new ArrayList<>();
         this.dineroInvertido = 0.0f;
         this.pagoTasasImpuestos = 0.0f;
         this.pagoAlquiler = 0.0f;
@@ -73,8 +69,12 @@ public class Jugador {
         this.tiradasCarcel = 0;
         this.vueltas = 0;
         this.vueltasTotal=0;
-        this.propiedades= new ArrayList<CasillaPropiedad>();
-        this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);
+        this.propiedades= new ArrayList<>();
+        //Dependiendo del tipo de avatar, se llama al constructor de la subclase
+        if(tipoAvatar.equalsIgnoreCase("coche")) this.avatar = new AvatarCoche(tipoAvatar, this, inicio, avCreados);
+        else if(tipoAvatar.equalsIgnoreCase("pelota")) this.avatar = new AvatarPelota(tipoAvatar, this, inicio, avCreados);
+        else if(tipoAvatar.equalsIgnoreCase("esfinge")) this.avatar = new AvatarEsfinge(tipoAvatar, this, inicio, avCreados);
+        else this.avatar = new AvatarSombrero(tipoAvatar, this, inicio, avCreados);
         this.dineroInvertido = 0.0f;
         this.pagoTasasImpuestos = 0.0f;
         this.pagoAlquiler = 0.0f;

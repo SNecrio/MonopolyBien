@@ -1,17 +1,10 @@
 package monopoly.casillas;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import monopoly.Carta;
-import monopoly.Grupo;
-import monopoly.Valor;
-import monopoly.edificios.Edificio;
-import monopoly.Tablero;
-import partida.avatares.*;
-import partida.Jugador;
-import excepcions.*;
 import monopoly.ConsolaNormal;
+import monopoly.Tablero;
+import partida.Jugador;
+import partida.avatares.*;
 
 public abstract class Casilla {
 
@@ -75,7 +68,6 @@ public abstract class Casilla {
     // Método abstracto para evaluar una casilla, debe ser implementado por las subclases
     //public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero);
 
-    //EVALUAR CASILLAS PARA SUERTE/COMUNIDAD, puxen eso en todo e asi xa oslo hai un
     public abstract boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero, ArrayList<Jugador> lista);
 
     //Metodo para saber si un avatar está en esta casilla

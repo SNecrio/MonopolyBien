@@ -1,8 +1,8 @@
 package monopoly.casillas;
 
 import java.util.ArrayList;
-import partida.Jugador;
 import monopoly.Tablero;
+import partida.Jugador;
 
 public class CasillaEspecial extends Casilla{
     
@@ -20,6 +20,7 @@ public class CasillaEspecial extends Casilla{
         this.impuesto=impuesto;
     }
     
+    @Override
     public boolean EvaluarCasilla(Jugador actual, Jugador banca, int tirada, Tablero tablero, ArrayList<Jugador> lista){
         
         if(this.getNombre().equalsIgnoreCase("parking")){

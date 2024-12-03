@@ -1,8 +1,9 @@
 package partida.avatares;
 
-import monopoly.*;
-import partida.Jugador;
 import java.util.ArrayList;
+import monopoly.*;
+import monopoly.casillas.Casilla;
+import partida.Jugador;
 
 
 public class AvatarPelota extends Avatar {
@@ -13,7 +14,11 @@ public class AvatarPelota extends Avatar {
     private final ConsolaNormal consola;
 
     //Constructor
-    public AvatarPelota(){
+    public AvatarPelota(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados){
+    setTipo(tipo);
+    setJugador(jugador);
+    setLugar(lugar);
+    setId(generarId(avCreados)); //usamos o metodo de abaixo para crear ID únicos
     this.tiradaInicial=0;
     this.continuar = 0;
     this.consola = new ConsolaNormal();
@@ -21,7 +26,7 @@ public class AvatarPelota extends Avatar {
 
 
     @Override
-    public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugadores> lista){
+    public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugador> jugadores){
         int casillasTotal = dado1 + dado2;
 
         if(tiradaInicial<=4){
@@ -116,12 +121,8 @@ public class AvatarPelota extends Avatar {
         //Moverse
         jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
         //Comprueba si se puede realizar la acción de la casilla.
-        //LAS CASILLAS DE SUERTE/COMUNIDAD TIENEN UN EVALUAR CASILLA DISTINTO POR LAS ACCIONES QUE EJECUTAN
-        if(jugador.getAvatar().getLugar().getNombreSinColor().equals("Suerte")||jugador.getAvatar().getLugar().getNombreSinColor().equals("Comunidad")){
-            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, lista));
-        }
-        else jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero));
-
+        jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));
+        
         tablero.imprimirTablero();
 
         if(continuar==0 && jugador.getDobles()>0){

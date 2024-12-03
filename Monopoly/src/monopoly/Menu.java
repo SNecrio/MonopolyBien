@@ -108,7 +108,6 @@ public class Menu {
                 System.out.printf("%-45s%-45s%n", "Deshipotecar <nombre casilla>", "Listar en venta");
                 System.out.printf("%-45s%-45s%n", "Vender <tipo> <nombre casilla> <cantidad>", "Estadisticas <nombre jugador>");
                 System.out.printf("%-45s%-45s%n", "listar edificios", "Listar edificios <color grupo>");
-
                 System.out.printf("%-45s%-45s%n", "Estadisticas", "Estadisticas <nombreJugador>");
 
 

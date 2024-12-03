@@ -25,6 +25,7 @@ public interface Comando {
     //void pobre(String comando);
 
     void lanzarDados(Jugador jugador);
+    public void lanzarDados(Jugador jugador, int dado1, int dado2);  //Trucados
 
     void acabarTurno(boolean vertablero);
 

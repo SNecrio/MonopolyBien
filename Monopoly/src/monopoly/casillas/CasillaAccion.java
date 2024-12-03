@@ -1,11 +1,10 @@
 package monopoly.casillas;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import monopoly.ConsolaNormal;
 import monopoly.Tablero;
-import partida.avatares.*;
 import partida.Jugador;
-import java.util.Collections;
-import java.util.ArrayList;
 
 
 
@@ -25,6 +24,7 @@ public class CasillaAccion extends Casilla{
         this.consola = new ConsolaNormal();
     }
 
+    @Override
     public void describirEspecifico(StringBuilder info){
         listarAvatares(info);
     }
@@ -48,10 +48,8 @@ public class CasillaAccion extends Casilla{
             consola.imprimir("Escoja una carta (1-6): ");
             carta = consola.leerNumero();
         }while(carta<1||carta>6);
-        //comenteino pa que fora 
-        /*if(actual.getAvatar().getLugar().getNombreSinColor().equalsIgnoreCase("Suerte")) return suerte(actual, tablero, carta, banca);
-        else return comunidad(actual, tablero, carta, banca,);*/
-        return true; //QUITALO DESPOIS
+        if(actual.getAvatar().getLugar().getNombreSinColor().equalsIgnoreCase("Suerte")) return suerte(actual, tablero, carta, banca);
+        else return comunidad(actual, tablero, carta, banca,lista);
         }
     
     public boolean comunidad(Jugador jugador, Tablero tablero, int carta, Jugador banca, ArrayList<Jugador> lista){
