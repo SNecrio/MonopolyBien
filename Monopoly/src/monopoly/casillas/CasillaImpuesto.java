@@ -1,8 +1,8 @@
 package monopoly.casillas;
 
 import java.util.ArrayList;
-import partida.Jugador;
 import monopoly.Tablero;
+import partida.Jugador;
 
 public class CasillaImpuesto extends Casilla{
     
@@ -28,7 +28,7 @@ public class CasillaImpuesto extends Casilla{
                 actual.sumarGastos(impuesto);
                 actual.EstadisticaTasasImpuesto(this.impuesto);
 
-                System.out.println("Oh no! El jugador "+actual.getNombre()+" tiene que pagar "+this.impuesto+ "por impuestos.");
+                System.out.println("Oh no! El jugador "+actual.getNombre()+" tiene que pagar "+this.impuesto+ " por impuestos.");
                 return true;
             }
             return false;

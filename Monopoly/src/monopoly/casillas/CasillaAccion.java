@@ -26,7 +26,6 @@ public class CasillaAccion extends Casilla{
 
     @Override
     public void describirEspecifico(StringBuilder info){
-        listarAvatares(info);
     }
 
     @Override
@@ -81,7 +80,6 @@ public class CasillaAccion extends Casilla{
             case 3:
                 aux = tablero.getPosiciones().get(3).get(10);
                 jugador.getAvatar().moverAvatar(tablero.getPosiciones(), aux, true);//Va a Salida cobrando
-                tablero.imprimirTablero();
                 break;
 
             case 4:
@@ -138,13 +136,11 @@ public class CasillaAccion extends Casilla{
             case 1:
                 aux = tablero.getPosiciones().get(3).get(5);
                 jugador.getAvatar().moverAvatar(tablero.getPosiciones(), aux, true);//Va a trans1 pasando por la salida
-                tablero.imprimirTablero();
                 break;
                         
             case 2:
                 aux = tablero.getPosiciones().get(0).get(6);
                 jugador.getAvatar().moverAvatar(tablero.getPosiciones(), aux, false);//Va a Solar15 sin pasar por la salida
-                tablero.imprimirTablero();
                 break;
 
             case 3:
@@ -155,7 +151,6 @@ public class CasillaAccion extends Casilla{
             case 4:
                 aux = tablero.getPosiciones().get(3).get(4);
                 jugador.getAvatar().moverAvatar(tablero.getPosiciones(), aux, true);//Va a solar3 pasando por la salida
-                tablero.imprimirTablero();
                 break;
 
                 case 5:

@@ -29,11 +29,12 @@ public class AvatarPelota extends Avatar {
     public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugador> jugadores){
         int casillasTotal = dado1 + dado2;
 
-        if(tiradaInicial<=4){
+        if(tiradaInicial!=0) casillasTotal=tiradaInicial; //Nos aseguramos de que vaya por la rama correcta
+        if(casillasTotal<=4){
 
             if(tiradaInicial==0){
                 consola.imprimir("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2 + ". Como es un 4 o menos, retrocede el valor obtenido parando en todos los movimientos impares.");
-                tiradaInicial=casillasTotal;  //Guardamos el valor de la primera tirada
+                tiradaInicial=casillasTotal; //Guardamos el valor de la primera tirada
                 if(dado1==dado2) jugador.setDobles(jugador.getDobles()+1);
                 else jugador.setDobles(0);
                 if(jugador.getDobles()==3){
@@ -46,10 +47,10 @@ public class AvatarPelota extends Avatar {
 
                 switch (tiradaInicial) {
                     case 2: case 3: //Para avanzar hasta esa casilla parando en los impares, se necesita 1 turno extra
-                        continuar=1;
+                        continuar=2;
                         break;
                     case 4: 
-                        continuar=2;
+                        continuar=3;
                         break;
                     default:
                         throw new AssertionError();
@@ -85,19 +86,19 @@ public class AvatarPelota extends Avatar {
 
                 switch (tiradaInicial) {
                     case 5:
-                    continuar=0;
+                    continuar=1;
                         break;
                     case 6: case 7: //Para avanzar hasta esa casilla parando en los impares, se necesita 1 turno extra
-                        continuar=1;
-                        break;
-                    case 8: case 9: 
                         continuar=2;
                         break;
-                    case 10: case 11: 
+                    case 8: case 9: 
                         continuar=3;
                         break;
-                    case 12: 
+                    case 10: case 11: 
                         continuar=4;
+                        break;
+                    case 12: 
+                        continuar=5;
                         break;
                     default:
                         throw new AssertionError();

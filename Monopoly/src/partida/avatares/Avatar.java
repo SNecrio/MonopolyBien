@@ -14,7 +14,7 @@ public class Avatar {
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
     private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
-    private ConsolaNormal consola;
+    private final ConsolaNormal consola;
 
     //Constructor vacío
     public Avatar() {
@@ -92,7 +92,7 @@ public class Avatar {
     * El ID generado será una letra mayúscula. Parámetros:
     * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    public String generarId(ArrayList<Avatar> avCreados) {
+    public final String generarId(ArrayList<Avatar> avCreados) {  //Final porque es la única implementación que proporcionamos
         
         Random ran = new Random();
         String id;
@@ -147,6 +147,7 @@ public class Avatar {
      // Método para movel el avatar en modo avanzado (esfinge y sombrero)
      public void moverEnAvanzado(int dado1, int dado2, Jugador jugador, Tablero tablero, Jugador banca, ArrayList<Jugador> jugadores){
         consola.imprimir("Este avatar no tiene modo de avance avanzado. Se procederá en el modo básico");
+        jugador.setModo(false);
         moverEnBasico(dado1, dado2, jugador, tablero, banca, jugadores);
      }
 

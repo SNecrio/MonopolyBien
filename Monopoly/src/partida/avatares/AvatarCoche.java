@@ -34,7 +34,7 @@ public class AvatarCoche extends Avatar {
 
             //Se mueve el valor obtenido para atrás
             casillasTotal = -1*casillasTotal;
-            jugador.setBloqueado(2);
+            jugador.getAvatar().setBloqueado(2);
             //Se mueve el avatar del jugador el numero de casillas
             jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
             tablero.imprimirTablero();

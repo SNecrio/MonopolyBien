@@ -28,7 +28,7 @@ public class Jugador {
     private int vueltasTotal;
     private ArrayList<CasillaPropiedad> propiedades; //Propiedades que posee el jugador.
     private int dobles; //Cuenta el número de veces que salen dobles en un turno
-    private int bloqueado; //Cuenta los turnos que un jugador no puede tirar
+    //private int bloqueado; //Cuenta los turnos que un jugador no puede tirar
     private boolean comprado; //Para saber si un jugador ha comprado una propiedad en el mismo turno (usado para, si sacas dobles, no volver a preguntar modo)
     private boolean modo; //false básico, true avanzado
     private int vecesDados;
@@ -51,7 +51,7 @@ public class Jugador {
         this.pasoSalida = 0.0f;
         this.premios = 0.0f;
         this.vecesCarcel = 0;
-        this.bloqueado = 0;
+        //this.bloqueado = 0;
     }
 
     /*Constructor principal. Requiere parámetros:
@@ -352,14 +352,14 @@ public class Jugador {
     public void setVueltas(int vueltas){
         this.vueltas = vueltas;
     }
-
+/* 
     public int getBloqueado(){
         return this.bloqueado;
     }
     
     public void setBloqueado(int bloqueado){
         this.bloqueado = bloqueado;
-    }
+    }*/
 
     public boolean getComprado(){
         return this.comprado;
