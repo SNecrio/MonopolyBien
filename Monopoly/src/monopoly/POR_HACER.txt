@@ -23,4 +23,8 @@ non sei por que cando pagas o alquiler se añaden as tuas estadisticas o de cobr
 Ines: mirar o en venta se ta BEN
 ines: comandos
 
-listar avatares fainos duas veces
+listar avatares fainos duas veces //LISTO
+comprar edificios //Listo creo (hai que facer mais comprobacións)
+se escribes estadisticas non fai nada
+creo que o mismo con listar edificios
+e listar edificios grupo

@@ -232,27 +232,25 @@ public class Jugador {
             }
             info.append("\n");
     
+            int contador =0;
             // Agregar edificios
             info.append("Edificios: ");
-            ArrayList<PropiedadSolar> propiedadSolares = new ArrayList<>();
             for (CasillaPropiedad propiedad : propiedades) {
-                if (propiedad.getTipo().equals("solar") && propiedad instanceof PropiedadSolar) {
-                    propiedadSolares.add((PropiedadSolar) propiedad);
+                if(propiedad instanceof PropiedadSolar){
+                    PropiedadSolar solar = (PropiedadSolar) propiedad;
+                    if(solar.getEdificios().isEmpty()==true){
+                        contador++;                        
+                    }
+                    else{
+                        for(Edificio edificio: solar.getEdificios()){
+                            info.append("[").append(edificio.getTipo()).append("-").append(edificio.getId()).append("] ");
+                        }
+                    }
                 }
+                
             }
-    
-            // Añadir los edificios
-            boolean hayEdificios = false;
-            for(PropiedadSolar solar : propiedadSolares){
-                ArrayList<Edificio> edificios = solar.getEdificios();
-                for(Edificio edificio : edificios){
-                    hayEdificios = true;
-                    info.append("[").append(edificio.getTipo()).append("-").append(edificio.getId()).append("] ");
-                }
-            }
-    
-            if (!hayEdificios) {
-                info.append("No hay edificios.");
+            if(contador !=0){
+                info.append("No hay edificios todavía");
             }
     
             info.append("\n");

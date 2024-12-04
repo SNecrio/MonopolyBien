@@ -48,7 +48,6 @@ public class Tablero {
         Grupo grupoMarron = new Grupo();
         grupoMarron.setColor("MARRON");
         grupos.put("MARRON",grupoMarron);
-
         Casilla casilla;
 
         casilla = new CasillaEspecial(0f,Valor.WHITE + "Parking",20);
@@ -158,8 +157,8 @@ public class Tablero {
         filaSur.add(casilla);
 
         casilla = new PropiedadSolar(grupoNegro,600000f, banca, Valor.BLACK + "Solar2",3);
-        ((PropiedadSolar)casilla).setGrupo(grupoCyan);
-        grupoCyan.anhadirCasilla((PropiedadSolar)casilla);        
+        ((PropiedadSolar)casilla).setGrupo(grupoNegro);
+        grupoNegro.anhadirCasilla((PropiedadSolar)casilla);        
         filaSur.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
         
@@ -169,8 +168,8 @@ public class Tablero {
         
 
         casilla = new PropiedadSolar(grupoNegro,600000f, banca, Valor.BLACK + "Solar1",1);
-        ((PropiedadSolar)casilla).setGrupo(grupoCyan);
-        grupoCyan.anhadirCasilla((PropiedadSolar)casilla);        
+        ((PropiedadSolar)casilla).setGrupo(grupoNegro);
+        grupoNegro.anhadirCasilla((PropiedadSolar)casilla);        
         filaSur.add(casilla);
         banca.anhadirPropiedad((PropiedadSolar)casilla);
         

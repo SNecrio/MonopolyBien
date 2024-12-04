@@ -31,7 +31,7 @@ public class Grupo {
         this.miembros.add(cas2);
         this.colorGrupo=colorGrupo;
 
-        this.numCasillas=2; //entendo que como esta formado por duas casillas xa poñemos directamente esto
+        this.numCasillas=2; 
     }
 
     /*Constructor para cuando el grupo está formado por TRES CASILLAS:
@@ -63,16 +63,26 @@ public class Grupo {
      */
     public boolean esDuenhoGrupo(Jugador jugador) {
         
-        int tamano = miembros.size();
         ArrayList<CasillaPropiedad> casillasJugador = jugador.getPropiedades();
-        
-        //recorremos o array de miembros 
-        for(int i=0; i< tamano; i++){
-            if(!casillasJugador.contains(miembros.get(i))){  //se o xogador non ten todas as propiedades do grupo, xa devolvemos falso
-                return false;
+        int contador = 0;
+
+        for(CasillaPropiedad casilla: casillasJugador){
+            if(casilla instanceof PropiedadSolar){
+                PropiedadSolar casillaSolar = (PropiedadSolar)casilla;
+                for(PropiedadSolar solar : this.miembros){
+                    if(casillaSolar.equals(solar)){
+                        contador++;
+                    }
+                }
             }
         }
-        return true;
+
+        if(contador == numCasillas){
+            return true;
+        }
+
+        return false;
+        
     }
 
 
@@ -161,6 +171,9 @@ public class Grupo {
         return this.numCasillas;
     }
 
+    public void sumarNumeroCasillas(){
+        this.numCasillas ++;
+    }
     public void sumarRentabilidad(float valor){
         this.rentabilidad += valor;
     }

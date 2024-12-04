@@ -150,6 +150,7 @@ public class PropiedadSolar extends CasillaPropiedad {
         jugador.EstadisticaDineroInvertido(coste);
         jugador.pagar(coste);
         jugador.sumarGastos(coste);
+        
 
         this.edificios = edificio.accionComprar(this.edificios); //ACTUALIZAMOS OS EDIFICIOS
         return true;
@@ -169,7 +170,7 @@ public class PropiedadSolar extends CasillaPropiedad {
             return false;
         }
         
-        if(!tipo.equalsIgnoreCase("casa") ||!tipo.equalsIgnoreCase("hotel") || !tipo.equalsIgnoreCase("piscina")  || !tipo.equalsIgnoreCase("pista de deporte") ){
+        if (!tipo.equalsIgnoreCase("casa") && !tipo.equalsIgnoreCase("hotel") && !tipo.equalsIgnoreCase("piscina") && !tipo.equalsIgnoreCase("pista de deporte")) {
             System.out.println("TIPO CONSTRUCCION NON VALIDO");
             return false;
         }

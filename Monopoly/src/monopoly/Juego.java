@@ -59,7 +59,7 @@ public class Juego implements Comando{
             if(avatar.equalsIgnoreCase("pelota")||avatar.equalsIgnoreCase("esfinge")||avatar.equalsIgnoreCase("sombrero")||avatar.equalsIgnoreCase("coche")){
                 Jugador nuevoJugador = new Jugador(nombre, avatar, tablero.encontrar_casilla("Salida"), avatares);       
                 jugadores.add(nuevoJugador);
-                avatares.add(nuevoJugador.getAvatar());
+                //avatares.add(nuevoJugador.getAvatar());
                 tablero.getPosiciones().get(3).get(10).anhadirAvatar(nuevoJugador.getAvatar());
 
                 tablero.imprimirTablero();
@@ -67,7 +67,7 @@ public class Juego implements Comando{
                 consola.imprimir("\nNombre: " + nombre);
                 consola.imprimir("Avatar: " + nuevoJugador.getAvatar().getId());
             }else{
-                consola.imprimir("Tipo de avatar no válido. Debe ser 'sombrero', 'esfinge', 'pelota' o 'coche'");
+                consola.imprimir("Tipo de avatar no válido. Debe ser 'sombrero', 'esfinge', 'pelota' o 'coche'"); //EXCEPCION
             }
         }
     }
@@ -222,6 +222,7 @@ public class Juego implements Comando{
 
         if(casilla == null){
             consola.imprimir("No se encuentra la casilla   HAY QUE METER EXCEPCIÓN"); //EXCEPCIÓN
+            return;
         }
 
         casilla.DescribirCasilla();
@@ -1041,7 +1042,7 @@ public class Juego implements Comando{
     private void AnalizarComando(String leido){
         
         String comando = leido.toLowerCase();
-        String[] partes = comando.split("");
+        String[] partes = comando.split(" ");
 
         if(comando.startsWith("crear jugador")){
             crearJugador(comando);
