@@ -104,6 +104,7 @@ public class AvatarPelota extends Avatar {
                         throw new AssertionError();
                 }
             casillasTotal=5; //Todos se mueven al 5 como primera casilla la primera vez
+            consola.imprimir("El jugador " + jugador.getAvatar().getId() + "avanza 5 casillas.");
             }
             else{
                 //El único caso en el que avanzaremos una casilla es en el último movimiento de una tirada par

@@ -244,20 +244,23 @@ public class Juego implements Comando{
         int lanzamiento = dado1.getValor() + dado2.getValor();
         Jugador jugadoractual = jugadores.get(turno);
 
-        if((tirado == false)&&(jugadoractual.getDobles()<1)){
-            consola.imprimir("El jugador aún no ha tirado los dados, por lo que no puede comprarla");
-            return;
+        //if(((tirado == false)&&(jugadoractual.getDobles()<1)&&(jugadoractual.getModo()==false))||((jugadoractual.getModo()==true))&&((jugadoractual.getAvatar().getExtras()==3)||(jugadoractual.getAvatar().getTiradaInicial()==0))){
+        if(permitir==true){    
+        consola.imprimir("El jugador aún no ha tirado los dados, por lo que no puede comprarla");
         } 
         else if(jugadoractual.getAvatar().getBloqueado()!=0){
             consola.imprimir("El jugador está bloqueado, por lo que no puede realizar compras");
-            return;
+        }
+        else if(jugadoractual.getModo()==true && jugadoractual.getComprado()==true && jugadoractual.getAvatar() instanceof AvatarCoche){
+            consola.imprimir("El jugador ya ha comprado una propiedad este turno");
         }
 
-        if(casillacomprada instanceof CasillaPropiedad){
+        else if(casillacomprada instanceof CasillaPropiedad){
             CasillaPropiedad casillaPropiedad = (CasillaPropiedad) casillacomprada;
             
             if(casillaPropiedad.EvaluarCasilla(jugadoractual, banca, lanzamiento, tablero, jugadores) ==true){
                 casillaPropiedad.comprarCasilla(jugadoractual, banca);
+                jugadoractual.setComprado(true);
             }
         }
 
@@ -599,7 +602,9 @@ public class Juego implements Comando{
         if(jugador.getEncarcel()==true){
             lanzarCarcel(dado1.getValor(), dado2.getValor());
         }
+
         permitir=false; //Ya no se puede cambiar de modo
+
         //Avance en modo simple
         if(jugador.getModo()==false){
             jugador.getAvatar().moverEnBasico(dado1.getValor(), dado2.getValor(), jugador, tablero, banca, jugadores);
@@ -689,7 +694,9 @@ public class Juego implements Comando{
         if(jugador.getEncarcel()==true){
             lanzarCarcel(dado1, dado2);
         }
+
         permitir=false; //Ya no se puede cambiar de modo
+
         //Avance en modo simple
         if(jugador.getModo()==false){
             jugador.getAvatar().moverEnBasico(dado1, dado2, jugador, tablero, banca, jugadores);
@@ -944,14 +951,12 @@ public class Juego implements Comando{
                 consola.imprimir("El jugador no puede permitirse pagar este alquiler, entra en bancarrota"); 
                 eliminarJugador(jugador);
                 acabarTurno(true);
-                return;                    
             }
 
         }else{
             consola.imprimir("El jugador no puede permitirse pagar este alquiler, entra en bancarrota"); 
             eliminarJugador(jugador);
             acabarTurno(true);
-            return;
         }
     }
 
@@ -1001,10 +1006,24 @@ public class Juego implements Comando{
             consola.imprimir("Aún no has agotado tus tiradas, aprovéchalas!");
             return;
         }
-        else if((jugador.getModo()==true)&&(jugador.getAvatar().getExtras()!=0)&&(jugador.getEncarcel()==false)&&(jugador.getAvatar().getBloqueado()!=2)){
-            consola.imprimir("Aún no has agotado tus movimientos, sigue avanzando lanzando el dado!");
-            return;
-        }
+        else if (
+    (
+        (jugador.getModo() == true) &&
+        (jugador.getAvatar().getExtras() >= 0) &&
+        (jugador.getAvatar().getBloqueado() != 2) &&
+        (jugador.getAvatar() instanceof AvatarCoche)
+    ) ||
+    (
+        (jugador.getModo() == true) &&
+        (jugador.getAvatar() instanceof AvatarPelota) &&
+        (jugador.getAvatar().getContinuar() != 0)
+    ) && 
+    (
+    (jugador.getEncarcel() == false))
+    ) {
+        consola.imprimir("Aún no has agotado tus movimientos, sigue avanzando lanzando el dado!");
+        return;
+    }
 
         //Resetea algunos de los atributos del jugador cuyo turno se ha acabado antes de cambiar
         permitir=true; //En el siguiente turno se puede volver a cambiar el modo
