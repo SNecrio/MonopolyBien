@@ -1,5 +1,6 @@
 package monopoly;
 import partida.*;
+import excepcions.*;
 
 //Define los métodos que deben implementarse en cualquier clase que la implemente (Juego)
 public interface Comando {
@@ -8,14 +9,13 @@ public interface Comando {
 
     void iniciarPartida();
 
-    void listarJugadores(String comando);
+    void listarJugadores(String comando) throws ExcepcionComando, ExcepcionJugador;
 
-    void listarEdificiosCasilla();
+   void listarEdificiosCasilla() throws ExcepcionTipoSolar;
 
-    void listarEdificiosGrupo(String comando);
+    void listarEdificiosGrupo(String comando) throws ExcepcionComando;
 
-    void listarAvatares();
-
+    void listarAvatares() throws ExcepcionJugador;
     void listarEnVenta();
 
     void consultarAvatar();
@@ -25,7 +25,8 @@ public interface Comando {
     //void pobre(String comando);
 
     void lanzarDados(Jugador jugador);
-    public void lanzarDados(Jugador jugador, int dado1, int dado2);  //Trucados
+
+    void lanzarDados(Jugador jugador, int dado1, int dado2);  //Trucados
 
     void acabarTurno(boolean vertablero);
 
@@ -39,9 +40,9 @@ public interface Comando {
 
     void describirCasilla(String comando);
 
-    void estadisticasPartida();
+     void estadisticasPartida(String mensaje);
 
-    void estadisticasJugador(String comando);
+     void estadisticasJugador(String comando) throws ExcepcionComando, ExcepcionJugadorIncorrecto;
 
     void comprarCasilla(String comando);
 
@@ -49,8 +50,6 @@ public interface Comando {
 
     void deshipotecarCasilla(String comando);
 
-    void edificar(String comando);
-
-    void venderEdificio(String comando);
- 
+    void edificar(String comando) throws ExcepcionComando;
+    void venderEdificio(String comando) throws ExcepcionEdificar; 
 }

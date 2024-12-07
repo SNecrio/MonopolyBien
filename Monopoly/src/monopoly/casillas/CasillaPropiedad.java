@@ -5,7 +5,8 @@ import partida.*;
 import monopoly.*;
 import monopoly.edificios.*;
 import monopoly.edificios.Edificio;
-import excepcions.*;
+import excepcions.ExcepcionPropiedad;
+import excepcions.ExcepcionPropiedadComprar;
 
 public abstract class CasillaPropiedad extends Casilla {
     private float valor;
@@ -61,7 +62,6 @@ public abstract class CasillaPropiedad extends Casilla {
                 return true;
             }
             else{
-                System.out.println("No te puedes permitir comprar esta casilla"); //EXECEPCION!!!!!!!!!!!!
                 return false;
             }
         }
@@ -114,33 +114,24 @@ public abstract class CasillaPropiedad extends Casilla {
         return false;
     }
 
-    public void comprarCasilla(Jugador solicitante, Jugador banca){
-        if(perteneceAJugador(solicitante)==true){
-            System.out.println("NO PUEDES COMPRAR UNA PROPIEDAD QUE YA ES TUYA"); //EXCEPCIÓN
-            return;
-        }
-
-        if(perteneceAJugador(banca)==false){
-            System.out.println("No puedes comprar una casilla que ya esta comprada"); //EXCEPCIÓN
-            return;
-        }
-
-        else if(solicitante.getFortuna() < this.valor){
-            System.out.println("El jugador no tiene dinero suficiente para comprar la casilla"); //EXCEPCIÓN
-            return;
-        }
-
-        banca.eliminarPropiedad(this);
-        solicitante.anhadirPropiedad(this);
-        solicitante.setComprado(true);
-        solicitante.pagar(this.valor); //reducimos a fortuna
-        solicitante.sumarGastos(this.valor); //aumentamos os gastos
-        solicitante.EstadisticaDineroInvertido(this.valor);
-
-        //establecemos dueño da casilla
-        this.duenho = solicitante;
+    public void comprarCasilla(Jugador solicitante, Jugador banca) throws ExcepcionPropiedad{
+ 
+        if (perteneceAJugador(banca)) { 
+            if (solicitante.getFortuna() >= this.valor) {
+                solicitante.pagar(this.valor);
+                solicitante.EstadisticaDineroInvertido(this.valor);
+                banca.eliminarPropiedad(this);
+                solicitante.setComprado(true);
+                solicitante.anhadirPropiedad(this);
+                this.duenho = solicitante;
         
-        System.out.println("El jugador " + solicitante.getNombre() + " compra la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.valor + ".");
+                System.out.println("El jugador " + solicitante.getNombre() + " compra la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.valor + ".");
+            } else {
+                throw new ExcepcionPropiedadComprar("\nEl jugador " + solicitante.getNombre() + " no tiene suficiente dinero para comprar esta casilla.");
+            }
+        } else {
+            throw new ExcepcionPropiedadComprar("\nLa casilla " + this.getNombreSinColor() + " no está en venta o ya tiene dueño.");
+        }
     }
 
     public void hipotecarCasilla(Jugador solicitante, Jugador banca){

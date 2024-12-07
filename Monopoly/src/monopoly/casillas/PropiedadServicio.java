@@ -33,7 +33,7 @@ public class PropiedadServicio extends CasillaPropiedad {
             return 10 * tirada * factor_servicio; //alquiler por dos servicios
         }
         else{
-            return 0; //AQUÍ HABRÍA QUE DAR UN ERROR
+            return 0; 
         }
         
     }

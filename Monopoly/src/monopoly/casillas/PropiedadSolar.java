@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import monopoly.*;
 import monopoly.edificios.Edificio;
 import partida.*;
+import excepcions.*;
 
 public class PropiedadSolar extends CasillaPropiedad {
     //ATRIBUTOS
@@ -132,86 +133,84 @@ public class PropiedadSolar extends CasillaPropiedad {
         
         float coste = edificio.calcularCoste();
 
-        if(verificarPrecondiciones(jugador, tipo, edificio) == false){
-            return false;
-        }
-
-        if(verificarLimiteEdificaciones(tipo)==false){
-            return false;
-        }
-        
-        if(edificio.puedeConstruir() == false){
-            System.out.println("NO PUEDES CONSTRUIR"); //EXCEPCION
-            return false;
-        }
-
-        this.edificios.add(edificio);
-
-        jugador.EstadisticaDineroInvertido(coste);
-        jugador.pagar(coste);
-        jugador.sumarGastos(coste);
-        
-
-        this.edificios = edificio.accionComprar(this.edificios); //ACTUALIZAMOS OS EDIFICIOS
-        return true;
+        try{
+            if(verificarPrecondiciones(jugador, tipo, edificio)){
             
+                try{
+                    if(verificarLimiteEdificaciones(tipo)){
+                        if(edificio.puedeConstruir()){
+                            this.edificios.add(edificio);
+
+                            jugador.EstadisticaDineroInvertido(coste);
+                            jugador.pagar(coste);
+                            jugador.sumarGastos(coste);
+                            
+                    
+                            this.edificios = edificio.accionComprar(this.edificios); //ACTUALIZAMOS OS EDIFICIOS
+                            return true;
+                        }
+                        else{
+                            throw new IllegalStateException("No se puede construír"); //EXCEPCION
+                        }
+                    }
+                }
+                catch (ExcepcionEdificar e){
+                    System.out.println("Error: " + e.getMessage());
+                }
+        }
+      
+        }
+        catch (ExcepcionEdificar e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
     }
 
-    //AQUI LANZAR TODAS AS EXCEPCIÓNS
-    public boolean verificarPrecondiciones(Jugador jugador, String tipo, Edificio edificio){
+    public boolean verificarPrecondiciones(Jugador jugador, String tipo, Edificio edificio) throws ExcepcionEdificar{
 
         if(!jugador.equals(this.getDuenho())){
-            System.out.println("EL JUGADOR NO ES EL DUEÑO DE LA CASILLA");
-            return false;
+            throw new ExcepcionEdificar("El jugador no es el dueño de la casilla");
         }
 
         if(this.getGrupo().esDuenhoGrupo(jugador) == false){
-            System.out.println("El jugador no es el dueño del grupo entero, no puede comprarla");
-            return false;
+            throw new ExcepcionEdificar("El jugador no es el dueño del grupo entero, no puede comprarla");
         }
         
         if (!tipo.equalsIgnoreCase("casa") && !tipo.equalsIgnoreCase("hotel") && !tipo.equalsIgnoreCase("piscina") && !tipo.equalsIgnoreCase("pista de deporte")) {
-            System.out.println("TIPO CONSTRUCCION NON VALIDO");
-            return false;
+            throw new ExcepcionEdificar("TIPO CONSTRUCCION NON VALIDO");
         }
 
         float coste = edificio.calcularCoste();
 
         if(jugador.getFortuna() < coste){
-            System.out.println("El jugador no tiene suficiente dinero para construir"); //EXCEPCION
-            return false;
+            throw new ExcepcionEdificar("El jugador no tiene suficiente dinero para construir"); //EXCEPCION
         }
 
         return true;
     }
 
-    //LANZAR EXCEPCIONS TAMEN
-    public boolean verificarLimiteEdificaciones(String tipo) {
+    public boolean verificarLimiteEdificaciones(String tipo) throws ExcepcionEdificar {
         int numeroCasillasGrupo = this.grupo.getNumeroCasillas();
         int numeroEdificacionesGrupo = contarEdificiosPorTipoGrupo(tipo, this.grupo);
     
         if (numeroCasillasGrupo == 2 && numeroEdificacionesGrupo >= 2) {
-            System.out.println("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
-            return false;
+            throw new ExcepcionEdificar("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
         }
     
         if (numeroCasillasGrupo == 3 && numeroEdificacionesGrupo >= 3) {
-            System.out.println("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
-            return false;
+            throw new ExcepcionEdificar("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
         }
     
         return true;
     }
 
-    public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador){
+    public void venderEdificios(int cantidad, String tipo, Jugador banca, Jugador jugador) throws ExcepcionEdificar{
         if(!tipo.equalsIgnoreCase("casa") && !tipo.equalsIgnoreCase("hotel") && !tipo.equalsIgnoreCase("piscina") && !tipo.equalsIgnoreCase("pista de deporte")){
-            System.out.println("El tipo de edificio indicado no existe\n");
-            return;
+            throw new ExcepcionEdificar("El tipo de edificio indicado no existe\n");
         }
 
         if(!this.getDuenho().equals(jugador)){
-            System.out.println("El jugador no es el dueño del solar");
-            return;
+            throw new ExcepcionEdificar("El jugador no es el dueño del solar");
         }
 
         int contador = 0;
@@ -224,8 +223,7 @@ public class PropiedadSolar extends CasillaPropiedad {
         }
 
         if(contador == 0){
-            System.out.println("No se encuentran estos edificios para vender");
-            return;
+            throw new ExcepcionEdificar("No se encuentran estos edificios para vender");
         }
 
         if (contador < cantidad){
