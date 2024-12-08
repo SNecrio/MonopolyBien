@@ -34,27 +34,33 @@ public class AvatarCoche extends Avatar {
 
             //Se mueve el valor obtenido para atrás
             casillasTotal = -1*casillasTotal;
-            jugador.getAvatar().setBloqueado(2);
+            jugador.getAvatar().setBloqueado(3);
             //Se mueve el avatar del jugador el numero de casillas
             jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
             tablero.imprimirTablero();
             consola.imprimir("El jugador " + jugador.getAvatar().getId() + " lanzó: " + dado1 + " y " + dado2 + "\nComo es un 4 o menos, retrocede el valor obtenido y pierde sus 2 proximos turnos.");
+            //Comprueba si se puede realizar la acción de la casilla.
+            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));
+
         }
         else{
 
             if(extras==0){
                 if(dado1==dado2 && jugador.getDobles()==0){
                     extras+=1;
-                    jugador.incrementarDobles();}
+                    jugador.incrementarDobles();
+                    consola.imprimir("Felicidades, tu tirada fueron dobles! Puedes volver a tirar");
+                }
             }
 
             jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
-            //Comprueba si se puede realizar la acción de la casilla.
-            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));
 
             //Atributos estadísticos
             //jugador.getAvatar().getLugar().sumarVisitas(1);
             //jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
+
+            //Comprueba si se puede realizar la acción de la casilla.
+            jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));
 
             tablero.imprimirTablero();
 
@@ -63,7 +69,7 @@ public class AvatarCoche extends Avatar {
             extras-=1;
 
         }
-
+        
     }
 
     @Override

@@ -14,7 +14,6 @@ public class Juego implements Comando{
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
-    //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
@@ -29,7 +28,6 @@ public class Juego implements Comando{
     public Juego(){
         this.avatares = new ArrayList<>();
         this.jugadores = new ArrayList<>();
-        //this.lanzamientos = 0;
         this.banca = new Jugador();
         this.tablero = new Tablero(this.banca);
         this.dado1 = new Dado();
@@ -696,7 +694,7 @@ public class Juego implements Comando{
             return;
         }
         else if(jugador.getAvatar().getBloqueado()!=0){
-            consola.imprimir("El jugador está bloqueado por " + (jugador.getAvatar().getBloqueado()+1) + " turno(s). No podrá tirar hasta entonces.");
+            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + " turno(s). No podrá tirar hasta entonces.");
             tirado=true;
             return;
         }
@@ -790,7 +788,8 @@ public class Juego implements Comando{
             return;
         }
         else if(jugador.getAvatar().getBloqueado()!=0){
-            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + "turno(s). No podrá tirar hasta entonces.");
+            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + " turno(s). No podrá tirar hasta entonces.");
+            tirado=true;
             return;
         }
 
@@ -1110,7 +1109,11 @@ public class Juego implements Comando{
     public void acabarTurno(boolean vertablero) {
         Jugador jugador = jugadores.get(turno);
 
-        if((tirado == false)&&(jugador.getEncarcel()==false)){
+        if(jugador.getAvatar().getBloqueado()!=0){
+            //If vacío para que se meta en este y siga por el resto del código
+        }
+
+        else if((tirado == false)&&(jugador.getEncarcel()==false)){
             consola.imprimir("Aún no has agotado tus tiradas, aprovéchalas!");
             return;
         }
@@ -1137,8 +1140,8 @@ public class Juego implements Comando{
         permitir=true; //En el siguiente turno se puede volver a cambiar el modo
         jugador.resetearDobles();
         jugador.setComprado(false);
+        jugador.getAvatar().setTiradaInicial(0);
         if(jugador.getAvatar().getBloqueado()<0) jugador.getAvatar().setBloqueado(0);
-        //jugador.setExtraDobles(false);
         if(jugador.getAvatar().getBloqueado()!=0) jugador.getAvatar().setBloqueado(jugador.getAvatar().getBloqueado() - 1); 
         jugador.getAvatar().setExtras(0);
 

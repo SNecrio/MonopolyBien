@@ -129,6 +129,7 @@ public class AvatarPelota extends Avatar {
 
         if(continuar==0 && jugador.getDobles()>0){
             tiradaInicial=0;
+            consola.imprimir("Felicidades, tu tirada fueron dobles! Puedes volver a tirar");
         }
 
     }
