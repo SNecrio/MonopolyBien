@@ -2,6 +2,7 @@ package monopoly.edificios;
 
 import java.util.ArrayList;
 
+import excepcions.ExcepcionMaximoEdificar;
 import monopoly.Grupo;
 import monopoly.casillas.*;
 import partida.Jugador;
@@ -18,14 +19,13 @@ public class Piscina extends Edificio{
     }
 
     @Override
-    public  boolean puedeConstruir(){
+    public  boolean puedeConstruir() throws ExcepcionMaximoEdificar{
 
         int numHoteles = this.getCasilla().contarEdificiosPorTipo("hotel");
         int numCasas = this.getCasilla().contarEdificiosPorTipo("casa");
 
         if(numHoteles < 1 || numCasas <2){
-            System.out.println("No se puede construír una piscina: se requiere un hotel y dos casas"); //EXCEPCION
-            return false;
+            throw new ExcepcionMaximoEdificar("No se puede construír una piscina: se requiere un hotel y dos casas"); 
         }
 
         return true;

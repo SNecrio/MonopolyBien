@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import monopoly.casillas.*;
 import partida.*;
 import monopoly.*;
+import excepcions.ExcepcionMaximoEdificar;
 
 public abstract class Edificio {
 
@@ -51,7 +52,7 @@ public abstract class Edificio {
 
     public abstract float calcularCoste();
 
-    public abstract boolean puedeConstruir();
+    public abstract boolean puedeConstruir() throws ExcepcionMaximoEdificar;
 
     //ESTE METODO USAMOLO CANDO POR EJEMPLO COMPRAMOS UN HOTEL HAI QUE ELIMINAR CATRO CASAS
     public abstract ArrayList<Edificio> accionComprar(ArrayList<Edificio> edificios);

@@ -3,21 +3,26 @@ package monopoly.casillas;
 import java.util.ArrayList;
 import monopoly.Tablero;
 import partida.Jugador;
+import monopoly.ConsolaNormal;
 
 public class CasillaImpuesto extends Casilla{
     
     //ATRIBUTOS
     private float impuesto;
+    private ConsolaNormal consola;
 
     //CONSTRUCTORES
     public CasillaImpuesto(){
         super();
         this.impuesto = 0.0f;
+        consola = new ConsolaNormal();
     }
 
     public CasillaImpuesto(float impuesto, String nombre, int posicion){
         super(nombre, "Impuesto", posicion);
         this.impuesto = impuesto;
+        consola = new ConsolaNormal();
+
     }
 
     @Override
@@ -28,13 +33,13 @@ public class CasillaImpuesto extends Casilla{
                 actual.sumarGastos(impuesto);
                 actual.EstadisticaTasasImpuesto(this.impuesto);
 
-                System.out.println("Oh no! El jugador "+actual.getNombre()+" tiene que pagar "+this.impuesto+ " por impuestos.");
+                consola.imprimir("Oh no! El jugador "+actual.getNombre()+" tiene que pagar "+this.impuesto+ " por impuestos.");
                 return true;
             }
             return false;
         }
         else{
-            System.out.println("ERROR, tipo equivocado a la hora de llamar Evaluar Casilla");
+            consola.imprimir("ERROR, tipo equivocado a la hora de llamar Evaluar Casilla");
             return false;
         }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import monopoly.Grupo;
 import monopoly.casillas.*;
 import partida.Jugador;
+import excepcions.ExcepcionMaximoEdificar;
 
 public class Hotel extends Edificio {
 
@@ -18,12 +19,11 @@ public class Hotel extends Edificio {
     }
 
     @Override
-    public  boolean puedeConstruir(){
+    public  boolean puedeConstruir() throws ExcepcionMaximoEdificar{
 
         int numCasas = this.getCasilla().contarEdificiosPorTipo("casa");
         if(numCasas < 4){
-            System.out.println("No se puede construir un hotel sin 4 casas antes"); //EXCEPCION
-            return false;
+            throw new ExcepcionMaximoEdificar("No se puede construir un hotel sin 4 casas antes"); 
         }
 
         return true;

@@ -8,6 +8,7 @@ import monopoly.Valor;
 
 public class PropiedadServicio extends CasillaPropiedad {
 
+    
     public PropiedadServicio(){
         super();
     };

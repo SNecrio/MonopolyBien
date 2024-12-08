@@ -5,7 +5,7 @@ import excepcions.*;
 //Define los métodos que deben implementarse en cualquier clase que la implemente (Juego)
 public interface Comando {
     
-    void crearJugador(String comando);
+    void crearJugador(String comando) throws ExcepcionAvatarNumero, ExcepcionComando;
 
     void iniciarPartida();
 
@@ -16,6 +16,7 @@ public interface Comando {
     void listarEdificiosGrupo(String comando) throws ExcepcionComando;
 
     void listarAvatares() throws ExcepcionJugador;
+
     void listarEnVenta();
 
     void consultarAvatar();
@@ -40,9 +41,9 @@ public interface Comando {
 
     void describirCasilla(String comando);
 
-     void estadisticasPartida(String mensaje);
+    void estadisticasPartida(String mensaje);
 
-     void estadisticasJugador(String comando) throws ExcepcionComando, ExcepcionJugadorIncorrecto;
+    void estadisticasJugador(String comando) throws ExcepcionComando, ExcepcionJugadorIncorrecto;
 
     void comprarCasilla(String comando);
 
@@ -51,5 +52,6 @@ public interface Comando {
     void deshipotecarCasilla(String comando);
 
     void edificar(String comando) throws ExcepcionComando;
+
     void venderEdificio(String comando) throws ExcepcionEdificar; 
 }

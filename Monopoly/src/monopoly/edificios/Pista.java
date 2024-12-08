@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import monopoly.Grupo;
 import monopoly.casillas.*;
 import partida.Jugador;
+import excepcions.ExcepcionMaximoEdificar;
 
 public class Pista extends Edificio {
 
@@ -18,13 +19,12 @@ public class Pista extends Edificio {
     }
 
     @Override
-    public  boolean puedeConstruir(){
+    public  boolean puedeConstruir() throws ExcepcionMaximoEdificar{
 
         int numHoteles = this.getCasilla().contarEdificiosPorTipo("hotel");
 
         if(numHoteles < 2){
-            System.out.println("No se puede construír una pista de deporte: se requieren dos hoteles"); //EXCEPCION
-            return false;
+            throw new ExcepcionMaximoEdificar("No se puede construír una pista de deporte: se requieren dos hoteles"); //EXCEPCION
         }
 
         return true;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import partida.*;
 import monopoly.*;
 import monopoly.edificios.*;
-import monopoly.edificios.Edificio;
 import excepcions.ExcepcionPropiedad;
 import excepcions.ExcepcionPropiedadComprar;
 
@@ -15,9 +14,9 @@ public abstract class CasillaPropiedad extends Casilla {
     private float hipoteca;
     private boolean estarHipotecada;
     private float rentabilidad;
-    private float alquiler;
     private int visitas = 0;
     private ArrayList<Jugador> jugadoresvisitantes; //Array usado para incluir los nombres de todas las personas que caen en la casilla (para calcular si el jugador cae mas de dos veces en esta casilla se puede comprar)
+    private ConsolaNormal consola;
 
 
 
@@ -30,9 +29,8 @@ public abstract class CasillaPropiedad extends Casilla {
         this.hipoteca = 0.0f;
         this.estarHipotecada = false;
         this.rentabilidad = 0.0f;
-        this.alquiler = 0.0f;
         this.jugadoresvisitantes = new ArrayList<>();
-
+        this.consola = new ConsolaNormal();
     }
 
     public CasillaPropiedad(float valor, Jugador duenho, String nombre, String tipo, int posicion){
@@ -44,6 +42,7 @@ public abstract class CasillaPropiedad extends Casilla {
         this.estarHipotecada = false;
         this.rentabilidad = 0.0f;
         this.jugadoresvisitantes = new ArrayList<>();
+        this.consola = new ConsolaNormal();
 
     }
 
@@ -125,7 +124,7 @@ public abstract class CasillaPropiedad extends Casilla {
                 solicitante.anhadirPropiedad(this);
                 this.duenho = solicitante;
         
-                System.out.println("El jugador " + solicitante.getNombre() + " compra la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.valor + ".");
+                consola.imprimir("El jugador " + solicitante.getNombre() + " compra la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.valor + ".");
             } else {
                 throw new ExcepcionPropiedadComprar("\nEl jugador " + solicitante.getNombre() + " no tiene suficiente dinero para comprar esta casilla.");
             }
@@ -139,14 +138,14 @@ public abstract class CasillaPropiedad extends Casilla {
         estarHipotecada = true;
         solicitante.sumarFortuna(this.hipoteca);
 
-        System.out.println("El jugador " + solicitante.getNombre() + " hipoteca la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.hipoteca + ".");
+        consola.imprimir("El jugador " + solicitante.getNombre() + " hipoteca la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.hipoteca + ".");
     }
 
     public void deshipotecarCasilla(Jugador solicitante, Jugador banca){
         estarHipotecada = false;
         solicitante.sumarFortuna(this.hipoteca * -1.1f);
 
-        System.out.println("El jugador " + solicitante.getNombre() + " deshipoteca la casilla " + this.getNombre() + Valor.WHITE + " por " + this.hipoteca * 1.1f + 
+        consola.imprimir("El jugador " + solicitante.getNombre() + " deshipoteca la casilla " + this.getNombre() + Valor.WHITE + " por " + this.hipoteca * 1.1f + 
         ", ahora puede volver a recibir alquiler");
     }
 
@@ -208,7 +207,7 @@ public abstract class CasillaPropiedad extends Casilla {
         if (jugador != null) {
             this.jugadoresvisitantes.add(jugador);
         } else {
-            System.out.println("Jugador no puede ser nulo");
+            consola.imprimir("Jugador no puede ser nulo");
         }   
     }
 

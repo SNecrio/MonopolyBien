@@ -5,12 +5,14 @@ import monopoly.*;
 import monopoly.edificios.Edificio;
 import partida.*;
 import excepcions.*;
+import monopoly.ConsolaNormal;
 
 public class PropiedadSolar extends CasillaPropiedad {
     //ATRIBUTOS
     private ArrayList<Edificio> edificios;
     private Grupo grupo;
     private float alquilersimple;
+    private ConsolaNormal consola;
 
     //CONSTRUCTOR VACÍO
     public PropiedadSolar(){
@@ -18,6 +20,7 @@ public class PropiedadSolar extends CasillaPropiedad {
         this.edificios = new ArrayList<>();
         this.grupo = null;
         this.alquilersimple=0.0f;
+        this.consola = new ConsolaNormal();
     }
 
     public PropiedadSolar(Grupo grupo,float valor, Jugador duenho, String nombre, int posicion){
@@ -25,6 +28,8 @@ public class PropiedadSolar extends CasillaPropiedad {
         this.edificios = new ArrayList<>();
         this.grupo = grupo;
         this.alquilersimple = 0.1f*this.getValor();
+        this.consola = new ConsolaNormal();
+
     }
 
     //Método que calcular el alquiler de las casillas de tipo solar
@@ -62,7 +67,7 @@ public class PropiedadSolar extends CasillaPropiedad {
                 anhadidoCasa = 50 * this.alquilersimple;
                 break;
             default:
-                System.out.println("No se pueden tener más de cuatro casas");
+                consola.imprimir("No se pueden tener más de cuatro casas");
         }
 
         if(numeroHoteles == 1){
@@ -122,7 +127,7 @@ public class PropiedadSolar extends CasillaPropiedad {
         info.append("Tipo: ").append(this.getTipo()).append("\n");
         info.append("Grupo: ").append(grupo.getColor()).append("\n");
         info.append("Valor: ").append(this.getValor()).append("\n");
-        System.out.println(info.toString());
+        consola.imprimir(info.toString());
     }
 
     public boolean tieneEdificios(){
@@ -138,7 +143,8 @@ public class PropiedadSolar extends CasillaPropiedad {
             
                 try{
                     if(verificarLimiteEdificaciones(tipo)){
-                        if(edificio.puedeConstruir()){
+                        try{
+                            if(edificio.puedeConstruir()){
                             this.edificios.add(edificio);
 
                             jugador.EstadisticaDineroInvertido(coste);
@@ -146,22 +152,23 @@ public class PropiedadSolar extends CasillaPropiedad {
                             jugador.sumarGastos(coste);
                             
                     
-                            this.edificios = edificio.accionComprar(this.edificios); //ACTUALIZAMOS OS EDIFICIOS
+                            this.edificios = edificio.accionComprar(this.edificios); 
                             return true;
+                            }
                         }
-                        else{
-                            throw new IllegalStateException("No se puede construír"); //EXCEPCION
+                        catch(ExcepcionMaximoEdificar e){
+                            consola.imprimir("Error: "+e.getMessage());
                         }
                     }
                 }
                 catch (ExcepcionEdificar e){
-                    System.out.println("Error: " + e.getMessage());
+                    consola.imprimir("Error: " + e.getMessage());
                 }
         }
       
         }
         catch (ExcepcionEdificar e){
-            System.out.println("Error: " + e.getMessage());
+            consola.imprimir("Error: " + e.getMessage());
         }
         return false;
     }
@@ -227,14 +234,14 @@ public class PropiedadSolar extends CasillaPropiedad {
         }
 
         if (contador < cantidad){
-            System.out.println("La casilla no tiene tantos edificios de ese tipo, se han vendido los máximos posibles");
+            consola.imprimir("La casilla no tiene tantos edificios de ese tipo, se han vendido los máximos posibles");
         }
 
         StringBuilder info = new StringBuilder();
 
         info.append("Se han vendido ").append(contador).append(" edificios del tipo ").append(tipo).append("\n");
          
-        System.out.println(info.toString());
+        consola.imprimir(info.toString());
     }
 
 

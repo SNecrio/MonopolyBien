@@ -40,23 +40,20 @@ public class Juego implements Comando{
     }
 
     @Override
-    public void crearJugador(String comando){
+    public void crearJugador(String comando) throws ExcepcionAvatarNumero, ExcepcionComando{
         String[] partes = comando.split(" ");
         if(partidainiciada == true){
-            consola.imprimir("No se puede crear un jugador una vez la partida haya iniciado"); //EXCEPCION
+            throw new ExcepcionAvatarNumero("No se puede crear un jugador una vez la partida haya iniciado"); //EXCEPCION
         }
         if(jugadores.size() > 6){
-            consola.imprimir("No puede haber más de 6 personajes en el juego");
+            throw new ExcepcionAvatarNumero("No puede haber más de 6 personajes en el juego");
         }
         else if(partes.length != 4){
-
-            consola.imprimir("\nFormato incorrecto. Usa: crear jugador 'nombre' 'tipo de avatar' "); //EXCEPCION
-
+            throw new ExcepcionComando("\nFormato incorrecto. Usa: crear jugador 'nombre' 'tipo de avatar' ");
         }else{
             String nombre = partes[2]; //nombre
             String avatar = partes [3]; //tipo avatar
             
-            //Comprobar que el tipo de avatar dado es correcto
 
             try{
                 comprobarAvatar(avatar);
@@ -73,7 +70,8 @@ public class Juego implements Comando{
                     consola.imprimir("Avatar: " + nuevoJugador.getAvatar().getId());
                 } catch (ExcepcionCasilla e){ 
                     consola.imprimir(e.getMessage());}
-            } catch(ExcepcionTipoAvatar e) {
+            
+                } catch(ExcepcionTipoAvatar e) {
                 consola.imprimir(e.getMessage());
             }
             
@@ -487,8 +485,48 @@ public class Juego implements Comando{
         if(partes.length == 3){
             String colorgrupo = partes[2];
             
-            Grupo grupo = tablero.obtenerGrupoPorNombre(colorgrupo);
-            grupo.listarEdificiosGrupo();
+            Casilla casilla = new PropiedadSolar();
+
+            try{
+            
+                if(colorgrupo.equalsIgnoreCase("black")){
+                    casilla = tablero.encontrar_casilla("Solar1");
+                }
+                else if(colorgrupo.equalsIgnoreCase("cyan")){
+                    casilla = tablero.encontrar_casilla("Solar3");
+                }
+                else if(colorgrupo.equalsIgnoreCase("purple")){
+                    casilla = tablero.encontrar_casilla("Solar6");
+                }
+                else if(colorgrupo.equalsIgnoreCase("naranja")){
+                    casilla = tablero.encontrar_casilla("Solar9");
+                }
+                else if(colorgrupo.equalsIgnoreCase("red")){
+                    casilla = tablero.encontrar_casilla("Solar12");
+                }
+                else if(colorgrupo.equalsIgnoreCase("marron")){
+                    casilla = tablero.encontrar_casilla("Solar15");
+                }
+                else if(colorgrupo.equalsIgnoreCase("green")){
+                    casilla = tablero.encontrar_casilla("Solar18");
+                }
+                else if(colorgrupo.equalsIgnoreCase("blue")){
+                    casilla = tablero.encontrar_casilla("Solar21");
+                }
+                else{
+                    consola.imprimir("El color especificado no existe");
+                    return;
+                }
+            
+
+            if(casilla instanceof PropiedadSolar){
+                PropiedadSolar solar = (PropiedadSolar)casilla;
+                solar.getGrupo().listarEdificiosGrupo();
+            }
+            }
+            catch(ExcepcionCasilla c){
+                consola.imprimir("Error: "+c.getMessage());
+            }
         }
         else{
             throw new ExcepcionComando("Comando introducido erroneo");
@@ -1132,6 +1170,21 @@ public class Juego implements Comando{
         }
     }
 
+    public void proponerTrato(String trato, Jugador destinatario){
+        try{
+            trato = trato.toLowerCase().trim();
+
+            //cambiar (solar, solar)
+            if (trato.startsWith("cambiar (") && trato.contains(",") && trato.endsWith(")")) {
+                
+            }
+
+        }
+        catch(ExcepcionCreacionTrato c){
+            consola.imprimir(c.getMessage());
+        }
+    }
+
     public void empezar(String mensaje) throws ExcepcionComando{
         if(mensaje.equals("iniciar partida")){
             if(jugadores.size()<2){
@@ -1290,7 +1343,9 @@ public class Juego implements Comando{
         }
         catch(ExcepcionTipoSolar e){
             consola.imprimir("Error: " + e.getMessage());
-
+        }
+        catch(ExcepcionAvatarNumero e){
+            consola.imprimir("Error: "+e.getMessage());
         }
     }
 

@@ -3,16 +3,21 @@ package monopoly.casillas;
 import java.util.ArrayList;
 import monopoly.Tablero;
 import partida.Jugador;
+import monopoly.ConsolaNormal;
+
 
 public class CasillaEspecial extends Casilla{
     
     //ATRIBUTOS
     private float impuesto; //Almacena os gastos que se acumulan en 'Parking'
+    private ConsolaNormal consola;
+
 
     //CONSTRUCTOR
     public CasillaEspecial(){
         super();
         this.impuesto = 0.0f;
+        this.consola = new ConsolaNormal();
     }
 
     public CasillaEspecial(float impuesto,String nombre, int posicion){
@@ -25,11 +30,11 @@ public class CasillaEspecial extends Casilla{
         
         if(this.getNombre().equalsIgnoreCase("parking")){
             if(this.impuesto<0.0001f){
-                System.out.println("OOOPSSS... El bote del Parking está vacío");
+                consola.imprimir("OOOPSSS... El bote del Parking está vacío");
             }
             else{
-                System.out.println("El jugador " + actual.getNombre()+ " recibe " + this.impuesto);
-                System.out.println("Su fortuna actual es: "+ actual.getFortuna());
+                consola.imprimir("El jugador " + actual.getNombre()+ " recibe " + this.impuesto);
+                consola.imprimir("Su fortuna actual es: "+ actual.getFortuna());
 
                 actual.sumarFortuna(this.impuesto);
                 actual.EstadisticaPremios(this.impuesto);
