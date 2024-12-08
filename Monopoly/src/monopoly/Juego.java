@@ -1,14 +1,12 @@
 package monopoly;
 
+import excepcions.*;
 import java.util.ArrayList;
-
 import static monopoly.Valor.SUMA_VUELTA;
 import monopoly.casillas.*;
 import monopoly.edificios.*;
 import partida.*;
 import partida.avatares.*;
-
-import excepcions.*;
 
 public class Juego implements Comando{
 
@@ -16,7 +14,7 @@ public class Juego implements Comando{
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
-    private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
+    //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
@@ -30,7 +28,7 @@ public class Juego implements Comando{
     public Juego(){
         this.avatares = new ArrayList<>();
         this.jugadores = new ArrayList<>();
-        this.lanzamientos = 0;
+        //this.lanzamientos = 0;
         this.banca = new Jugador();
         this.tablero = new Tablero(this.banca);
         this.dado1 = new Dado();
@@ -59,19 +57,26 @@ public class Juego implements Comando{
             String avatar = partes [3]; //tipo avatar
             
             //Comprobar que el tipo de avatar dado es correcto
-            if(avatar.equalsIgnoreCase("pelota")||avatar.equalsIgnoreCase("esfinge")||avatar.equalsIgnoreCase("sombrero")||avatar.equalsIgnoreCase("coche")){
-                Jugador nuevoJugador = new Jugador(nombre, avatar, tablero.encontrar_casilla("Salida"), avatares);       
-                jugadores.add(nuevoJugador);
-                //avatares.add(nuevoJugador.getAvatar());
-                tablero.getPosiciones().get(3).get(10).anhadirAvatar(nuevoJugador.getAvatar());
 
-                tablero.imprimirTablero();
+            try{
+                comprobarAvatar(avatar);
+                try {
+                    Jugador nuevoJugador = new Jugador(nombre, avatar, tablero.encontrar_casilla("Salida"), avatares);
+                        
+                    jugadores.add(nuevoJugador);
+                    //avatares.add(nuevoJugador.getAvatar());
+                    tablero.getPosiciones().get(3).get(10).anhadirAvatar(nuevoJugador.getAvatar());
 
-                consola.imprimir("\nNombre: " + nombre);
-                consola.imprimir("Avatar: " + nuevoJugador.getAvatar().getId());
-            }else{
-                consola.imprimir("Tipo de avatar no válido. Debe ser 'sombrero', 'esfinge', 'pelota' o 'coche'"); //EXCEPCION
+                    tablero.imprimirTablero();
+
+                    consola.imprimir("\nNombre: " + nombre);
+                    consola.imprimir("Avatar: " + nuevoJugador.getAvatar().getId());
+                } catch (ExcepcionCasilla e){ 
+                    consola.imprimir(e.getMessage());}
+            } catch(ExcepcionTipoAvatar e) {
+                consola.imprimir(e.getMessage());
             }
+            
         }
     }
 
@@ -220,7 +225,6 @@ public class Juego implements Comando{
                 avatar.describirAvatar();
             }
         }
-        return;
     }
 
     @Override
@@ -228,15 +232,12 @@ public class Juego implements Comando{
         String[] partes = comando.split(" "); 
         String nombreCasilla = partes[1];
         consola.imprimir("");
-
-        Casilla casilla = tablero.encontrar_casilla(nombreCasilla);
-
-        if(casilla == null){
-            consola.imprimir("No se encuentra la casilla "); //EXCEPCIÓN
-            return;
+        try{
+            Casilla casilla = tablero.encontrar_casilla(nombreCasilla);
+            casilla.DescribirCasilla();
+        } catch(ExcepcionCasilla e){
+            consola.imprimir(e.getMessage());
         }
-
-        casilla.DescribirCasilla();
     }
 
     @Override
@@ -244,12 +245,17 @@ public class Juego implements Comando{
         String[] partes = comando.split(" ");
         String nombreCasilla = partes[1];
         consola.imprimir("");
+        Casilla casillacomprada = null;
 
-        Casilla casillacomprada = tablero.encontrar_casilla(nombreCasilla);
-        if(casillacomprada==null){
-            consola.imprimir("No se encuentra la casilla"); //EXCEPCIÓN
+        try{
+            casillacomprada = tablero.encontrar_casilla(nombreCasilla);
+        } catch(ExcepcionCasilla e){
+            consola.imprimir(e.getMessage());
+        }
+        
+        /*if(casillacomprada==null){
             return;
-        } 
+        } */
 
         
         int lanzamiento = dado1.getValor() + dado2.getValor();
@@ -290,15 +296,11 @@ public class Juego implements Comando{
         String nombreCasilla = partes[1];
         consola.imprimir("");
 
-        Casilla casilla = tablero.encontrar_casilla(nombreCasilla);
-        if(casilla==null){
-            consola.imprimir("No se ha encontrado la casilla");
-            return;
-        }
+        try{
+            Casilla casilla = tablero.encontrar_casilla(nombreCasilla);
+            Jugador jugadoractual = jugadores.get(turno); //obter xogador actual
 
-        Jugador jugadoractual = jugadores.get(turno); //obter xogador actual
-
-        if(casilla instanceof PropiedadSolar){
+            if(casilla instanceof PropiedadSolar){
             PropiedadSolar solar = (PropiedadSolar) casilla;
             
             if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
@@ -314,7 +316,11 @@ public class Juego implements Comando{
             solar.hipotecarCasilla(jugadoractual, banca);
         }
        
-    }
+        } catch (ExcepcionCasilla e){
+            consola.imprimir(e.getMessage());
+        }
+        
+        }
 
     @Override
     public void deshipotecarCasilla(String comando){
@@ -322,29 +328,30 @@ public class Juego implements Comando{
         String nombreCasilla = partes[1];
         consola.imprimir("");
 
-        Casilla casilla = tablero.encontrar_casilla(nombreCasilla);
-        if(casilla==null){
-            consola.imprimir("No se ha encontrado la casilla");
-            return;
-        }
-
-        Jugador jugadoractual = jugadores.get(turno);
-
-        if(casilla instanceof PropiedadSolar){
-            PropiedadSolar solar = (PropiedadSolar) casilla;
+        try{
+            Casilla casilla = tablero.encontrar_casilla(nombreCasilla);
             
-            if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
-                consola.imprimir("No eres el dueño de la casilla para deshipotecarla"); //EXCEPCION
-                return;
-            }
+            Jugador jugadoractual = jugadores.get(turno);
 
-            else if(solar.estaHipotecada()==true){
-                consola.imprimir("No puedes hipotecar la casilla si no está hipotecada"); //EXCEPCION
-                return;
-            }
+            if(casilla instanceof PropiedadSolar){
+                PropiedadSolar solar = (PropiedadSolar) casilla;
+                
+                if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
+                    consola.imprimir("No eres el dueño de la casilla para deshipotecarla"); //EXCEPCION
+                    return;
+                }
 
-            solar.deshipotecarCasilla(jugadoractual, jugadoractual);
+                else if(solar.estaHipotecada()==true){
+                    consola.imprimir("No puedes hipotecar la casilla si no está hipotecada"); //EXCEPCION
+                    return;
+                }
+
+                solar.deshipotecarCasilla(jugadoractual, jugadoractual);
         }
+        } catch (ExcepcionCasilla e){
+            consola.imprimir(e.getMessage());
+        }
+
     }
 
     @Override
@@ -431,11 +438,14 @@ public class Juego implements Comando{
         }
 
         Jugador jugador = jugadores.get(turno);
-        Casilla casillaActual = tablero.encontrar_casilla(casilla);
-
-        if(casillaActual instanceof PropiedadSolar){
-            PropiedadSolar solar = (PropiedadSolar)casillaActual;
-            solar.venderEdificios(entero, tipo, banca, jugador);
+        try{
+            Casilla casillaActual = tablero.encontrar_casilla(casilla);
+            if(casillaActual instanceof PropiedadSolar){
+                PropiedadSolar solar = (PropiedadSolar)casillaActual;
+                solar.venderEdificios(entero, tipo, banca, jugador);
+            }
+        } catch (ExcepcionCasilla e){
+            consola.imprimir(e.getMessage());
         }
     }
 
@@ -633,7 +643,8 @@ public class Juego implements Comando{
             return;
         }
         else if(jugador.getAvatar().getBloqueado()!=0){
-            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + "turno(s). No podrá tirar hasta entonces.");
+            consola.imprimir("El jugador está bloqueado por " + (jugador.getAvatar().getBloqueado()+1) + " turno(s). No podrá tirar hasta entonces.");
+            tirado=true;
             return;
         }
 
@@ -653,7 +664,8 @@ public class Juego implements Comando{
         //Avance en modo avanzado
         else {
             jugador.getAvatar().moverEnAvanzado(dado1.getValor(), dado2.getValor(), jugador, tablero, banca, jugadores);
-            if(jugador.getEncarcel()==true || jugador.getAvatar().getExtras()<0 || (jugador.getAvatar().getContinuar()==0 && jugador.getAvatar().getTiradaInicial()!=0) || jugador.getAvatar().getBloqueado()!=0) tirado = true;
+            if(jugador.getEncarcel()==true || jugador.getAvatar().getExtras()<0 || (jugador.getAvatar().getContinuar()<=0 && jugador.getAvatar().getTiradaInicial()!=0) || jugador.getAvatar().getBloqueado()!=0) tirado = true;
+            
             //Si se tira en modo avanzado desde un avatar que no lo tiene, se cambia para hacer comprobaciones y luego se vuelve a poner
             else if (jugador.getModo()==false && (dado1.getValor()!=dado2.getValor())){
                 jugador.setModo(true);
@@ -841,7 +853,7 @@ public class Juego implements Comando{
                     consola.imprimir(jugadores.get(turno).getNombre() + " paga " + 0.25*SUMA_VUELTA + " y sale de la cárcel. Puede lanzar los dados");
                     jugadores.get(turno).pagar(0.25f*SUMA_VUELTA);
                     jugadores.get(turno).EstadisticaTasasImpuesto(0.25f*SUMA_VUELTA);
-                    lanzamientos = 0;
+                    //lanzamientos = 0;
                     tirado = false;
                     jugadores.get(turno).setEncarcel(false);
                     jugadores.get(turno).setTiradasCarcel(0);
@@ -850,7 +862,7 @@ public class Juego implements Comando{
             }
             else{
                 if(jugadores.get(turno).getAvatar().getLugar().EvaluarCasilla(jugadores.get(turno), banca, tirada, tablero, jugadores) == true){
-                    lanzamientos = 0;
+                    //lanzamientos = 0;
                     tirado = false;
                     jugadores.get(turno).setEncarcel(false);
                     jugadores.get(turno).setTiradasCarcel(0); 
@@ -965,23 +977,27 @@ public class Juego implements Comando{
                             consola.imprimir("\n");
                             cantidad = consola.leerNumero("Cantidad: ");
                             consola.imprimir("\n"); 
-                            Casilla casilla = tablero.encontrar_casilla(nombreVender);
-                        
-                            if(casilla instanceof PropiedadSolar){
-                                venderEdificioJuego(tipo, casilla, cantidad);
 
-                                PropiedadSolar solarVender = (PropiedadSolar)casilla;
-                                if(!solarVender.tieneEdificios()){
-                                    paraVenderEdificios.remove(solarVender);
-                                    paraHipotecar.add(solarVender);
-                                }
-                                solv = (jugador.getFortuna() > dineroPagar);
-                                if(solv){
-                                    jugador.sumarFortuna(-dineroPagar);
-                                    jugador.sumarGastos(dineroPagar);
-                                    consola.imprimir("El jugador pudo pagar sus deudas");
-                                }
-                            }   
+                            try{
+                                Casilla casilla = tablero.encontrar_casilla(nombreVender);
+                                if(casilla instanceof PropiedadSolar){
+                                    venderEdificioJuego(tipo, casilla, cantidad);
+    
+                                    PropiedadSolar solarVender = (PropiedadSolar)casilla;
+                                    if(!solarVender.tieneEdificios()){
+                                        paraVenderEdificios.remove(solarVender);
+                                        paraHipotecar.add(solarVender);
+                                    }
+                                    solv = (jugador.getFortuna() > dineroPagar);
+                                    if(solv){
+                                        jugador.sumarFortuna(-dineroPagar);
+                                        jugador.sumarGastos(dineroPagar);
+                                        consola.imprimir("El jugador pudo pagar sus deudas");
+                                    }
+                                }  
+                            } catch (ExcepcionCasilla e){
+                                consola.imprimir(e.getMessage());
+                            }
                         }
                     }
                 }                
@@ -1049,7 +1065,7 @@ public class Juego implements Comando{
     (
         (jugador.getModo() == true) &&
         (jugador.getAvatar().getExtras() >= 0) &&
-        (jugador.getAvatar().getBloqueado() != 2) &&
+        (jugador.getAvatar().getBloqueado() <0) &&
         (jugador.getAvatar() instanceof AvatarCoche)
     ) ||
     (
@@ -1078,7 +1094,7 @@ public class Juego implements Comando{
             turno = 0;
         }
         
-        lanzamientos = 0;
+        //lanzamientos = 0;
         tirado = false;
         jugador.getAvatar().setExtras(3);
         jugador.getAvatar().setSolvente(true);
@@ -1261,6 +1277,13 @@ public class Juego implements Comando{
         catch(ExcepcionTipoSolar e){
             consola.imprimir("Error: " + e.getMessage());
 
+        }
+    }
+
+    public void comprobarAvatar(String tipo) throws ExcepcionTipoAvatar {
+        // Verifica si el tipo de avatar es válido
+            if(!tipo.equalsIgnoreCase("pelota")&&!tipo.equalsIgnoreCase("esfinge")&&!tipo.equalsIgnoreCase("sombrero")&&!tipo.equalsIgnoreCase("coche")){
+                throw new ExcepcionTipoAvatar("El tipo de avatar dado no es válido");
         }
     }
 

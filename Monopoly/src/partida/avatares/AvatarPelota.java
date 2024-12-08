@@ -61,11 +61,11 @@ public class AvatarPelota extends Avatar {
             else{
                 if(continuar==1 && (tiradaInicial%2)==0){
                     casillasTotal=-1;
-                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + "retrocede la casilla final.");
+                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + " retrocede la casilla final.");
                 }
                 else{
                     casillasTotal = -2;
-                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + "retrocede las 2 siguientes casillas.");
+                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + " retrocede las 2 siguientes casillas.");
                 }
             }                            
         }
@@ -104,17 +104,17 @@ public class AvatarPelota extends Avatar {
                         throw new AssertionError();
                 }
             casillasTotal=5; //Todos se mueven al 5 como primera casilla la primera vez
-            consola.imprimir("El jugador " + jugador.getAvatar().getId() + "avanza 5 casillas.");
+            consola.imprimir("El jugador " + jugador.getAvatar().getId() + " avanza 5 casillas.");
             }
             else{
                 //El único caso en el que avanzaremos una casilla es en el último movimiento de una tirada par
                 if(continuar==1 && (tiradaInicial%2)==0){
                     casillasTotal = 1;
-                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + "avanza la casilla final.");
+                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + " avanza la casilla final.");
                 }
                 else{
                     casillasTotal = 2;
-                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + "avanza las 2 siguientes casillas.");
+                    consola.imprimir("El jugador " + jugador.getAvatar().getId() + " avanza las 2 siguientes casillas.");
                 }
             }                
         }

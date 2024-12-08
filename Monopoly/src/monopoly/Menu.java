@@ -2,7 +2,6 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Collections;  // CUANDO SE DESCOMNTEN LAS CARTAS SE NECESITA
 import static monopoly.Valor.SUMA_VUELTA;
 import partida.*;
 import monopoly.casillas.*;
@@ -127,6 +126,7 @@ public class Menu {
             
            
         }
+    }
     
 
 
