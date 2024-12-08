@@ -193,20 +193,34 @@ public class Juego implements Comando{
 
     @Override
     public void describirJugador(String comando){
-        String[] partes = comando.split(" "); 
-        if(partes.length <= 2){
-            consola.imprimir("\nFormato incorrecto. Introduzca describir jugador 'nombre'"); //EXCEPCION
-            return;}
-        else{
+       
+        String[] partes = comando.split(" ");
 
-            String nombre = partes[2];
-
-            for(Jugador jugador : jugadores){
-                if(jugador.getNombre().equalsIgnoreCase(nombre)){
-                    jugador.describirJugador(nombre);
+        try{
+            if(partes.length <= 2){
+                //Tengo que revisar por qué esta línea nunca se imprime -M
+                throw new ExcepcionNumeroJugadores("\nFormato incorrecto. Introduzca describir jugador 'nombre'");
                 }
+            else{
+                boolean encontrado=false;
+                String nombre = partes[2];
+
+                for(Jugador jugador : jugadores){
+                    if(jugador.getNombre().equalsIgnoreCase(nombre)){
+                        jugador.describirJugador(nombre);
+                        encontrado=true;
+                    }
+                }
+                if (!encontrado) {
+                    try {
+                        throw new ExcepcionJugador();
+                    } catch (ExcepcionJugador e) {
+                        consola.imprimir(e.getMessage());
+                    }
             }
-            return;
+        }
+        } catch (ExcepcionNumeroJugadores e){
+            consola.imprimir(e.getMessage());
         }
     }
 

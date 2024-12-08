@@ -203,7 +203,7 @@ public class Jugador {
         return true;
     }
 
-    public void describirJugador(String nombre){
+    public void describirJugador(String nombre) {
         if(this.nombre.equalsIgnoreCase(nombre)){
             StringBuilder info = new StringBuilder();
     
@@ -255,8 +255,7 @@ public class Jugador {
     
             info.append("\n");
             System.out.println(info.toString());
-            return;
-        } 
+            } 
     }
 
     public void mostrarEstadisticas(){
