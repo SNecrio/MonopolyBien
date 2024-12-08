@@ -13,12 +13,14 @@ public class Grupo {
     private String colorGrupo; //Color del grupo
     private int numCasillas; //Número de casillas del grupo.
     private float rentabilidad = 0f;
+    private ConsolaNormal consola;
 
     //Constructor vacío.
     public Grupo() {
         this.miembros = new ArrayList<PropiedadSolar>();
         this.colorGrupo="";
         this.numCasillas= 0;
+        consola = new ConsolaNormal();
     }
 
     /*Constructor para cuando el grupo está formado por DOS CASILLAS:
@@ -31,7 +33,8 @@ public class Grupo {
         this.miembros.add(cas2);
         this.colorGrupo=colorGrupo;
 
-        this.numCasillas=2; 
+        this.numCasillas=2;
+        consola = new ConsolaNormal();
     }
 
     /*Constructor para cuando el grupo está formado por TRES CASILLAS:
@@ -44,6 +47,7 @@ public class Grupo {
         this.miembros.add(cas3);
         this.colorGrupo= colorGrupo;
         this.numCasillas=3;
+        consola = new ConsolaNormal();
     }
 
     /* Método que añade una casilla al array de casillas miembro de un grupo.
@@ -150,7 +154,7 @@ public class Grupo {
             
             info.append("alquiler: ").append(propiedad.calcularAlquiler(jugador, tirada)).append("\n");
             info.append("}");
-            System.out.println(info.toString());
+            consola.imprimir(info.toString());
         }
     }
 

@@ -24,6 +24,7 @@ public class Juego implements Comando{
     private boolean partidainiciada;
     private boolean acabarPartida = false;
     private ConsolaNormal consola;
+    private ArrayList<Trato> tratos;
 
     public Juego(){
         this.avatares = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Juego implements Comando{
         this.permitir = true;
         this.partidainiciada = false;
         this.consola = new ConsolaNormal();
+        this.tratos = new ArrayList<>();
     }
 
     @Override
@@ -134,7 +136,7 @@ public class Juego implements Comando{
                 consola.imprimir( "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
                 
 
-                System.out.println("-------------------------------------------------------------------------------");
+                consola.imprimir("-------------------------------------------------------------------------------");
                 System.out.printf("%-45s%-45s%n", "Ver tablero", "Describir jugador <nombreJugador>");
                 System.out.printf("%-45s%-45s%n", "Lanzar dados", "Describir avatar <idAvatar>");
                 System.out.printf("%-45s%-45s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
@@ -369,7 +371,6 @@ public class Juego implements Comando{
     @Override
     public void listarEnVenta(){
         banca.listarPropiedadesenVenta();
-        return;
     }
 
     @Override
@@ -1170,19 +1171,105 @@ public class Juego implements Comando{
         }
     }
 
-    public void proponerTrato(String trato, Jugador destinatario){
+    public boolean esNumero(String parte){
+        try {
+            Float.parseFloat(parte);
+            return true;
+        } 
+        catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public void proponerTrato(String trato, Jugador destinatario) throws ExcepcionTrato{
         try{
             trato = trato.toLowerCase().trim();
+            Jugador solicitante = jugadores.get(turno);
 
-            //cambiar (solar, solar)
             if (trato.startsWith("cambiar (") && trato.contains(",") && trato.endsWith(")")) {
-                
+                String contenido = trato.substring(9, trato.length()-1).trim();
+
+                String[] partes = contenido.split(",");
+
+                if(partes.length == 2){
+                    String parte1 = partes[0].trim();
+                    String parte2 = partes[1].trim();
+
+                    //cambiar (solar, solar)
+                    if(!esNumero(parte1) && !esNumero(parte1)){
+                        try {
+                            Casilla prop1 = tablero.encontrar_casilla(parte1);
+                            Casilla prop2 = tablero.encontrar_casilla(parte2);
+
+                            if(prop1 instanceof CasillaPropiedad){
+                                if(prop2 instanceof CasillaPropiedad){
+                                    Trato tratoPropuesto = new Trato((CasillaPropiedad)prop1, (CasillaPropiedad)prop2, solicitante, destinatario);
+                                }
+                                else{
+                                    throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                                }
+                            }
+                            else{
+                                throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                            }
+                        }catch (ExcepcionCasilla e) {
+                            consola.imprimir("Error: "+e.getMessage());
+                        } 
+
+                    if(!esNumero(parte1) && esNumero(parte2)){
+                        try{
+                            Casilla prop1 = tablero.encontrar_casilla(parte1);
+                            if(prop1 instanceof CasillaPropiedad){
+                                float cantidad = Float.parseFloat(parte2);
+                                Trato tratoPropuesto = new Trato((CasillaPropiedad)prop1, destinatario, cantidad, solicitante);
+                            }
+                        }
+                        catch(ExcepcionCasilla e){
+                            consola.imprimir("Error: "+e.getMessage());
+
+                        }
+                    }
+
+
+                    }
+                }
             }
 
         }
+       
         catch(ExcepcionCreacionTrato c){
             consola.imprimir(c.getMessage());
         }
+    }
+
+    public void listarTratos(){
+        
+        try{
+            if(!tratos.isEmpty()){
+            for(Trato trato : tratos){
+                consola.imprimir("{");
+                trato.Listar();
+                consola.imprimir("}");
+            }
+        }else{
+            throw new ExcepcionTrato("No hay tratos que enseñar");
+        }}catch(ExcepcionTrato e){
+            consola.imprimir(e.getMessage());
+        }
+        
+    }
+
+    public void eliminarTrato(String tratoNombre){
+        if(!tratos.isEmpty()){
+            for(Trato trato : tratos){
+                if(tratoNombre.equals("trato" + String.valueOf(trato.getId()) )){
+                    tratos.remove(tratos.indexOf(trato));
+                    consola.imprimir("Trato borrado");
+                    return;
+                }
+            }
+        }
+        consola.imprimir("No se encontro el trato");
     }
 
     public void empezar(String mensaje) throws ExcepcionComando{

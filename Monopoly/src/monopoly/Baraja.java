@@ -3,15 +3,18 @@ package monopoly;
 import java.util.ArrayList;
 
 public class Baraja {
-     //Atributos:
-     private ArrayList<Carta> suerte; //Array que contiene todas las cartas de suerte
-     private ArrayList<Carta> comunidad; //Array que contiene todas las cartas de suerte
+    
+    //Atributos:
+    private ArrayList<Carta> suerte; //Array que contiene todas las cartas de suerte
+    private ArrayList<Carta> comunidad; //Array que contiene todas las cartas de suerte
+    private ConsolaNormal consola;
 
     //Constructores:
     public Baraja() {
     //damoslle valores por defecto
     this.suerte = cartasSuerte();
     this.comunidad = cartasComunidad();
+    consola = new ConsolaNormal();
     }
 
     //Genera las cartas que se usarán en el juego, tanto las de suerte como las de comunidad
@@ -61,6 +64,6 @@ public class Baraja {
         String  mensaje = "";
         if(tipo==0) mensaje += suerte.get(num).getMensaje();
         else mensaje += comunidad.get(num).getMensaje();
-        System.out.println(mensaje);
+        consola.imprimir(mensaje);
     }
 }

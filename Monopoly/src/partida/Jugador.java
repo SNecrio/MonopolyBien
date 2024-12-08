@@ -32,6 +32,7 @@ public class Jugador {
     private boolean comprado; //Para saber si un jugador ha comprado una propiedad en el mismo turno (usado para, si sacas dobles, no volver a preguntar modo)
     private boolean modo; //false básico, true avanzado
     private int vecesDados;
+    private ConsolaNormal consola;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -51,6 +52,7 @@ public class Jugador {
         this.pasoSalida = 0.0f;
         this.premios = 0.0f;
         this.vecesCarcel = 0;
+        consola = new ConsolaNormal();
         //this.bloqueado = 0;
     }
 
@@ -84,7 +86,7 @@ public class Jugador {
         this.cobroAlquiler = 0.0f;
         this.comprado = false;
         this.modo = false;
-  
+        consola = new ConsolaNormal();
     }
     
     //Otros métodos:
@@ -96,7 +98,7 @@ public class Jugador {
     //Método para eliminar una propiedad del arraylist de propiedades de jugador.
     public void eliminarPropiedad(CasillaPropiedad casilla) {
         if(!this.propiedades.remove(casilla)){
-            System.out.println("El jugador no tiene esa casilla en propiedad, no se puede eliminar");
+            consola.imprimir("El jugador no tiene esa casilla en propiedad, no se puede eliminar");
         }
     }
 
@@ -105,7 +107,7 @@ public class Jugador {
         this.vueltas ++;
         this.fortuna += SUMA_VUELTA;
         this.pasoSalida += SUMA_VUELTA;
-        System.out.println("El jugador " + this.nombre + " paso por la salida y recibio " + SUMA_VUELTA);
+        consola.imprimir("El jugador " + this.nombre + " paso por la salida y recibio " + SUMA_VUELTA);
     }
 
     //Método para añadir fortuna a un jugador
@@ -139,7 +141,7 @@ public class Jugador {
             this.vecesCarcel++;
 
         }else{
-            System.out.println("El jugador ya esta en la carcel");;
+            consola.imprimir("El jugador ya esta en la carcel");;
         }
     }
 
@@ -181,11 +183,11 @@ public class Jugador {
     
     public void listarPropiedadesenVenta(){
         if(propiedades.isEmpty()){ //comprobamos que no está vacía
-            System.out.println("No hay propiedades");
+            consola.imprimir("No hay propiedades");
         }
 
         else{
-            System.out.println("Propiedades en venta: ");
+            consola.imprimir("Propiedades en venta: ");
             for(CasillaPropiedad propiedad : propiedades){
                 propiedad.casEnVenta();
             }
@@ -254,7 +256,7 @@ public class Jugador {
             }
     
             info.append("\n");
-            System.out.println(info.toString());
+            consola.imprimir(info.toString());
             } 
     }
 
@@ -271,7 +273,7 @@ public class Jugador {
         info.append("veces en la carcel: ").append(vecesCarcel).append("\n");
         info.append("}").append("\n");
 
-        System.out.println(info.toString());
+        consola.imprimir(info.toString());
     }
 
     //Metodo para transferir todas as propiedades do xogador a banca

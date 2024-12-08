@@ -1,9 +1,9 @@
 package monopoly;
 
-import partida.*;
-import monopoly.casillas.*;
-import java.util.Random;
 import excepcions.ExcepcionCreacionTrato;
+import java.util.Random;
+import monopoly.casillas.*;
+import partida.*;
 
 public class Trato{
 
@@ -19,6 +19,7 @@ public class Trato{
     private boolean aceptado;
     private String frase;
 
+    private ConsolaNormal consola;
 
     public Trato(){}
 
@@ -32,6 +33,8 @@ public class Trato{
         if(!propiedad2.getDuenho().equals(receptor)){
             throw new ExcepcionCreacionTrato("El receptor del trato no es el propietario de la propiedad implicada");
         }
+
+        consola = new ConsolaNormal();
 
         this.prop1 = propiedad1;
         this.prop2 = propiedad2;
@@ -54,6 +57,8 @@ public class Trato{
             throw new ExcepcionCreacionTrato("No eres el dueño de esta propiedad para involucrarla en el trato");
         }
 
+        consola = new ConsolaNormal();
+
         this.prop1 = propiedad1;
         this.prop2 = null;
         this.cantidad = cantidad;
@@ -74,6 +79,8 @@ public class Trato{
             throw new ExcepcionCreacionTrato("El receptor del trato no es el dueño de esta propiedad para involucrarla en el trato");
         }
 
+        consola = new ConsolaNormal();
+        
         this.prop1 = propiedad1;
         this.prop2 = null;
         this.originario = emisor;
@@ -96,6 +103,8 @@ public class Trato{
             throw new ExcepcionCreacionTrato("El receptor del trato no es el dueño de la casilla que involucra el trato");
         }
 
+        consola = new ConsolaNormal();
+
         this.prop1 = propiedad1;
         this.prop2 = propiedad2;
         this.originario = emisor;
@@ -116,6 +125,8 @@ public class Trato{
         if (!propiedad2.getDuenho().getNombre().equalsIgnoreCase(receptor.getNombre())){
             throw new ExcepcionCreacionTrato("El receptor del trato no es el dueño de la casilla que involucra el trato");
         }
+
+        consola = new ConsolaNormal();
 
         this.prop1 = propiedad1;
         this.prop2 = propiedad2;
@@ -153,7 +164,10 @@ public class Trato{
         return this.aceptado;
     }
 
-    
+    public int getId(){
+        return this.id;
+    }
+
     public void setAceptado(boolean aceptado) {
         this.aceptado = aceptado;
     }
@@ -173,7 +187,7 @@ public class Trato{
                 originario.getPropiedades().add(prop2);
                 destinatario.getPropiedades().add(prop1);
 
-                System.out.println("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+"):("+prop2.getNombreSinColor()+")");
+                consola.imprimir("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+"):("+prop2.getNombreSinColor()+")");
                 this.aceptado = true;
                 break;
 
@@ -189,7 +203,7 @@ public class Trato{
                 destinatario.sumarGastos(cantidad);
                 destinatario.pagar(cantidad);
 
-                System.out.println("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+"):("+cantidad+")");
+                consola.imprimir("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+"):("+cantidad+")");
                 this.aceptado = true;
                 break;
 
@@ -203,7 +217,7 @@ public class Trato{
                 originario.pagar(cantidad);
                 destinatario.sumarFortuna(cantidad);
                 originario.sumarGastos(cantidad);
-                System.out.println("ACEPTADO TRATO: cambiar("+cantidad+"):("+prop1.getNombreSinColor()+")");
+                consola.imprimir("ACEPTADO TRATO: cambiar("+cantidad+"):("+prop1.getNombreSinColor()+")");
                 this.aceptado = true;
                 break;
             
@@ -222,7 +236,7 @@ public class Trato{
                 originario.sumarFortuna(cantidad);
                 destinatario.pagar(cantidad);
 
-                System.out.println("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+"):("+prop2.getNombreSinColor()+","+cantidad+")");
+                consola.imprimir("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+"):("+prop2.getNombreSinColor()+","+cantidad+")");
                 this.aceptado = true;
                 break;
 
@@ -240,12 +254,12 @@ public class Trato{
                 originario.pagar(cantidad);
                 destinatario.sumarFortuna(cantidad);
 
-                System.out.println("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+","+cantidad+"):("+prop2.getNombreSinColor()+")");
+                consola.imprimir("ACEPTADO TRATO: cambiar("+prop1.getNombreSinColor()+","+cantidad+"):("+prop2.getNombreSinColor()+")");
                 this.aceptado = true;
                 break;     
                 
             default:
-                System.out.println("Tipo de trat no válido");
+                consola.imprimir("Tipo de trat no válido");
                 break;
         }
     }
@@ -271,10 +285,16 @@ public class Trato{
     
 
     public void Listar(){
-
         
+        consola.imprimir("id: trato" + this.id);
+        consola.imprimir("Jugador que propone: " + this.originario.getNombre());
 
-
+        switch(this.tipo){
+            case 1: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + ", " + this.prop2.getNombre() + ")"); break;
+            case 2: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + ", " + this.cantidad + ")"); break;
+            case 3: consola.imprimir("trato: cambiar (" + this.cantidad + ", " + this.prop2.getNombre() + " y " + this.cantidad + ")"); break;
+            case 4: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + ", " + this.prop2.getNombre() + ")"); break;
+            case 5: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + " y " + this.cantidad + ", " + this.prop2.getNombre() + ")"); break;
+        }
     }
-
 }

@@ -25,6 +25,7 @@ public class Menu {
     private boolean partidainiciada;
     private boolean acabarPartida = false;
     private Baraja baraja;
+    private ConsolaNormal consola;
 
     public Menu(){
         this.avatares = new ArrayList<>();
@@ -38,6 +39,7 @@ public class Menu {
         this.solvente = true;
         this.partidainiciada = false;
         this.baraja = new Baraja();
+        this.consola = new ConsolaNormal();
     }
     
     // Método para inciar una partida: crea los jugadores y avatares.
@@ -49,15 +51,15 @@ public class Menu {
         dado2 = new Dado();
     
         Scanner scan = new Scanner(System.in);
-        System.out.println("\u001B[1m");
-        System.out.println("&&   &&  &&&&&&  &&   &  &&&&&&  &&&&&&  &&&&&&  &    &   &");
-        System.out.println("& & & &  &    &  & &  &  &    &  &    &  &    &  &     & &");
-        System.out.println("&  &  &  &    &  &  & &  &    &  &&&&&   &    &  &      &");
-        System.out.println("&     &  &    &  &   &&  &    &  &       &    &  &      &");
-        System.out.println("&     &  &&&&&&  &    &  &&&&&&  &       &&&&&&  &&&&&  &\u001B[0m");
+        consola.imprimir("\u001B[1m");
+        consola.imprimir("&&   &&  &&&&&&  &&   &  &&&&&&  &&&&&&  &&&&&&  &    &   &");
+        consola.imprimir("& & & &  &    &  & &  &  &    &  &    &  &    &  &     & &");
+        consola.imprimir("&  &  &  &    &  &  & &  &    &  &&&&&   &    &  &      &");
+        consola.imprimir("&     &  &    &  &   &&  &    &  &       &    &  &      &");
+        consola.imprimir("&     &  &&&&&&  &    &  &&&&&&  &       &&&&&&  &&&&&  &\u001B[0m");
 
-        System.out.println("\nBienvenido a una nueva partida de Monopoly!\n");
-        System.out.println("Para comenzar, cree de 2 a 6 jugadores. Recuerde que una vez empezada, no se podran crear nuevos jugadores.\n");
+        consola.imprimir("\nBienvenido a una nueva partida de Monopoly!\n");
+        consola.imprimir("Para comenzar, cree de 2 a 6 jugadores. Recuerde que una vez empezada, no se podran crear nuevos jugadores.\n");
         try{
             mostrarMenu();
         }catch(GeneralException e){
@@ -75,30 +77,30 @@ public class Menu {
             
             if(acabarPartida == true){
                 if(jugadores.size() == 1){
-                    System.out.println("Felicidades " + jugadores.get(0).getNombre() + ", ganaste el Monopoly!");    
+                    consola.imprimir("Felicidades " + jugadores.get(0).getNombre() + ", ganaste el Monopoly!");    
                 }
-                System.out.println("Cerrando juego...");
+                consola.imprimir("Cerrando juego...");
                 scan.close();
                 return;
             }
 
             if(partidainiciada == false){
 
-                System.out.println(Valor.WHITE + "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
-                System.out.println("-------------------------------------------");
-                System.out.println("Crear jugador <nombreJugador> <tipoAvatar>");
-                System.out.println("Listar jugadores");
-                System.out.println("Consultar tipos avatar");
-                System.out.println("Iniciar partida");
-                System.out.println("-------------------------------------------");
+                consola.imprimir(Valor.WHITE + "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
+                consola.imprimir("-------------------------------------------");
+                consola.imprimir("Crear jugador <nombreJugador> <tipoAvatar>");
+                consola.imprimir("Listar jugadores");
+                consola.imprimir("Consultar tipos avatar");
+                consola.imprimir("Iniciar partida");
+                consola.imprimir("-------------------------------------------");
             }
     
             else{
         
-            System.out.println(Valor.WHITE + "\nEs tu turno " + jugadores.get(turno).getNombre() + "!");        
-                System.out.println( "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
+            consola.imprimir(Valor.WHITE + "\nEs tu turno " + jugadores.get(turno).getNombre() + "!");        
+                consola.imprimir( "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
 
-                System.out.println("-------------------------------------------------------------------------------");
+                consola.imprimir("-------------------------------------------------------------------------------");
                 System.out.printf("%-45s%-45s%n", "Ver tablero", "Describir jugador <nombreJugador>");
                 System.out.printf("%-45s%-45s%n", "Lanzar dados", "Describir avatar <idAvatar>");
                 System.out.printf("%-45s%-45s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
@@ -111,15 +113,15 @@ public class Menu {
 
 
                 if(jugadores.get(turno).getEncarcel()==true){
-                    System.out.println("Pagar fianza");}
+                    consola.imprimir("Pagar fianza");}
                 System.out.printf("%-45s%-45s%n", "Acabar turno", "Salir");
-                System.out.println("-------------------------------------------------------------------------------");
+                consola.imprimir("-------------------------------------------------------------------------------");
             }
     
             comando = scan.nextLine();
 
             if(comando.equalsIgnoreCase("salir")){
-                System.out.println("Cerrando juego...");
+                consola.imprimir("Cerrando juego...");
                 scan.close();
                 return;
             }

@@ -47,7 +47,7 @@ public class CasillaEspecial extends Casilla{
         
             actual.encarcelar(tablero.getPosiciones());
             tablero.imprimirTablero();
-            System.out.println(
+            consola.imprimir(
             "El avatar "+ jugador.getAvatar().getId() + " avanza " + casillasTotal + " posiciones, desde " + 
             casillaAnterior + Valor.WHITE + " hasta " + "IrCárcel y es llevado a la cárcel, perdiendo su turno. Oh no!");
             tirado=true;
