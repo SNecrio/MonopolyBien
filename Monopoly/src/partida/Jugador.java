@@ -255,7 +255,7 @@ public class Jugador {
                 }
                 
             }
-            if(contador !=0){
+            if(contador == 0){
                 info.append("No hay edificios todavía");
             }
     
