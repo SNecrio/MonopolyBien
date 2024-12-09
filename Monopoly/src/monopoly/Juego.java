@@ -1340,7 +1340,7 @@ public class Juego implements Comando{
     }
 
     @Override
-    public void listarTratos() throws ExcepcionTrato{
+    public void listarTratos() throws ExcepcionTrato{ 
         Jugador jugador = jugadores.get(turno);
         consola.imprimir("Tratos pendientes:");
         if(!jugador.getTratos().isEmpty()){
@@ -1376,11 +1376,12 @@ public class Juego implements Comando{
         if(jugador.getTratos().isEmpty()){
             throw new ExcepcionAceptarTrato("No tiene tratos pendientes para aceptar");
         }
-        
+        boolean encontrado = false;
         for(Trato trato: jugador.getTratos()){
             String comparar = "Trato"+trato.getId();
 
             if(comparar.equalsIgnoreCase(tratoEnviado)){
+                encontrado = true;
                 try{
                     trato.Aceptar();
                     jugador.eliminarTrato(trato);
@@ -1390,9 +1391,11 @@ public class Juego implements Comando{
                     consola.imprimir("Error: "+c.getMessage());
                 }            
             }
+            
+            if(encontrado == false){
+                consola.imprimir("No se ha encontrado ese trato para aceptar");
+            }
         }
-
-        consola.imprimir("No se ha encontrado ese trato para aceptar");
     }
 
     private void AnalizarComando(String leido) throws ExcepcionComando{
