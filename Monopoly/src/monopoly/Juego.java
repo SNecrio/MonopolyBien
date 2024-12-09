@@ -136,21 +136,21 @@ public class Juego implements Comando{
                 
 
                 consola.imprimir("-------------------------------------------------------------------------------");
-                System.out.printf("%-67s%-67s%n", "Ver tablero", "Describir jugador <nombreJugador>");
-                System.out.printf("%-67s%-67s%n", "Lanzar dados", "Describir avatar <idAvatar>");
-                System.out.printf("%-67s%-67s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
-                System.out.printf("%-67s%-67s%n", "Edificar <tipo>", "Listar jugadores");
-                System.out.printf("%-67s%-67s%n", "Hipotecar <nombre casilla>", "Listar avatares");
-                System.out.printf("%-67s%-67s%n", "Deshipotecar <nombre casilla>", "Listar en venta");
-                System.out.printf("%-67s%-67s%n", "Vender <tipo> <nombre casilla> <cantidad>", "Estadisticas <nombre jugador>");
-                System.out.printf("%-67s%-67s%n", "Listar edificios", "Listar edificios <color grupo>");
-                System.out.printf("%-67s%-67s%n", "Estadisticas", "Trato <Destinatario>: cambiar (<propiedad>,<propiedad>)"); 
-                System.out.printf("%-67s%-67s%n", "Trato <Destinatario>: cambiar (<propiedad>,cantidad)", "Trato <Destinatario>: cambiar (cantidad,<propiedad>)"); 
-                System.out.printf("%-67s%-67s%n", "Trato <Destinatario>: cambiar (<propiedad>, cantidad, <propiedad>)", "Trato <Destinatario>: cambiar (<propiedad>, <propiedad>, cantidad)"); 
-                System.out.printf("%-67s%-67s%n", "Tratos", "Aceptar <Trato+IdTrato>"); 
+                consola.imprimirArgumentos("%-67s%-67s%n", "Ver tablero", "Describir jugador <nombreJugador>");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Lanzar dados", "Describir avatar <idAvatar>");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Edificar <tipo>", "Listar jugadores");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Hipotecar <nombre casilla>", "Listar avatares");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Deshipotecar <nombre casilla>", "Listar en venta");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Vender <tipo> <nombre casilla> <cantidad>", "Estadisticas <nombre jugador>");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Listar edificios", "Listar edificios <color grupo>");
+                consola.imprimirArgumentos("%-67s%-67s%n", "Estadisticas", "Trato <Destinatario>: cambiar (<propiedad>,<propiedad>)"); 
+                consola.imprimirArgumentos("%-67s%-67s%n", "Trato <Destinatario>: cambiar (<propiedad>,cantidad)", "Trato <Destinatario>: cambiar (cantidad,<propiedad>)"); 
+                consola.imprimirArgumentos("%-67s%-67s%n", "Trato <Destinatario>: cambiar (<propiedad>, cantidad, <propiedad>)", "Trato <Destinatario>: cambiar (<propiedad>, <propiedad>, cantidad)"); 
+                consola.imprimirArgumentos("%-67s%-67s%n", "Tratos", "Aceptar <Trato+IdTrato>"); 
 
 
-                System.out.printf("%-67s%-67s%n", "Cambiar modo", "Acabar turno");       
+                consola.imprimirArgumentos("%-67s%-67s%n", "Cambiar modo", "Acabar turno");       
                 if(jugadores.get(turno).getEncarcel()==true){
                     consola.imprimir("Pagar fianza");
                 }

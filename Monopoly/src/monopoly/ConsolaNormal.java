@@ -23,6 +23,11 @@ public class ConsolaNormal implements Consola{
 	}
 
 	@Override
+	public void imprimirArgumentos(String formato, String arg1, String arg2){
+		System.out.printf(formato, arg1, arg2);
+	}
+
+	@Override
 	public String leer(){
     	String leido = scanner.nextLine();   // Lee la entrada del usuario
     	return leido;

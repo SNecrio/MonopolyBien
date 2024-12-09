@@ -7,5 +7,6 @@ public interface Consola{
 	public int leerNumero();
 	public String leer();
 	public void imprimirSinEspacio(String mensaje);
+	public void imprimirArgumentos(String formato, String arg1, String arg2);
 }
 

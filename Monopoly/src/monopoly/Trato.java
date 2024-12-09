@@ -182,7 +182,9 @@ public class Trato{
                 //Actualizamos propietarios
                 prop1.setDuenho(destinatario);
                 prop2.setDuenho(originario);
-
+                if(!(prop1.getDuenho().equals(originario) && prop2.getDuenho().equals(destinatario))){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque alguna de las propiedades ya no pertenece a alguno de los jugadores");
+                }
                 originario.getPropiedades().remove(prop1);
                 destinatario.getPropiedades().remove(prop2);
 
@@ -200,6 +202,10 @@ public class Trato{
                 if(destinatario.getFortuna()<this.cantidad){
                     throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
                 }
+                if(!prop1.getDuenho().equals(destinatario)){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque alguna de las propiedades ya no pertenece a alguno de los jugadores");
+                }
+
                 prop1.setDuenho(destinatario);
 
                 originario.getPropiedades().remove(prop1);
@@ -219,6 +225,9 @@ public class Trato{
                 if(originario.getFortuna()<this.cantidad){
                     throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
                 }
+                if(!prop1.getDuenho().equals(originario)){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque alguna de las propiedades ya no pertenece a alguno de los jugadores");
+                }
 
                 prop1.setDuenho(originario);
 
@@ -237,6 +246,9 @@ public class Trato{
 
                 if(destinatario.getFortuna()<this.cantidad){
                     throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
+                }
+                if(!(prop1.getDuenho().equals(originario) && prop2.getDuenho().equals(destinatario))){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque alguna de las propiedades ya no pertenece a alguno de los jugadores");
                 }
 
                 prop1.setDuenho(destinatario);
@@ -262,6 +274,10 @@ public class Trato{
                 if(originario.getFortuna()<this.cantidad){
                     throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
                 }
+                if(!(prop1.getDuenho().equals(destinatario) && prop2.getDuenho().equals(originario))){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque alguna de las propiedades ya no pertenece a alguno de los jugadores");
+                }
+
                 prop1.setDuenho(destinatario);
                 prop2.setDuenho(originario);
 
