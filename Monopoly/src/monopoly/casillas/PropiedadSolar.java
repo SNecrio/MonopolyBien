@@ -199,14 +199,18 @@ public class PropiedadSolar extends CasillaPropiedad {
     public boolean verificarLimiteEdificaciones(String tipo) throws ExcepcionEdificar {
         int numeroCasillasGrupo = this.grupo.getNumeroCasillas();
         int numeroEdificacionesGrupo = contarEdificiosPorTipoGrupo(tipo, this.grupo);
+        int numerohoteles = contarEdificiosPorTipo("Hotel");
     
-        if (numeroCasillasGrupo == 2 && numeroEdificacionesGrupo >= 2) {
-            throw new ExcepcionEdificar("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
+        if(numerohoteles >2){
+            if (numeroCasillasGrupo == 2 && numeroEdificacionesGrupo >= 2) {
+                throw new ExcepcionEdificar("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
+            }
+        
+            if (numeroCasillasGrupo == 3 && numeroEdificacionesGrupo >= 3) {
+                throw new ExcepcionEdificar("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
+            }
         }
-    
-        if (numeroCasillasGrupo == 3 && numeroEdificacionesGrupo >= 3) {
-            throw new ExcepcionEdificar("No se pueden construir más " + tipo + " en el grupo, ya se alcanzó el límite.");
-        }
+       
     
         return true;
     }

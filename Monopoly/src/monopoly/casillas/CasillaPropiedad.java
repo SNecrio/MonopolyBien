@@ -127,7 +127,8 @@ public abstract class CasillaPropiedad extends Casilla {
                 this.duenho = solicitante;
         
                 consola.imprimir("El jugador " + solicitante.getNombre() + " compra la casilla " + this.getNombreSinColor() + Valor.WHITE + " por " + this.valor + ".");
-            } else {
+            }
+            else {
                 throw new ExcepcionPropiedadComprar("\nEl jugador " + solicitante.getNombre() + " no tiene suficiente dinero para comprar esta casilla.");
             }
         } else {

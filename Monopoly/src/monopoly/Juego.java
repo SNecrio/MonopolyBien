@@ -413,22 +413,22 @@ public class Juego implements Comando{
 
             switch (tipo.toLowerCase()) {
                 case "casa":
-                    Casa casa = new Casa(banca, solar.getEdificios().size(), solar.getValorInicial(), solar, solar.getGrupo());
+                    Casa casa = new Casa(jugadorActual, solar.getEdificios().size(), solar.getValorInicial(), solar, solar.getGrupo());
                     solar.Edificar(jugadorActual, casa, tipo);
                     break;
 
                 case "hotel":
-                    Hotel hotel = new Hotel(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
+                    Hotel hotel = new Hotel(jugadorActual, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
                     solar.Edificar(jugadorActual, hotel, tipo);
                     break;
 
                 case "pista de deporte":
-                    Pista pista = new Pista(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
+                    Pista pista = new Pista(jugadorActual, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
                     solar.Edificar(jugadorActual, pista, tipo);
                     break;
 
                 case "piscina":
-                    Piscina piscina = new Piscina(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
+                    Piscina piscina = new Piscina(jugadorActual, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
                     solar.Edificar(jugadorActual, piscina, tipo);
                     break;
 
