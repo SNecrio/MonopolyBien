@@ -26,11 +26,11 @@ public class Trato{
     //Cambiar propiedad por propiedad
     public Trato(CasillaPropiedad propiedad1, CasillaPropiedad propiedad2, Jugador emisor, Jugador receptor) throws ExcepcionCreacionTrato{
         
-        if(!propiedad1.getDuenho().equals(emisor)){
+        if(!propiedad1.getDuenho().getNombre().equals(emisor.getNombre())){
             throw new ExcepcionCreacionTrato("El emisor del trato no es el propietario de la propiedad impliada");
         }
 
-        if(!propiedad2.getDuenho().equals(receptor)){
+        if(!propiedad2.getDuenho().getNombre().equals(receptor.getNombre())){
             throw new ExcepcionCreacionTrato("El receptor del trato no es el propietario de la propiedad implicada");
         }
 
@@ -47,7 +47,7 @@ public class Trato{
         Random ran = new Random();
         this.id = ran.nextInt(99) + 1;
 
-        this.frase = "Hola "+receptor.getNombre()+". Soy el jugador " + emisor.getNombre() + "¿Te doy la propiedad "+propiedad1.getNombreSinColor()+ " a cambio de tu propiedad "+propiedad2.getNombreSinColor();
+        this.frase = "Hola "+receptor.getNombre()+". Soy el jugador " + emisor.getNombre() + "¿Te doy la propiedad "+propiedad1.getNombreSinColor()+ " a cambio de tu propiedad "+propiedad2.getNombreSinColor()+ "?";
         this.aceptado = false;
     }
 
@@ -86,6 +86,7 @@ public class Trato{
         this.originario = emisor;
         this.destinatario = receptor;
         this.tipo = 3;
+        this.cantidad = cantidad;
 
         Random ran = new Random();
         this.id = ran.nextInt(99) + 1;
@@ -109,6 +110,7 @@ public class Trato{
         this.prop2 = propiedad2;
         this.originario = emisor;
         this.destinatario = receptor;
+        this.cantidad = cantidad;
         this.tipo = 4;
         Random ran = new Random();
         this.id = ran.nextInt(99) + 1;
@@ -173,7 +175,7 @@ public class Trato{
     }
  
     
-    public void Aceptar(){
+    public void Aceptar() throws ExcepcionCreacionTrato{
         
         switch(tipo){
             case 1:
@@ -194,6 +196,10 @@ public class Trato{
             
             // Tipo 2: Cambiar propiedad1 por cantidad
             case 2:
+
+                if(destinatario.getFortuna()<this.cantidad){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
+                }
                 prop1.setDuenho(destinatario);
 
                 originario.getPropiedades().remove(prop1);
@@ -209,6 +215,11 @@ public class Trato{
 
             //Tipo 3: Comprar propiedad por dinero
             case 3:
+
+                if(originario.getFortuna()<this.cantidad){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
+                }
+
                 prop1.setDuenho(originario);
 
                 originario.getPropiedades().add(prop1);
@@ -223,6 +234,11 @@ public class Trato{
             
             //Tipo 4:Cambiar propiedad por dinero y propiedad del otro
             case 4:
+
+                if(destinatario.getFortuna()<this.cantidad){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
+                }
+
                 prop1.setDuenho(destinatario);
                 prop2.setDuenho(originario);
  
@@ -242,6 +258,10 @@ public class Trato{
 
             //Tipo 5: cambiar propiedad y dinero por propiedad del otro
             case 5:
+
+                if(originario.getFortuna()<this.cantidad){
+                    throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
+                }
                 prop1.setDuenho(destinatario);
                 prop2.setDuenho(originario);
 
@@ -259,42 +279,22 @@ public class Trato{
                 break;     
                 
             default:
-                consola.imprimir("Tipo de trat no válido");
+                consola.imprimir("Tipo de trato no válido");
                 break;
         }
-    }
-        /*
-        //Si el originario ofrecio una propiedad, cambia de dueño
-        if(this.propOrig != null){
-            originario.eliminarPropiedad(this.propOrig);
-            destinatario.anhadirPropiedad(this.propOrig);
-        }
-        
-        //Si el destinatario fue pedido una propiedad, cambia de dueño
-        if(this.propDest != null){
-            destinatario.eliminarPropiedad(this.propDest);
-            originario.anhadirPropiedad(this.propDest);
-        }
-
-        //Suma la cantidad ofertada a los demas, siempre suma porque si no se oferta es 0
-        this.originario.sumarFortuna(-this.dineroOrig);
-        this.destinatario.sumarFortuna(this.dineroOrig);
-
-        this.destinatario.sumarFortuna(-this.dineroDest);
-        this.originario.sumarFortuna(this.dineroDest);*/
-    
+    }    
 
     public void Listar(){
         
-        consola.imprimir("id: trato" + this.id);
+        consola.imprimir("Id: trato" + this.id);
         consola.imprimir("Jugador que propone: " + this.originario.getNombre());
 
         switch(this.tipo){
-            case 1: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + ", " + this.prop2.getNombre() + ")"); break;
-            case 2: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + ", " + this.cantidad + ")"); break;
-            case 3: consola.imprimir("trato: cambiar (" + this.cantidad + ", " + this.prop2.getNombre() + " y " + this.cantidad + ")"); break;
-            case 4: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + ", " + this.prop2.getNombre() + ")"); break;
-            case 5: consola.imprimir("trato: cambiar (" + this.prop1.getNombre() + " y " + this.cantidad + ", " + this.prop2.getNombre() + ")"); break;
+            case 1: consola.imprimir("Trato: cambiar (" + this.prop1.getNombreSinColor() + ", " + this.prop2.getNombreSinColor() + ")"); break;
+            case 2: consola.imprimir("Trato: cambiar (" + this.prop1.getNombreSinColor() + ", " + this.cantidad + ")"); break;
+            case 3: consola.imprimir("Trato: cambiar (" + this.cantidad + ", " + this.prop1.getNombreSinColor()+")"); break;
+            case 4: consola.imprimir("Trato: cambiar (" + this.prop1.getNombreSinColor() + ", " + this.prop2.getNombreSinColor() + " y "+ this.cantidad + ")"); break;
+            case 5: consola.imprimir("Trato: cambiar (" + this.prop1.getNombreSinColor() + " y " + this.cantidad + ", " + this.prop2.getNombreSinColor() + ")"); break;
         }
     }
 }

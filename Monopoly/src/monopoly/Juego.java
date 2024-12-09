@@ -14,6 +14,7 @@ public class Juego implements Comando{
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
+    //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
@@ -28,6 +29,7 @@ public class Juego implements Comando{
     public Juego(){
         this.avatares = new ArrayList<>();
         this.jugadores = new ArrayList<>();
+        //this.lanzamientos = 0;
         this.banca = new Jugador();
         this.tablero = new Tablero(this.banca);
         this.dado1 = new Dado();
@@ -43,7 +45,7 @@ public class Juego implements Comando{
     public void crearJugador(String comando) throws ExcepcionAvatarNumero, ExcepcionComando{
         String[] partes = comando.split(" ");
         if(partidainiciada == true){
-            throw new ExcepcionAvatarNumero("No se puede crear un jugador una vez la partida haya iniciado"); //EXCEPCION
+            throw new ExcepcionAvatarNumero("No se puede crear un jugador una vez la partida haya iniciado");
         }
         if(jugadores.size() > 6){
             throw new ExcepcionAvatarNumero("No puede haber más de 6 personajes en el juego");
@@ -61,7 +63,6 @@ public class Juego implements Comando{
                     Jugador nuevoJugador = new Jugador(nombre, avatar, tablero.encontrar_casilla("Salida"), avatares);
                         
                     jugadores.add(nuevoJugador);
-                    //avatares.add(nuevoJugador.getAvatar());
                     tablero.getPosiciones().get(3).get(10).anhadirAvatar(nuevoJugador.getAvatar());
 
                     tablero.imprimirTablero();
@@ -116,7 +117,6 @@ public class Juego implements Comando{
                 consola.imprimir("Cerrando juego...");
                 return;
             }
-
             if(partidainiciada == false){
 
                 consola.imprimir(Valor.WHITE + "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
@@ -130,21 +130,27 @@ public class Juego implements Comando{
     
             else{
         
-                consola.imprimir(Valor.WHITE + "\nEs tu turno " + jugadores.get(turno).getNombre() + "!");        
+                consola.imprimir(Valor.WHITE + "\nEs tu turno " + jugadores.get(turno).getNombre() + "!");    
+                
                 consola.imprimir( "\n\u001B[1mOPCIONES DISPONIBLES:\u001B[0m");
                 
 
                 consola.imprimir("-------------------------------------------------------------------------------");
-                System.out.printf("%-45s%-45s%n", "Ver tablero", "Describir jugador <nombreJugador>");
-                System.out.printf("%-45s%-45s%n", "Lanzar dados", "Describir avatar <idAvatar>");
-                System.out.printf("%-45s%-45s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
-                System.out.printf("%-45s%-45s%n", "Edificar <tipo>", "Listar jugadores");
-                System.out.printf("%-45s%-45s%n", "Hipotecar <nombre casilla>", "Listar avatares");
-                System.out.printf("%-45s%-45s%n", "Deshipotecar <nombre casilla>", "Listar en venta");
-                System.out.printf("%-45s%-45s%n", "Vender <tipo> <nombre casilla> <cantidad>", "Estadisticas <nombre jugador>");
-                System.out.printf("%-45s%-45s%n", "Listar edificios", "Listar edificios <color grupo>");
-                System.out.printf("%-45s%-45s%n", "Estadisticas", "Estadisticas <nombreJugador>"); 
-                System.out.printf("%-45s%-45s%n", "Cambiar modo", "Acabar turno");       
+                System.out.printf("%-67s%-67s%n", "Ver tablero", "Describir jugador <nombreJugador>");
+                System.out.printf("%-67s%-67s%n", "Lanzar dados", "Describir avatar <idAvatar>");
+                System.out.printf("%-67s%-67s%n", "Comprar <nombre casilla>", "Describir <nombreCasilla>");
+                System.out.printf("%-67s%-67s%n", "Edificar <tipo>", "Listar jugadores");
+                System.out.printf("%-67s%-67s%n", "Hipotecar <nombre casilla>", "Listar avatares");
+                System.out.printf("%-67s%-67s%n", "Deshipotecar <nombre casilla>", "Listar en venta");
+                System.out.printf("%-67s%-67s%n", "Vender <tipo> <nombre casilla> <cantidad>", "Estadisticas <nombre jugador>");
+                System.out.printf("%-67s%-67s%n", "Listar edificios", "Listar edificios <color grupo>");
+                System.out.printf("%-67s%-67s%n", "Estadisticas", "Trato <Destinatario>: cambiar (<propiedad>,<propiedad>)"); 
+                System.out.printf("%-67s%-67s%n", "Trato <Destinatario>: cambiar (<propiedad>,cantidad)", "Trato <Destinatario>: cambiar (cantidad,<propiedad>)"); 
+                System.out.printf("%-67s%-67s%n", "Trato <Destinatario>: cambiar (<propiedad>, cantidad, <propiedad>)", "Trato <Destinatario>: cambiar (<propiedad>, <propiedad>, cantidad)"); 
+                System.out.printf("%-67s%-67s%n", "Tratos", "Aceptar <Trato+IdTrato>"); 
+
+
+                System.out.printf("%-67s%-67s%n", "Cambiar modo", "Acabar turno");       
                 if(jugadores.get(turno).getEncarcel()==true){
                     consola.imprimir("Pagar fianza");
                 }
@@ -228,10 +234,13 @@ public class Juego implements Comando{
         String[] partes = comando.split(" "); // Dividir por espacios
         String id = partes[2];
 
-        if(avatares.isEmpty()==true){
-            consola.imprimir("No se han encontrado avatares"); //EXCEPCION
-            return;
+        try{
+            if(avatares.isEmpty()==true){
+                throw new ExcepcionAvatarNumero("No se han encontrado avatares");}
+        } catch (ExcepcionAvatarNumero e){
+            consola.imprimir(e.getMessage());
         }
+        
         for(Avatar avatar : avatares){
             if(avatar.getId().equalsIgnoreCase(id)){
                 avatar.describirAvatar();
@@ -253,7 +262,7 @@ public class Juego implements Comando{
     }
 
     @Override
-    public void comprarCasilla(String comando){
+    public void comprarCasilla(String comando) throws ExcepcionPropiedadComprar{
         String[] partes = comando.split(" ");
         String nombreCasilla = partes[1];
         consola.imprimir("");
@@ -265,15 +274,9 @@ public class Juego implements Comando{
             consola.imprimir(e.getMessage());
         }
         
-        /*if(casillacomprada==null){
-            return;
-        } */
-
-        
         int lanzamiento = dado1.getValor() + dado2.getValor();
         Jugador jugadoractual = jugadores.get(turno);
 
-        //if(((tirado == false)&&(jugadoractual.getDobles()<1)&&(jugadoractual.getModo()==false))||((jugadoractual.getModo()==true))&&((jugadoractual.getAvatar().getExtras()==3)||(jugadoractual.getAvatar().getTiradaInicial()==0))){
         if(permitir==true){    
         consola.imprimir("El jugador aún no ha tirado los dados, por lo que no puede comprarla");
         } 
@@ -298,6 +301,9 @@ public class Juego implements Comando{
                 
             }
         }
+        else{
+            throw new ExcepcionPropiedadComprar("No se puede comprar esta casilla porque no es de tipo propiedad");
+        }
 
     }
 
@@ -315,24 +321,29 @@ public class Juego implements Comando{
             if(casilla instanceof PropiedadSolar){
             PropiedadSolar solar = (PropiedadSolar) casilla;
             
-            if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
-                consola.imprimir("No eres el dueño de la casilla para hipotecarla"); //EXCEPCION
-                return;
-            }
+            try{
+                if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
+                throw new ExcepcionJugadorIncorrecto("No eres el dueño de la casilla para hipotecarla");
+                }
+                else if(solar.tieneEdificios()==true){
+                    throw new ExcepcionHipotecarEdificio("Debes vender antes los edificios de esta casilla antes de hipotecar");
+                    return;
+                }
+                solar.hipotecarCasilla(jugadoractual, banca);
 
-            else if(solar.tieneEdificios()==true){
-                consola.imprimir("Debes vender antes los edificios de esta casilla antes de hipotecar"); //EXCEPCION
-                return;
+            } catch(ExcepcionJugadorIncorrecto e){
+                consola.imprimir(e.getMessage());
+            } catch(ExcepcionHipotecarEdificio e){
+                consola.impimir(e.getMessage());
             }
-
-            solar.hipotecarCasilla(jugadoractual, banca);
-        }
+            }
        
         } catch (ExcepcionCasilla e){
             consola.imprimir(e.getMessage());
         }
+    }
         
-        }
+        
 
     @Override
     public void deshipotecarCasilla(String comando){
@@ -348,18 +359,22 @@ public class Juego implements Comando{
             if(casilla instanceof PropiedadSolar){
                 PropiedadSolar solar = (PropiedadSolar) casilla;
                 
-                if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
-                    consola.imprimir("No eres el dueño de la casilla para deshipotecarla"); //EXCEPCION
-                    return;
-                }
+                try{
+                    if(!solar.getDuenho().getNombre().equalsIgnoreCase(jugadoractual.getNombre())){
+                        throw new ExcepcionJugadorIncorrecto("No eres el dueño de la casilla para deshipotecarla");
+                    }
 
-                else if(solar.estaHipotecada()==true){
-                    consola.imprimir("No puedes hipotecar la casilla si no está hipotecada"); //EXCEPCION
-                    return;
-                }
+                    else if(solar.estaHipotecada()==true){
+                        throw new ExcepcionHipotecarNoHipotecada("No puedes hipotecar la casilla si no está hipotecada");
+                    }
 
-                solar.deshipotecarCasilla(jugadoractual, jugadoractual);
-        }
+                    solar.deshipotecarCasilla(jugadoractual, jugadoractual);
+                } catch(ExcepcionJugadorIncorrecto e){
+                    consola.imprimir(e.getMessage());
+                } catch(ExcepcionHipotecarNoHipotecada e){
+                    consola.imprimir(e.getMessage());
+                }
+            }
         } catch (ExcepcionCasilla e){
             consola.imprimir(e.getMessage());
         }
@@ -372,64 +387,65 @@ public class Juego implements Comando{
     }
 
     @Override
-    public void edificar(String comando) throws ExcepcionComando{
-        String[] partes = comando.split(" ");
-        String tipo = partes[1];
-        consola.imprimir("");
+    public void edificar(String comando) throws ExcepcionComando {
+    String[] partes = comando.split(" ");
 
-        if(partes.length != 2){
+    try{
+        if (partes.length != 2) {
             throw new ExcepcionComando("Comando incorrecto, el formato correcto es 'edificar' 'tipo edificio'");
         }
-
-        boolean tipoValido = false;
-
-        while(!tipoValido){
-
-            Jugador jugadoractual = jugadores.get(turno);
-            Casilla casillaActual = jugadoractual.getAvatar().getLugar();
-
-            if(tipo.equalsIgnoreCase("pista")){
-                tipo = "pista de deporte";
-            }
-
-            if(casillaActual instanceof PropiedadSolar){
-                PropiedadSolar solar = (PropiedadSolar)casillaActual;
-
-                // Crear el edificio correspondiente
-                switch (tipo.toLowerCase()) {
-                    case "casa":
-                        Casa casa = new Casa(banca, solar.getEdificios().size(), solar.getValorInicial(), solar, solar.getGrupo());
-                        solar.Edificar(jugadoractual, casa, tipo); 
-
-                        break;
-
-                    case "hotel":
-                        Hotel hotel = new Hotel(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo()); 
-                        solar.Edificar(jugadoractual, hotel, tipo); 
-
-                        break;
-
-                    case "pista de deporte":
-                        Pista pista = new Pista(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
-                        solar.Edificar(jugadoractual, pista, tipo); 
-
-                        break;
-
-                    case "piscina":
-                        Piscina piscina = new Piscina(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo()); 
-                        solar.Edificar(jugadoractual, piscina, tipo); 
-
-                        break;
-                        
-                    default:
-                        consola.imprimir("Las edificaciones pueden ser del tipo: 'casa' 'hotel' 'pista de deporte' 'piscina'. Vuelve a introducir uno de estos tipos");
-                        tipo =  consola.leer();
-                        break; 
-                }
-
-            }
-        }
+    } catch (ExcepcionComando e){  //Metí aquí el catch porque seica daba cousas raras
+        consola.imprimir(e.getMessage());
     }
+
+    String tipo = partes[1];
+    consola.imprimir("");
+
+    try {
+        Jugador jugadorActual = jugadores.get(turno);
+        Casilla casillaActual = jugadorActual.getAvatar().getLugar();
+
+        if (tipo.equalsIgnoreCase("pista")) {
+            tipo = "pista de deporte";
+        }
+
+        if (casillaActual instanceof PropiedadSolar) {
+            PropiedadSolar solar = (PropiedadSolar) casillaActual;
+
+            switch (tipo.toLowerCase()) {
+                case "casa":
+                    Casa casa = new Casa(banca, solar.getEdificios().size(), solar.getValorInicial(), solar, solar.getGrupo());
+                    solar.Edificar(jugadorActual, casa, tipo);
+                    break;
+
+                case "hotel":
+                    Hotel hotel = new Hotel(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
+                    solar.Edificar(jugadorActual, hotel, tipo);
+                    break;
+
+                case "pista de deporte":
+                    Pista pista = new Pista(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
+                    solar.Edificar(jugadorActual, pista, tipo);
+                    break;
+
+                case "piscina":
+                    Piscina piscina = new Piscina(banca, solar.getEdificios().size(), solar.getValor(), solar, solar.getGrupo());
+                    solar.Edificar(jugadorActual, piscina, tipo);
+                    break;
+
+                default:
+                    throw new ExcepcionEdificarTipo("Las edificaciones pueden ser del tipo: 'casa', 'hotel', 'pista de deporte', 'piscina'.");
+            }
+        } else {
+            throw new ExcepcionEdificar("No se puede edificar en este tipo de casilla");
+        }
+    } catch (ExcepcionEdificarTipo e) {
+        consola.imprimir(e.getMessage());
+    } catch (ExcepcionEdificar e) {
+        consola.imprimir(e.getMessage());
+    }
+}
+
 
     @Override
     public void venderEdificio(String comando) throws ExcepcionEdificar{
@@ -694,7 +710,7 @@ public class Juego implements Comando{
             return;
         }
         else if(jugador.getAvatar().getBloqueado()!=0){
-            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + " turno(s). No podrá tirar hasta entonces.");
+            consola.imprimir("El jugador está bloqueado por " + (jugador.getAvatar().getBloqueado()+1) + " turno(s). No podrá tirar hasta entonces.");
             tirado=true;
             return;
         }
@@ -788,8 +804,7 @@ public class Juego implements Comando{
             return;
         }
         else if(jugador.getAvatar().getBloqueado()!=0){
-            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + " turno(s). No podrá tirar hasta entonces.");
-            tirado=true;
+            consola.imprimir("El jugador está bloqueado por " + jugador.getAvatar().getBloqueado() + "turno(s). No podrá tirar hasta entonces.");
             return;
         }
 
@@ -868,11 +883,6 @@ public class Juego implements Comando{
             resetearVueltas();
         }
     }
-
-
-
-
-
 
     private void lanzarCarcel(int d1, int d2){
         Jugador jugador = jugadores.get(turno);
@@ -1109,11 +1119,7 @@ public class Juego implements Comando{
     public void acabarTurno(boolean vertablero) {
         Jugador jugador = jugadores.get(turno);
 
-        if(jugador.getAvatar().getBloqueado()!=0){
-            //If vacío para que se meta en este y siga por el resto del código
-        }
-
-        else if((tirado == false)&&(jugador.getEncarcel()==false)){
+        if((tirado == false)&&(jugador.getEncarcel()==false)){
             consola.imprimir("Aún no has agotado tus tiradas, aprovéchalas!");
             return;
         }
@@ -1140,8 +1146,8 @@ public class Juego implements Comando{
         permitir=true; //En el siguiente turno se puede volver a cambiar el modo
         jugador.resetearDobles();
         jugador.setComprado(false);
-        jugador.getAvatar().setTiradaInicial(0);
         if(jugador.getAvatar().getBloqueado()<0) jugador.getAvatar().setBloqueado(0);
+        //jugador.setExtraDobles(false);
         if(jugador.getAvatar().getBloqueado()!=0) jugador.getAvatar().setBloqueado(jugador.getAvatar().getBloqueado() - 1); 
         jugador.getAvatar().setExtras(0);
 
@@ -1189,7 +1195,7 @@ public class Juego implements Comando{
             trato = trato.toLowerCase().trim();
             Jugador solicitante = jugadores.get(turno);
 
-            if (trato.startsWith("cambiar (") && trato.contains(",") && trato.endsWith(")")) {
+            if ((trato.startsWith("cambiar (") && trato.contains(",") && trato.endsWith(")"))){
                 String contenido = trato.substring(9, trato.length()-1).trim();
 
                 String[] partes = contenido.split(",");
@@ -1199,7 +1205,7 @@ public class Juego implements Comando{
                     String parte2 = partes[1].trim();
 
                     //cambiar (solar, solar)
-                    if(!esNumero(parte1) && !esNumero(parte1)){
+                    if(!esNumero(parte1) && !esNumero(parte2)){
                         try {
                             Casilla prop1 = tablero.encontrar_casilla(parte1);
                             Casilla prop2 = tablero.encontrar_casilla(parte2);
@@ -1207,6 +1213,9 @@ public class Juego implements Comando{
                             if(prop1 instanceof CasillaPropiedad){
                                 if(prop2 instanceof CasillaPropiedad){
                                     Trato tratoPropuesto = new Trato((CasillaPropiedad)prop1, (CasillaPropiedad)prop2, solicitante, destinatario);
+                                    consola.imprimir(tratoPropuesto.getFrase());
+                                    tratos.add(tratoPropuesto);
+                                    destinatario.anhadirTrato(tratoPropuesto);
                                 }
                                 else{
                                     throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
@@ -1216,39 +1225,125 @@ public class Juego implements Comando{
                                 throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
                             }
                         }catch (ExcepcionCasilla e) {
-                            consola.imprimir("Error: "+e.getMessage());
-                        } 
+                            consola.imprimir("Error: "+e.getMessage());                        } 
+                    }
 
-                    if(!esNumero(parte1) && esNumero(parte2)){
+                    //cambiar(solar, cantidad)
+                    else if(!esNumero(parte1) && esNumero(parte2)){
                         try{
                             Casilla prop1 = tablero.encontrar_casilla(parte1);
                             if(prop1 instanceof CasillaPropiedad){
                                 float cantidad = Float.parseFloat(parte2);
                                 Trato tratoPropuesto = new Trato((CasillaPropiedad)prop1, destinatario, cantidad, solicitante);
+                                consola.imprimir(tratoPropuesto.getFrase());
+                                tratos.add(tratoPropuesto);
+                                destinatario.anhadirTrato(tratoPropuesto);
+
+                            }
+                            else{
+                                throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
                             }
                         }
                         catch(ExcepcionCasilla e){
                             consola.imprimir("Error: "+e.getMessage());
-
                         }
                     }
 
+                    //cambiar (cantidad, solar)
+                    else if(esNumero(parte1) && !esNumero(parte2)){
+                        try{
+                            Casilla prop1 = tablero.encontrar_casilla(parte2);
+                            if(prop1 instanceof CasillaPropiedad){
+                                float cantidad = Float.parseFloat(parte1);
+                                Trato tratoPropuesto = new Trato(solicitante, destinatario, cantidad, (CasillaPropiedad)prop1);
+                                consola.imprimir(tratoPropuesto.getFrase());
+                                destinatario.anhadirTrato(tratoPropuesto);
+                                tratos.add(tratoPropuesto);
+                            }
+                            else{
+                                throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                            }
+                        }catch(ExcepcionCasilla e){
+                            consola.imprimir("Error: "+e.getMessage());
+                        }
+                    
+                    }
+                }
 
+                else if(partes.length==3){
+                    String parte1 = partes[0].trim();
+                    String parte2 = partes[1].trim();
+                    String parte3 = partes[2].trim();
+
+                    //cambiar(solar, solar, cantidad)
+                    if(!esNumero(parte1) && !esNumero(parte2) && esNumero(parte3)){
+                        try{
+                            Casilla prop1 = tablero.encontrar_casilla(parte1);
+                            Casilla prop2 = tablero.encontrar_casilla(parte2);
+                            if(prop1 instanceof CasillaPropiedad){
+                                if(prop2 instanceof CasillaPropiedad){
+                                    float cantidad = Float.parseFloat(parte3);
+                                    Trato tratoPropuesto = new Trato((CasillaPropiedad)prop1, (CasillaPropiedad)prop2, cantidad, solicitante, destinatario);
+                                    consola.imprimir(tratoPropuesto.getFrase());
+                                    destinatario.anhadirTrato(tratoPropuesto);
+                                    tratos.add(tratoPropuesto);
+                                }
+                                else{
+                                    throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                                }
+                            }
+                            else{
+                                throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                            }
+                        }catch(ExcepcionCasilla e){
+                            consola.imprimir("Error: "+e.getMessage());
+                        }
+                    }
+                    
+                    //cambiar(solar, cantidad, solar)
+                    else if(!esNumero(parte1) && esNumero(parte2) && !esNumero(parte3)){
+                        try{
+                            Casilla prop1 = tablero.encontrar_casilla(parte1);
+                            Casilla prop2 = tablero.encontrar_casilla(parte3);
+                            if(prop1 instanceof CasillaPropiedad){
+                                if(prop2 instanceof CasillaPropiedad){
+                                    float cantidad = Float.parseFloat(parte2);
+                                    Trato tratoPropuesto = new Trato((CasillaPropiedad)prop1, cantidad, (CasillaPropiedad)prop2, solicitante, destinatario);
+                                    consola.imprimir(tratoPropuesto.getFrase());
+                                    destinatario.anhadirTrato(tratoPropuesto);
+                                    tratos.add(tratoPropuesto);
+                                }
+                                else{
+                                    throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                                }
+                            }
+                            else{
+                                throw new ExcepcionTrato("La casilla tiene que ser de tipo propiedad");
+                            }
+                        }catch(ExcepcionCasilla e){
+                            consola.imprimir("Error: "+e.getMessage());
+                        }
+                    }
+                    else{
+                        throw new ExcepcionTrato("El trato especificado no se ha encontrado");
                     }
                 }
             }
+            else{
+                throw new ExcepcionTrato("El formato especificado está mal");
+            }
 
         }
-       
         catch(ExcepcionCreacionTrato c){
             consola.imprimir(c.getMessage());
         }
     }
 
-    public void listarTratos(){
-        
-        try{
-            if(!tratos.isEmpty()){
+    @Override
+    public void listarTratos() throws ExcepcionTrato{
+        Jugador jugador = jugadores.get(turno);
+        consola.imprimir("Tratos pendientes:");
+        if(!jugador.getTratos().isEmpty()){
             for(Trato trato : tratos){
                 consola.imprimir("{");
                 trato.Listar();
@@ -1256,23 +1351,7 @@ public class Juego implements Comando{
             }
         }else{
             throw new ExcepcionTrato("No hay tratos que enseñar");
-        }}catch(ExcepcionTrato e){
-            consola.imprimir(e.getMessage());
-        }
-        
-    }
-
-    public void eliminarTrato(String tratoNombre){
-        if(!tratos.isEmpty()){
-            for(Trato trato : tratos){
-                if(tratoNombre.equals("trato" + String.valueOf(trato.getId()) )){
-                    tratos.remove(tratos.indexOf(trato));
-                    consola.imprimir("Trato borrado");
-                    return;
-                }
-            }
-        }
-        consola.imprimir("No se encontro el trato");
+        }        
     }
 
     public void empezar(String mensaje) throws ExcepcionComando{
@@ -1288,6 +1367,32 @@ public class Juego implements Comando{
         else{
             throw new ExcepcionComando("El comando introducido es incorrecto");
         }
+    }
+
+    @Override
+    public void AceptarTrato(String tratoEnviado) throws ExcepcionAceptarTrato{
+        
+        Jugador jugador = jugadores.get(turno);
+        if(jugador.getTratos().isEmpty()){
+            throw new ExcepcionAceptarTrato("No tiene tratos pendientes para aceptar");
+        }
+        
+        for(Trato trato: jugador.getTratos()){
+            String comparar = "Trato"+trato.getId();
+
+            if(comparar.equalsIgnoreCase(tratoEnviado)){
+                try{
+                    trato.Aceptar();
+                    jugador.eliminarTrato(trato);
+                    return;   
+                    
+                }catch(ExcepcionCreacionTrato c) {
+                    consola.imprimir("Error: "+c.getMessage());
+                }            
+            }
+        }
+
+        consola.imprimir("No se ha encontrado ese trato para aceptar");
     }
 
     private void AnalizarComando(String leido) throws ExcepcionComando{
@@ -1363,9 +1468,10 @@ public class Juego implements Comando{
                 verTablero();
             }
     
+
             else if(comando.startsWith("describir jugador")){
                 if(partes.length <= 2){
-                    return; //EXCEPCION ESTA MAL POSTO O FORMATO
+                    throw new ExcepcionComando("El comando introducido no está completo");
                 }
                 else{
                     describirJugador(comando);
@@ -1419,6 +1525,43 @@ public class Juego implements Comando{
                 if(jugadores.get(turno).getModo()==true) consola.imprimir("El modo de juego es avanzado");
                 else consola.imprimir("El modo de juego es simple");
             }
+
+            else if (comando.equalsIgnoreCase("tratos")){
+                listarTratos();
+            }
+
+            else if(comando.startsWith("trato")){
+                String[] partesTrato = comando.split(":");
+                if(partesTrato.length<2){
+                    throw new ExcepcionComando("El comando introducido es incorrecto");
+                }
+                String nombreParte = partesTrato[0].trim(); 
+                String[] partesNombre = nombreParte.split(" ");
+                String nombre = partesNombre[1].trim();  
+                // La segunda parte es la acción después de ":"
+                String Accion = partesTrato[1].trim(); 
+                if(jugadores.isEmpty()==true){
+                    consola.imprimir("La lista de jugadores está vacía");
+                }
+                for(Jugador jugador:jugadores){
+                    if(jugador.getNombre().equalsIgnoreCase(nombre)){
+                        proponerTrato(Accion, jugador);
+                    }
+                }
+            }
+
+            else if(comando.startsWith("aceptar")){
+                if(partes.length == 2){
+                    String trato = partes[1];
+                    AceptarTrato(trato);
+                }
+                else{
+                    throw new ExcepcionComando("El comando introducido es incorrecto");
+                }
+            }
+            else{
+                throw new ExcepcionComando("El comando introducido es incorrecto");
+            }
     
         
         }
@@ -1435,6 +1578,12 @@ public class Juego implements Comando{
             consola.imprimir("Error: " + e.getMessage());
         }
         catch(ExcepcionAvatarNumero e){
+            consola.imprimir("Error: "+e.getMessage());
+        }
+        catch(ExcepcionTrato e){
+            consola.imprimir("Error: "+e.getMessage());
+        }
+        catch(ExcepcionPropiedadComprar e){
             consola.imprimir("Error: "+e.getMessage());
         }
     }

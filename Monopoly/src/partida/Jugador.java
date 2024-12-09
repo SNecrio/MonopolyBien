@@ -33,6 +33,7 @@ public class Jugador {
     private boolean modo; //false básico, true avanzado
     private int vecesDados;
     private ConsolaNormal consola;
+    private ArrayList<Trato> tratos;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -52,7 +53,8 @@ public class Jugador {
         this.pasoSalida = 0.0f;
         this.premios = 0.0f;
         this.vecesCarcel = 0;
-        consola = new ConsolaNormal();
+        this.consola = new ConsolaNormal();
+        this.tratos = new ArrayList<>();
         //this.bloqueado = 0;
     }
 
@@ -86,7 +88,9 @@ public class Jugador {
         this.cobroAlquiler = 0.0f;
         this.comprado = false;
         this.modo = false;
-        consola = new ConsolaNormal();
+        this.consola = new ConsolaNormal();
+        this.tratos = new ArrayList<>();
+
     }
     
     //Otros métodos:
@@ -276,6 +280,15 @@ public class Jugador {
         consola.imprimir(info.toString());
     }
 
+    public void listarTratos(){
+        if(tratos.isEmpty()==true){
+            consola.imprimir("No hay tratos pendientes");
+        }
+        for(Trato trato: tratos){
+            trato.Listar();
+        }
+    }
+
     //Metodo para transferir todas as propiedades do xogador a banca
     public void transferirPropiedadesBanca(Jugador banca){
         for(CasillaPropiedad propiedad: propiedades){
@@ -351,14 +364,18 @@ public class Jugador {
     public void setVueltas(int vueltas){
         this.vueltas = vueltas;
     }
-/* 
-    public int getBloqueado(){
-        return this.bloqueado;
+
+    public ArrayList<Trato> getTratos(){
+        return this.tratos;
     }
-    
-    public void setBloqueado(int bloqueado){
-        this.bloqueado = bloqueado;
-    }*/
+
+    public void anhadirTrato(Trato trato){
+        this.tratos.add(trato);
+    }
+
+    public void eliminarTrato(Trato trato){
+        this.tratos.remove(trato);
+    }
 
     public boolean getComprado(){
         return this.comprado;

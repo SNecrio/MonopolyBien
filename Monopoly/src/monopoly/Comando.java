@@ -45,7 +45,7 @@ public interface Comando {
 
     void estadisticasJugador(String comando) throws ExcepcionComando, ExcepcionJugadorIncorrecto;
 
-    void comprarCasilla(String comando);
+    void comprarCasilla(String comando) throws ExcepcionPropiedadComprar;
 
     void hipotecarCasilla(String comando);
 
@@ -54,4 +54,9 @@ public interface Comando {
     void edificar(String comando) throws ExcepcionComando;
 
     void venderEdificio(String comando) throws ExcepcionEdificar; 
+
+    void listarTratos() throws ExcepcionTrato;
+
+    void AceptarTrato(String tratoEnviado) throws ExcepcionAceptarTrato;
+
 }

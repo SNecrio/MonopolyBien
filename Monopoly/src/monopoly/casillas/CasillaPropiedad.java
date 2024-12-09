@@ -116,6 +116,9 @@ public abstract class CasillaPropiedad extends Casilla {
     public void comprarCasilla(Jugador solicitante, Jugador banca) throws ExcepcionPropiedad{
  
         if (perteneceAJugador(banca)) { 
+            if(solicitante.getAvatar().getLugar().getPosicion()!=this.getPosicion()){
+                throw new ExcepcionPropiedadComprar("No puedes comprar la propiedad porque no estás situado sobre ella");
+            }
             if (solicitante.getFortuna() >= this.valor) {
                 solicitante.pagar(this.valor);
                 solicitante.EstadisticaDineroInvertido(this.valor);
