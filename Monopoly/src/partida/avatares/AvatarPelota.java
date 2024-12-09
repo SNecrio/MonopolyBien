@@ -10,15 +10,12 @@ public class AvatarPelota extends Avatar {
 
     //Atributos
     private int tiradaInicial; //Cuenta el numero de tiradas extra correspondiente a un tipo de avatar
-    private int continuar; //
+    private int continuar; //Contabiliza cuantos movimientos le quedan para completar la tirada
     private final ConsolaNormal consola;
 
     //Constructor
     public AvatarPelota(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados){
-    setTipo(tipo);
-    setJugador(jugador);
-    setLugar(lugar);
-    setId(generarId(avCreados)); //usamos o metodo de abaixo para crear ID únicos
+    super(tipo, jugador, lugar, avCreados);  //Usa el constructor de avatar genérico para los atributos de avatar
     this.tiradaInicial=0;
     this.continuar = 0;
     this.consola = new ConsolaNormal();
@@ -125,6 +122,10 @@ public class AvatarPelota extends Avatar {
         //Comprueba si se puede realizar la acción de la casilla.
         jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));
         
+        //Atributos estadísticos
+        jugador.getAvatar().getLugar().sumarVisitas(1);
+        jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
+
         tablero.imprimirTablero();
 
         if(continuar==0 && jugador.getDobles()>0){

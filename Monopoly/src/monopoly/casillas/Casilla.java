@@ -26,7 +26,7 @@ public abstract class Casilla {
         this.avatares=new ArrayList<>(); //inicializamos o array vacío
         this.visitas = 0;
         this.jugadoresvisitantes = new ArrayList<>();
-        this.consola = new ConsolaNormal(); //No se si es mejor esto o pasar como argumento, asumo que esto
+        this.consola = new ConsolaNormal();
         
     }//Parámetros vacíos
 
@@ -98,14 +98,14 @@ public abstract class Casilla {
 
 public void listarAvatares (StringBuilder info){
 
-        ArrayList<Avatar> avatares = this.getAvatares();
+        ArrayList<Avatar> avs = this.getAvatares();
 
         info.append("Jugadores: ");
         if(this.getAvatares().isEmpty()){
             info.append(" - ");
         }
         else{
-            for(Avatar avatar : avatares){
+            for(Avatar avatar : avs){
                 info.append(avatar.getJugador().getNombre()).append(",");
             }
         }
@@ -128,5 +128,27 @@ public void listarAvatares (StringBuilder info){
         }
         return true;
     }
+
+    public int getVisitas(){
+        return this.visitas;
+    }
+
+    public void sumarVisitas(int valor){
+        this.visitas += valor;
+    }
+
+    public ArrayList<Jugador> getJugadoresVisitantes(){
+        return jugadoresvisitantes;
+    }
+
+
+    public void sumarJugadoresVisitantes(Jugador jugador){
+        if (jugador != null) {
+            this.jugadoresvisitantes.add(jugador);
+        } else {
+            consola.imprimir("Jugador no puede ser nulo");
+        }   
+    }
+
 
 }

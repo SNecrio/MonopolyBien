@@ -1,6 +1,6 @@
 package monopoly;
-import partida.*;
 import excepcions.*;
+import partida.*;
 
 //Define los métodos que deben implementarse en cualquier clase que la implemente (Juego)
 public interface Comando {
@@ -20,8 +20,6 @@ public interface Comando {
     void listarEnVenta();
 
     void consultarAvatar();
-
-    //void trucados(String comando);
 
     //void pobre(String comando);
 

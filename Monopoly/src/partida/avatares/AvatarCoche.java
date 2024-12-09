@@ -16,10 +16,7 @@ public class AvatarCoche extends Avatar {
 
     //Constructor
     public AvatarCoche(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados){
-    setTipo(tipo);
-    setJugador(jugador);
-    setLugar(lugar);
-    setId(generarId(avCreados)); //usamos o metodo de abaixo para crear ID únicos
+    super(tipo, jugador, lugar, avCreados);  //Usa el constructor de avatar genérico para los atributos de avatar
     this.extras = 3;
     this.bloqueado = 0;
     this.consola = new ConsolaNormal();
@@ -56,8 +53,8 @@ public class AvatarCoche extends Avatar {
             jugador.getAvatar().moverAvatar(tablero.getPosiciones(),casillasTotal);
 
             //Atributos estadísticos
-            //jugador.getAvatar().getLugar().sumarVisitas(1);
-            //jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
+            jugador.getAvatar().getLugar().sumarVisitas(1);
+            jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
 
             //Comprueba si se puede realizar la acción de la casilla.
             jugador.getAvatar().setSolvente(jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores));

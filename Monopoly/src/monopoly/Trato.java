@@ -225,7 +225,7 @@ public class Trato{
                 if(originario.getFortuna()<this.cantidad){
                     throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque el jugador que lo acepta no tiene el dinero suficiente");
                 }
-                if(!prop1.getDuenho().equals(originario)){
+                if(!prop1.getDuenho().equals(destinatario)){
                     throw new ExcepcionCreacionTrato("No se puede aceptar el trato porque alguna de las propiedades ya no pertenece a alguno de los jugadores");
                 }
 

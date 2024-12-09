@@ -1,9 +1,9 @@
 package monopoly;
 
-import partida.*;
 import java.util.ArrayList;
 import monopoly.casillas.*;
 import monopoly.edificios.Edificio;
+import partida.*;
 
 
 public class Grupo {
@@ -17,7 +17,7 @@ public class Grupo {
 
     //Constructor vacío.
     public Grupo() {
-        this.miembros = new ArrayList<PropiedadSolar>();
+        this.miembros = new ArrayList<>();
         this.colorGrupo="";
         this.numCasillas= 0;
         consola = new ConsolaNormal();
@@ -27,7 +27,7 @@ public class Grupo {
     * Requiere como parámetros las dos casillas miembro y el color del grupo.
      */
     public Grupo(PropiedadSolar cas1, PropiedadSolar cas2, String colorGrupo) {
-        this.miembros = new ArrayList<PropiedadSolar>(); //inicializamos o array de miembros
+        this.miembros = new ArrayList<>(); //inicializamos o array de miembros
         this.miembros.add(cas1);
         //cas1.
         this.miembros.add(cas2);
@@ -41,7 +41,7 @@ public class Grupo {
     * Requiere como parámetros las tres casillas miembro y el color del grupo.
      */
     public Grupo(PropiedadSolar cas1, PropiedadSolar cas2, PropiedadSolar cas3, String colorGrupo) {
-        this.miembros = new ArrayList<PropiedadSolar>();
+        this.miembros = new ArrayList<>();
         this.miembros.add(cas1);
         this.miembros.add(cas2);
         this.miembros.add(cas3);
@@ -111,7 +111,7 @@ public class Grupo {
             }
             else{
                 for(Edificio edificio : listaCasas){
-                    edificio.identificadorEdificio(info);;
+                    edificio.identificadorEdificio(info);
                 }
             }
             info.append("\n");

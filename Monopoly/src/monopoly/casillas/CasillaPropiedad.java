@@ -1,11 +1,10 @@
 package monopoly.casillas;
 
-import java.util.ArrayList;
-import partida.*;
-import monopoly.*;
-import monopoly.edificios.*;
 import excepcions.ExcepcionPropiedad;
 import excepcions.ExcepcionPropiedadComprar;
+import java.util.ArrayList;
+import monopoly.*;
+import partida.*;
 
 public abstract class CasillaPropiedad extends Casilla {
     private float valor;
@@ -191,27 +190,5 @@ public abstract class CasillaPropiedad extends Casilla {
     public void sumarRentabilidad(float valor){
         this.rentabilidad += valor;
     }
-
-    public int getVisitas(){
-        return visitas;
-    }
-
-    public void sumarVisitas(int valor){
-        this.visitas += valor;
-    }
-
     
-    public ArrayList<Jugador> getJugadoresVisitantes(){
-        return jugadoresvisitantes;
-    }
-
-
-    public void sumarJugadoresVisitantes(Jugador jugador){
-        if (jugador != null) {
-            this.jugadoresvisitantes.add(jugador);
-        } else {
-            consola.imprimir("Jugador no puede ser nulo");
-        }   
-    }
-
 }

@@ -95,18 +95,18 @@ public class Avatar {
     public final String generarId(ArrayList<Avatar> avCreados) {  //Final porque es la única implementación que proporcionamos
         
         Random ran = new Random();
-        String id;
+        String identificacion;
         
         //generar unha letra maiuscula aleatoria
-        id = String.valueOf((char) (ran.nextInt(26) + 'A'));
+        identificacion = String.valueOf((char) (ran.nextInt(26) + 'A'));
 
         for (Avatar avatar : avCreados) {
-            if(avatar.getId().equals(id)){
-                 id = String.valueOf((char)(ran.nextInt(26) + 'A'));
+            if(avatar.getId().equals(identificacion)){
+                identificacion = String.valueOf((char)(ran.nextInt(26) + 'A'));
             }
         }
         avCreados.add(this);
-        return id;
+        return identificacion;
         
     }
 
@@ -134,8 +134,8 @@ public class Avatar {
         solvente = jugador.getAvatar().getLugar().EvaluarCasilla(jugador, banca, casillasTotal, tablero, jugadores);
 
         //Atributos estadísticos
-        //jugador.getAvatar().getLugar().sumarVisitas(1);
-        //jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
+        jugador.getAvatar().getLugar().sumarVisitas(1);
+        jugador.getAvatar().getLugar().sumarJugadoresVisitantes(jugador);
 
         tablero.imprimirTablero();
 

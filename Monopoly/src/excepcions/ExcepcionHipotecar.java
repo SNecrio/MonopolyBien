@@ -1,6 +1,6 @@
 package excepcions;
 
-public class ExcepcionHipotecar extends Excepcion {
+public class ExcepcionHipotecar extends Exception {
     public ExcepcionHipotecar() {
         super("Error al hipotecar la casilla");
     }

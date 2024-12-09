@@ -327,14 +327,13 @@ public class Juego implements Comando{
                 }
                 else if(solar.tieneEdificios()==true){
                     throw new ExcepcionHipotecarEdificio("Debes vender antes los edificios de esta casilla antes de hipotecar");
-                    return;
                 }
                 solar.hipotecarCasilla(jugadoractual, banca);
 
             } catch(ExcepcionJugadorIncorrecto e){
                 consola.imprimir(e.getMessage());
             } catch(ExcepcionHipotecarEdificio e){
-                consola.impimir(e.getMessage());
+                consola.imprimir(e.getMessage());
             }
             }
        

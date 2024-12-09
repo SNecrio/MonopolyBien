@@ -8,10 +8,7 @@ public class AvatarEsfinge extends Avatar {
 
     //Constructor
     public AvatarEsfinge(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados){
-    setTipo(tipo);
-    setJugador(jugador);
-    setLugar(lugar);
-    setId(generarId(avCreados)); //usamos o metodo de abaixo para crear ID únicos
+    super(tipo, jugador, lugar, avCreados);  //Como no tiene atributos propios, usa el constructor de avatar genérico
     }
 
 }
